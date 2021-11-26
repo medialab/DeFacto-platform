@@ -1,0 +1,118 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Software.SoftwareSheet" locale="">
+  <web>XWiki.DeFacto.Software</web>
+  <name>SoftwareSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($object = $doc.getObject('XWiki.DeFacto.Software.SoftwareClass'))
+#if (!$object)
+  #set ($messageKey = 'software.sheet.description')
+  #set ($messageType = 'info')
+  #if ($doc.documentReference.name != 'SoftwareSheet')
+    #set ($messageKey = 'software.sheet.noObject')
+    #set ($messageType = 'warning')
+  #end
+  {{$messageType}}
+  $services.localization.render($messageKey)
+  {{/$messageType}}
+  #stop
+#end
+#set ($discard = $xwiki.jsfx.use('uicomponents/edit/editableProperty.js', {
+  'forceSkinAction': true,
+  'language': $xcontext.locale
+}))
+#set ($discard = $doc.use($object))
+#set ($editing = $xcontext.action == 'edit')
+{{html wiki="true" clean="false"}}
+&lt;div class="xform"&gt;
+  &lt;dl&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('title').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_title"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('title', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('title')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('abstract').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_abstract"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('abstract', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('abstract')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('authors').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Software.Code.SoftwareClass_0_authors"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('authors', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('authors')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('home').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_home"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('home', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('home')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('content').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Software.Code.SoftwareClass_0_content"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('content', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('content')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('repository').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_repository"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('repository', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('repository')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('documentation').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_documentation"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('documentation', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('documentation')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('demo').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_demo"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('demo', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('demo')&lt;/dd&gt;
+  &lt;/dl&gt;
+&lt;/div&gt;
+{{/html}}
+{{/velocity}}</content>
+</xwikidoc>

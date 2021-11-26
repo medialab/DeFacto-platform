@@ -1,0 +1,44 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="A-propos.Qui-sommes-nous.WebHome" locale="">
+  <web>A-propos.Qui-sommes-nous</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>A-propos.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Qui sommes-nous ?</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>= Partenaires =
+
+== Sciences Po ==
+
+* **Vulgariser et synthétiser** la production scientifique. Les recherches sur la désinformation sont désormais extraordinairement nombreuses et d’une très inégale qualité. L’équipe de Sciences Po propose de réaliser des synthèses en mettant en avant les travaux donnant des résultats stables, méthodiquement bien construits et réguliers pour produire un savoir cumulatif sur la désinformation.
+* **Comparaisons internationales.** Les travaux de recherche sur la désinformation s’enrichissent grandement de comparaisons internationales. L’équipe de Sciences Po contribue à la mise en perspective de ces travaux au regard du cas français.
+* **Re-situer la désinformation dans un contexte plus large.** Comprendre la désinformation comme un fait social implique de situer les producteurs de désinformation dans un contexte plus large, d’observer leur circulation dans un écosystème complet et d’observer, dans leur variété, les contextes de réception et les usages que d’autres acteurs font de la désinformation. Approche cartographique et statistique.
+* **Proposer et innover**  en construisant des propositions et des dispositifs de régulation de la désinformation (policy lab). En s’impliquant dans le débat sur la régulation de la modération des contenus, les équipes de recherche associées au projet proposeront un ensemble de policy paper.
+
+== AFP ==
+
+* **Pluralisme et diversité :** nous avons contacté tous les partenaires (Le Monde, Libé, 20 minutes, Radio France, les Surligneurs). Tout le monde est on board. On met en place le workflow technique. Les quatre premiers feront trois FC par mois chacun. Les Surligneurs 1. On ajoute aussi les révélateurs de France TV qui viennent de se créer et en feront 1/mois.
+* L’ensemble de leur production va atterrir dans notre back office. On choisira nous-mêmes ce qui fait sens pour la plateforme sachant qu’on fait moins de politique. Donc on prendra beaucoup de politique chez eux. TOUS leurs fact checks iront en top fact check afin de garantir sur le site un maximum de diversité. Puis ils atterriront dans les boîtes thématiques (environnement, politique, société, économie, sports, santé).
+* Dans la mesure du possible on évitera les doublons sur un même sujet. En revanche, on publiera parfois deux FC en une sur le même sujet s’ils sont complémentaires.
+* La plupart d’entre eux sont OK pour une publication intégrale, sauf Le Monde qui va nous dire combien de paras on peut reprendre avant renvoi sur leur site.
+* Pour les Fact checks enrichis on pense que le mieux serait de choisir des FC qui sont de véritables investigations de longue haleine. On les publie, on vous les signale et s'ils vous paraissent intéressants vous ajoutez sous votre responsabilité éditoriale une partie de recherche/impact. Ça permettra d’éviter une dilution de nos copyrights respectifs qui est toujours très complexe en cas de contestation : qui est responsable de quoi, etc ? Au moins les choses seront claires. Donc typiquement on fait un FC très investigué. Puis avec vos outils vous apportez des précisions soit sur l’impact, et/ou les sources, les tendances auxquelles cette désinformation est reliée, etc. Il nous semble important que vous ayez la main sur cet enrichissement.
+
+== CLEMI ==
+
+* **Contribuer à une communauté EMI à l’échelle européenne :** les enjeux de l’éducation aux médias et à l’information se posent pour tous les Etats membres mais les réponses apportées par chacun sont diverses (dans leur forme, dans les partenaires engagés). EDMO doit permettre de créer une communauté d’échanges de pratiques et de contenus sur ces enjeux et le CLEMI apportera son expertise sur ces sujets.
+* **Rappeler l’importance du travail sur les fondamentaux de l’information :** le développement du sens du discernement chez toutes les générations passe essentiellement par l’acquisition d’une vision globale de ce qu’est une information avant même d’aborder les enjeux de désinformation. Maîtriser la notion d’information, connaître les circuits de l’information, les différentes facettes du métier de journaliste et les enjeux de la publication sont des prérequis essentiels à acquérir en parallèle du développement de l’esprit critique.
+* **Encourager les usages de la pédagogie active :** il s’agit d’un pan essentiel de l’éducation aux médias et à l’information car elle permet de sensibiliser les élèves aux processus de l’information par l’action : en essayant de créer la meilleure information dont ils sont capables, les élèves peuvent comprendre comment est faite l’information, comment travaillent les médias.
+* **S’adresser à tous les publics et les soutenir dans leurs pratiques :** aujourd’hui toutes les générations sont confrontées aux processus de désinformation. Il est essentiel d’encourager un dialogue au sein des familles sur les pratiques informationnelles de chacun et de sensibiliser chaque génération sur le rôle qu’elle a à jouer dans la circulation d’informations fiables et vérifiées. Pour cela chacun doit se sentir acteur et contributeur de cette écologie de l’information. En étant responsabilisés et encouragés dans leurs pratiques, chacun peut agir en citoyen libre, éclairé et engagé dans cette dynamique.
+
+</content>
+</xwikidoc>

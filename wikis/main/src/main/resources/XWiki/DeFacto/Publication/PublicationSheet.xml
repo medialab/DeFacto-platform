@@ -1,0 +1,145 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Publication.PublicationSheet" locale="">
+  <web>XWiki.DeFacto.Publication</web>
+  <name>PublicationSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($object = $doc.getObject('XWiki.DeFacto.Publication.PublicationClass'))
+#if (!$object)
+  #set ($messageKey = 'publication.sheet.description')
+  #set ($messageType = 'info')
+  #if ($doc.documentReference.name != 'PublicationSheet')
+    #set ($messageKey = 'publication.sheet.noObject')
+    #set ($messageType = 'warning')
+  #end
+  {{$messageType}}
+  $services.localization.render($messageKey)
+  {{/$messageType}}
+  #stop
+#end
+#set ($discard = $xwiki.jsfx.use('uicomponents/edit/editableProperty.js', {
+  'forceSkinAction': true,
+  'language': $xcontext.locale
+}))
+#set ($discard = $doc.use($object))
+#set ($editing = $xcontext.action == 'edit')
+{{html wiki="true" clean="false"}}
+&lt;div class="xform"&gt;
+  &lt;dl&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('content').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_content"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('content', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('content')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('pdate').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_pdate"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('pdate', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('pdate')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('authors').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_authors"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('authors', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('authors')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('category').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_category"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('category', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('category')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('type').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_type"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('type', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('type')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('pubLink').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_pubLink"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('pubLink', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('pubLink')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('link').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_link"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('link', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('link')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('attachment').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_attachment"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('attachment', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('attachment')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('reference').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_reference"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('reference', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('reference')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('doi').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_doi"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('doi', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('doi')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('language').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Publication.PublicationClass_0_language"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('language', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('language')&lt;/dd&gt;
+  &lt;/dl&gt;
+&lt;/div&gt;
+{{/html}}
+{{/velocity}}</content>
+</xwikidoc>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.xwiki.projects.defacto.platform</groupId>
+    <artifactId>xwiki-defacto-platform-wikis</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>xwiki-defacto-platform-wikis-main-upgrade</artifactId>
+  <name>XWiki Projects - De Facto Platform - Main wiki upgrade</name>
+  <packaging>xar</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>xwiki-defacto-platform-wikis-main</artifactId>
+      <version>${project.version}</version>
+      <type>xar</type>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.xwiki.commons</groupId>
+        <artifactId>xwiki-commons-tool-xar-plugin</artifactId>
+        <configuration>
+          <includeDependencies>true</includeDependencies>
+          <excludes>
+            <!-- Exclude XWikiPreferences in case rights were updated in production -->
+            <exclude>**/XWiki/XWikiPreferences.xml</exclude>
+            <!-- Exclude groups -->
+            <!-- Exclude content pages -->
+            <exclude>**/A-propos/**</exclude>
+            <exclude>**/Actus/**</exclude>
+            <exclude>**/Comprendre/**</exclude>
+            <exclude>**/Explorer/**</exclude>
+            <exclude>**/Medias/**</exclude>
+            <exclude>**/Mentions-legales/**</exclude>
+            <exclude>**/Themes/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

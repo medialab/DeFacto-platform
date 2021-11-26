@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="A-propos.WebHome" locale="">
+  <web>A-propos</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>À propos</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>{{velocity}}
+{{html clean="false"}}
+  &lt;ul class="defacto-a-propos nav nav-tabs" role="tablist"&gt;
+    &lt;li role="presentation" class="active"&gt;&lt;a href="#manifeste" aria-controls="manifeste" role="tab" data-toggle="tab"&gt;Manifeste&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#qui-sommes-nous" aria-controls="qui-sommes-nous" role="tab" data-toggle="tab"&gt;Qui sommes-nous ?&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#reseau" aria-controls="reseau" role="tab" data-toggle="tab"&gt;Le réseau européen&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+{{/html}}
+
+(% class="tab-content" %)(((
+  (% role="tabpanel" class="tab-pane active" id="manifeste" %)(((
+    {{include reference="A-propos.Manifeste.WebHome"/}}
+  )))
+  (% role="tabpanel" class="tab-pane" id="qui-sommes-nous" %)(((
+    {{include reference="A-propos.Qui-sommes-nous.WebHome"/}}
+  )))
+  (% role="tabpanel" class="tab-pane" id="reseau" %)(((
+    {{include reference="A-propos.Le-reseau-europeen.WebHome"/}}
+  )))
+)))
+{{/velocity}}
+
+</content>
+</xwikidoc>

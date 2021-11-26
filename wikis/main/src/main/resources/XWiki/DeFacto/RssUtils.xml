@@ -1,0 +1,82 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.RssUtils" locale="">
+  <web>XWiki.DeFacto</web>
+  <name>RssUtils</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>RssUtils</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{groovy}}
+import com.rometools.rome.io.*;
+import com.rometools.rome.feed.synd.*;
+
+class RssUtils {
+
+  RssUtils() {
+    super();
+  }
+
+  SyndFeed createFeed(pageList, services, xwiki) {
+    def SyndFeed feed = new SyndFeedImpl();
+    feed.setFeedType("rss_2.0");
+    feed.setTitle('De Facto');
+    feed.setLink('https://defacto-observatoire.fr/');
+    feed.setDescription("De Facto – Des clés pour mieux s'informer");
+    feed.setUri('https://defacto-observatoire.fr/')
+    def List&lt;SyndEntry&gt; entries = new ArrayList&lt;&gt;();
+    pageList.each{ result -&gt;
+      def SyndEntry entry = new SyndEntryImpl();
+      def List&lt;SyndPerson&gt; eventAuthors = new ArrayList&lt;SyndPerson&gt;();
+      def page = xwiki.getDocument(result[0])
+
+      // Define the GUID
+      entry.setUri(page.fullName);
+      entry.setLink(page.getExternalURL());
+      // Set the entry title
+      entry.setTitle(page.displayTitle);
+      // Add the description to the entry
+      def SyndContent entryDescription = new SyndContentImpl();
+      // set published date, language, enclosure etc.
+      entryDescription.setType("text/html");
+      def content = page.content;
+      // There is an issue with emoticons it seems. The generated XML is wrong when not adding a space between brackets and parenthesis
+      // or between italics and parenthesis
+      content = content.replaceAll('\\]\\]\\)', ']] )')
+      content = content.replaceAll('//\\)', '// )')
+      def xdom = services.rendering.parse(content, "xwiki/2.1");
+      def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
+      entryDescription.setValue(renderedContent);
+      entry.setDescription(entryDescription);
+      entries.add(entry);
+    }
+    feed.setEntries(entries);
+    return feed;
+  }
+
+  void printFeed(feed, out, xcontext, response) {
+    def SyndFeedOutput output = new SyndFeedOutput();
+    if (xcontext.action == 'get') {
+      response.setContentType("application/xml");
+      def feedStr = output.outputString(feed, true);
+      out.println(feedStr);
+
+    } else {
+      out.println("{{code language='xml'}}")
+      out.println(output.outputString(feed));
+      out.println("{{/code}}")
+    }
+  }
+}
+
+{{/groovy}}</content>
+</xwikidoc>

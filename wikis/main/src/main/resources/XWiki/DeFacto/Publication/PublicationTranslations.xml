@@ -1,0 +1,119 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Publication.PublicationTranslations" locale="">
+  <web>XWiki.DeFacto.Publication</web>
+  <name>PublicationTranslations</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content># Class fields
+XWiki.DeFacto.Publication.PublicationClass_content=Abstract
+XWiki.DeFacto.Publication.PublicationClass_category=Catégorie
+XWiki.DeFacto.Publication.PublicationClass_category_1=Analyse
+XWiki.DeFacto.Publication.PublicationClass_category_2=Étude
+XWiki.DeFacto.Publication.PublicationClass_type=Type
+XWiki.DeFacto.Publication.PublicationClass_type_article=Article / Chapitre
+XWiki.DeFacto.Publication.PublicationClass_type_book=Livre
+XWiki.DeFacto.Publication.PublicationClass_type_communication=Communication
+XWiki.DeFacto.Publication.PublicationClass_type_grey-literature=Littérature grise
+XWiki.DeFacto.Publication.PublicationClass_type_report=Rapport
+XWiki.DeFacto.Publication.PublicationClass_type_thesis=Thèse
+XWiki.DeFacto.Publication.PublicationClass_pdate=Date de publication
+XWiki.DeFacto.Publication.PublicationClass_authors=Auteurs
+XWiki.DeFacto.Publication.PublicationClass_pubLink=Lien vers la publication complète
+XWiki.DeFacto.Publication.PublicationClass_link=Autre lien
+XWiki.DeFacto.Publication.PublicationClass_attachment=Fichier joint
+XWiki.DeFacto.Publication.PublicationClass_reference=Référence
+XWiki.DeFacto.Publication.PublicationClass_doi=DOI
+XWiki.DeFacto.Publication.PublicationClass_language=Langue
+XWiki.DeFacto.Publication.PublicationClass_language_fr=fr
+XWiki.DeFacto.Publication.PublicationClass_language_en=en
+
+# Sheet keys
+publication.sheet.description=This page controls how Publication pages are displayed in both view and edit modes.
+publication.sheet.noObject=The current page doesn't have the expected Publication object.
+publication.sheet.noFields=The Publication application doesn't have any fields to display.
+
+# Live table generic keys
+publication.livetable.doc.title=Titre de la page
+publication.livetable.doc.name=Nom de la page
+publication.livetable.doc.space=Espace
+publication.livetable.doc.fullname=Nom complet de la page
+publication.livetable.doc.location=Emplacement
+publication.livetable.doc.author=Dernier auteur
+publication.livetable.doc.creator=Créateur
+publication.livetable.doc.date=Date de dernière mise à jour
+publication.livetable.doc.creationDate=Date de création
+publication.livetable._avatar=Avatar
+publication.livetable._images=Images
+publication.livetable._attachments=Pièces jointes
+publication.livetable._actions=Actions
+publication.livetable._actions.edit=Modifier
+publication.livetable._actions.delete=Supprimer
+publication.livetable.emptyvalue=-
+
+# Live table specific keys
+publication.livetable.content=Abstract
+publication.livetable.pdate=Date de publication
+publication.livetable.authors=Auteurs
+publication.livetable.link=Lien vers la publication complète
+publication.livetable.attachment=Fichier joint
+publication.livetable.reference=Référence
+publication.livetable.doi=DOI
+publication.livetable.language=Langue
+
+# Other keys
+publication.entry.name=Publication
+publication.entry.hint=Étude ou analyse
+
+# Deprecated keys
+publication.dataSpace.title=Data
+</content>
+  <object>
+    <name>XWiki.DeFacto.Publication.PublicationTranslations</name>
+    <number>0</number>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>39b0a026-b4ad-4275-a288-828673454bfd</guid>
+    <class>
+      <name>XWiki.TranslationDocumentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>1</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <scope>WIKI</scope>
+    </property>
+  </object>
+</xwikidoc>

@@ -1,0 +1,195 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Media.HomeSheet" locale="">
+  <web>XWiki.DeFacto.Media</web>
+  <name>HomeSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Media.HomeSheet'))
+  #set ($hql = "select doc.title, doc.fullName from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = :class and doc.fullName not like '%Template%' order by doc.title")
+  #set ($query = $services.query.hql($hql))
+  #set ($discard = $query.bindValue('class', 'XWiki.DeFacto.Media.MediaClass'))
+  #set ($entries = $query.execute())
+  (% class="row" %)(((
+    #foreach ($entry in $entries)
+      #set ($r = $foreach.index % 3)
+      #if ($foreach.index &gt; 0 &amp;&amp; $r == 0)
+        (% class="clearfix" %)((()))
+      #end
+      (% class="col-xs-12 col-md-4" %)(((
+        (% class="box defacto-box" %)(((
+          #set ($mediaPage = $xwiki.getDocument($entry[1]))
+          #set ($mediaObject = $mediaPage.getObject('XWiki.DeFacto.Media.MediaClass'))
+          #set ($site = $mediaObject.getValue('site'))
+          #set ($feed = $mediaObject.getValue('feed'))
+          #set ($logo = $mediaObject.getValue('logo'))
+          (% class="defacto-box-image" %)(((
+            #if ("$!logo" != '')
+              [[image:$entry[1]@$logo]]
+            #end
+          )))
+          (% class="defacto-box-main" %)(((
+            == [[$entry[0]&gt;&gt;$entry[1]]] ==
+            (% class="defacto-media-metadata" %)(((
+              #if ("$!site" != '')
+              * [[Site&gt;&gt;$site]]
+              #end
+              #if ("$!feed" != '')
+              * [[Fil RSS&gt;&gt;$feed]]
+              #end
+            )))
+          )))
+        )))
+      )))
+    #end
+  )))
+{{/velocity}}</content>
+  <object>
+    <name>XWiki.DeFacto.Media.HomeSheet</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>411d2d08-d4b8-4fd3-a6ba-11d603bc1f4e</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>.defacto-box {
+  background: #fcfcfc;
+  display: flex;
+  .defacto-media-metadata ul {
+    list-style: none;
+    padding-left: 0;
+    li {
+      display: inline-block;
+      margin-right: 1em;
+    }
+  }
+  .defacto-box-image {
+    max-width: 130px;
+    min-width: 80px;
+    margin-right: 1em;
+  }
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+</xwikidoc>

@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.News.WebHome" locale="">
+  <web>XWiki.DeFacto.News</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>XWiki.DeFacto.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>News</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($columnsProperties = {
+  'doc.title': {"link":"view"},
+  'doc.location': {"html":true},
+  'doc.date': {},
+  'doc.author': {"link":"author"},
+  '_actions': {"sortable":false,"filterable":false,"html":true,"actions":["edit","delete"]}
+})
+#set ($options = {
+  'className': 'XWiki.DeFacto.News.NewsClass',
+  'translationPrefix': 'news.livetable.',
+  'tagCloud': true,
+  'rowCount': 15,
+  'maxPages': 10,
+  'selectedColumn': 'doc.title',
+  'defaultOrder': 'asc'
+})
+#set ($columns = ['doc.title', 'doc.location', 'doc.date', 'doc.author', '_actions'])
+#livetable('news' $columns $columnsProperties $options)
+{{/velocity}}</content>
+</xwikidoc>

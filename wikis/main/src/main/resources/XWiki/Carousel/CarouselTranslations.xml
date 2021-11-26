@@ -1,0 +1,92 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.Carousel.CarouselTranslations" locale="">
+  <web>XWiki.Carousel</web>
+  <name>CarouselTranslations</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content># Class fields
+XWiki.Carousel.CarouselClass_slides=Slides
+
+# Sheet keys
+carousel.sheet.description=This page controls how Carousel pages are displayed in both view and edit modes.
+carousel.sheet.noObject=The current page doesn't have the expected Carousel object.
+carousel.sheet.noFields=The Carousel application doesn't have any fields to display.
+
+# Live table generic keys
+carousel.livetable.doc.title=Titre de la page
+carousel.livetable.doc.name=Nom de la page
+carousel.livetable.doc.space=Espace
+carousel.livetable.doc.fullname=Nom complet de la page
+carousel.livetable.doc.location=Emplacement
+carousel.livetable.doc.author=Dernier auteur
+carousel.livetable.doc.creator=Créateur
+carousel.livetable.doc.date=Date de dernière mise à jour
+carousel.livetable.doc.creationDate=Date de création
+carousel.livetable._avatar=Avatar
+carousel.livetable._images=Images
+carousel.livetable._attachments=Pièces jointes
+carousel.livetable._actions=Actions
+carousel.livetable._actions.edit=Modifier
+carousel.livetable._actions.delete=Supprimer
+carousel.livetable.emptyvalue=-
+
+# Live table specific keys
+carousel.livetable.slides=Page
+
+# Other keys
+carousel.entry.name=Carousel
+carousel.entry.hint=Jeu de diapositives avec ou sans image
+
+# Deprecated keys
+carousel.dataSpace.title=Data
+</content>
+  <object>
+    <name>XWiki.Carousel.CarouselTranslations</name>
+    <number>0</number>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>f1ea544b-f81e-49f2-8be1-fbbf9b385100</guid>
+    <class>
+      <name>XWiki.TranslationDocumentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>1</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <scope>WIKI</scope>
+    </property>
+  </object>
+</xwikidoc>

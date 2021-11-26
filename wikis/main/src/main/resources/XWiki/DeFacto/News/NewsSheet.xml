@@ -1,0 +1,258 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.News.NewsSheet" locale="">
+  <web>XWiki.DeFacto.News</web>
+  <name>NewsSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($object = $doc.getObject('XWiki.DeFacto.News.NewsClass'))
+#if (!$object)
+  #set ($messageKey = 'news.sheet.description')
+  #set ($messageType = 'info')
+  #if ($doc.documentReference.name != 'NewsSheet')
+    #set ($messageKey = 'news.sheet.noObject')
+    #set ($messageType = 'warning')
+  #end
+  {{$messageType}}
+  $services.localization.render($messageKey)
+  {{/$messageType}}
+  #stop
+#end
+#set ($discard = $xwiki.jsfx.use('uicomponents/edit/editableProperty.js', {
+  'forceSkinAction': true,
+  'language': $xcontext.locale
+}))
+#set ($discard = $doc.use($object))
+#set ($editing = $xcontext.action == 'edit')
+{{html wiki="true" clean="false"}}
+&lt;div class="xform"&gt;
+  &lt;dl&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('title').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_title"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('title', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('title')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('type').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_type"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('type', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('type')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('abstract').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_abstract"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('abstract', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('abstract')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('content').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_content"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('content', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('content')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('date').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_date"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('date', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('date')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('dateLabel').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_dateLabel"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('dateLabel', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('dateLabel')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('schedule').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_schedule"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('schedule', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('schedule')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('coverImage').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_coverImage"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('coverImage', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    #if ($editing)
+    #set ($attachmentPickerParams = {
+      'id': 'XWiki.DeFacto.News.NewsClass_0_coverImage',
+      'name': 'XWiki.DeFacto.News.NewsClass_0_coverImage',
+      'data-search-scope': "document:$services.model.serialize($doc.documentReference)",
+      'data-upload-allowed': $services.security.authorization.hasAccess('edit'),
+      'value': $object.getValue('coverImage')
+    })
+    #attachmentPicker($attachmentPickerParams)
+    #else
+      &lt;dd&gt;$doc.display('coverImage')&lt;/dd&gt;
+    #end
+  &lt;/dl&gt;
+&lt;/div&gt;
+{{/html}}
+{{/velocity}}</content>
+  <object>
+    <name>XWiki.DeFacto.News.NewsSheet</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>bfe4c36f-2efe-4f78-bc64-7190cd09c9c7</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>.defacto-box.defacto-box-news {
+  display: flex;
+  .defacto-box-image {
+    img {
+      width: 180px;
+      margin-right: 1em;
+      max-width: inherit;
+    }
+  }
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+</xwikidoc>

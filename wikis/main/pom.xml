@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.xwiki.projects.defacto.platform</groupId>
+    <artifactId>xwiki-defacto-platform-wikis</artifactId>
+    <version>0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>xwiki-defacto-platform-wikis-main</artifactId>
+  <name>XWiki Projects - De Facto Platform - Main wiki</name>
+  <packaging>xar</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>org.xwiki.contrib</groupId>
+      <artifactId>api-extra-xar-entry-types</artifactId>
+      <version>${extraXarEntryTypes.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.validation</groupId>
+          <artifactId>validation-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.xwiki.commons</groupId>
+        <artifactId>xwiki-commons-tool-xar-plugin</artifactId>
+        <configuration>
+          <includeDependencies>false</includeDependencies>
+          <!-- Prevent licence to be added -->
+          <formatLicense>false</formatLicense>
+          <defaultLanguage>fr</defaultLanguage>
+          <entries>
+            <!-- Groups -->
+            <entry>
+              <document>XWiki.XWikiPreferences</document>
+              <type>configuration</type>
+            </entry>
+            <entry>
+              <document>Main.WebHome</document>
+              <type>noedit-nodelete-overwrite</type>
+            </entry>
+            <entry>
+              <document>XWiki.EntityNameValidation.Configuration</document>
+              <type>edit-nodelete-owerwrite</type>
+            </entry>
+            <entry>
+              <document>XWiki.Like.LikeConfiguration</document>
+              <type>edit-nodelete-owerwrite</type>
+            </entry>
+          </entries>
+          <visibleTechnicalPages>
+            <visibleTechnicalPage>.*/Administration/.*\.xml</visibleTechnicalPage>
+          </visibleTechnicalPages>
+          <contentPages>
+            <contentPage>.*/A-propos/.*\.xml</contentPage>
+            <contentPage>.*/Actus/.*\.xml</contentPage>
+            <contentPage>.*/Comprendre/.*\.xml</contentPage>
+            <contentPage>.*/Explorer/.*\.xml</contentPage>
+            <contentPage>.*/Medias/.*\.xml</contentPage>
+            <contentPage>.*/Mentions-legales/.*\.xml</contentPage>
+            <contentPage>.*/Themes/.*\.xml</contentPage>
+          </contentPages>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

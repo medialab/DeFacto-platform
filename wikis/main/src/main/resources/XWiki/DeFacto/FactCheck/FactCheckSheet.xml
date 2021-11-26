@@ -1,0 +1,663 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.FactCheckSheet" locale="">
+  <web>XWiki.DeFacto.FactCheck</web>
+  <name>FactCheckSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($discard = $xwiki.ssx.use('XWiki.DeFacto.FactCheck.FactCheckSheet'))
+#set ($discard = $xwiki.jsx.use('XWiki.DeFacto.FactCheck.FactCheckSheet'))
+#set ($discard = $xwiki.jsx.use('XWiki.DeFacto.LnF.TabsJSX'))
+#set ($object = $doc.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
+#set ($discard = $doc.use($object))
+#set ($editing = $xcontext.action == 'edit')
+
+(% class="xform defacto-fact-check" %)(((
+
+#if ($editing)
+
+{{html clean="false"}}
+  &lt;ul class="defacto-a-propos nav nav-tabs" role="tablist"&gt;
+    &lt;li role="presentation" class="active"&gt;&lt;a href="#article" aria-controls="article" role="tab" data-toggle="tab"&gt;Article&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#review" aria-controls="review" role="tab" data-toggle="tab"&gt;Évaluation&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+{{/html}}
+
+(% class="tab-content defacto-fact-check-edit" %)(((
+  (% role="tabpanel" class="tab-pane active" id="article" %)(((
+    = $doc.displayPrettyName('title', false, false) =
+    $doc.display('title')
+
+    = $doc.displayPrettyName('authors', false, false) =
+    $doc.display('authors')
+
+    = $doc.displayPrettyName('pdate', false, false) =
+    $doc.display('pdate')
+
+    = $doc.displayPrettyName('updateDate', false, false) =
+    $doc.display('updateDate')
+
+    = $doc.displayPrettyName('link', false, false) =
+    $doc.display('link')
+
+    = $doc.displayPrettyName('headerImage', false, false) =
+
+    {{html}}
+    #set ($attachmentPickerParams = {
+      'id': 'XWiki.DeFacto.FactCheck.FactCheckClass_0_headerImage',
+      'name': 'XWiki.DeFacto.FactCheck.FactCheckClass_0_headerImage',
+      'data-search-scope': "document:$services.model.serialize($doc.documentReference)",
+      'data-upload-allowed': $services.security.authorization.hasAccess('edit'),
+      'value': $object.getValue('headerImage')
+    })
+    #attachmentPicker($attachmentPickerParams)
+    {{/html}}
+
+    = $doc.displayPrettyName('headerImageCaption', false, false) =
+    $doc.display('headerImageCaption')
+
+    = $doc.displayPrettyName('headerImageCredits', false, false) =
+    $doc.display('headerImageCredits')
+
+    = $doc.displayPrettyName('headerAudio', false, false) =
+    $doc.display('headerAudio')
+
+    = $doc.displayPrettyName('chapeau', false, false) =
+    $doc.display('chapeau')
+
+    = $doc.displayPrettyName('content', false, false) =
+    $doc.display('content')
+
+    = $doc.displayPrettyName('themes', false, false) =
+    $doc.display('themes')
+
+    = Tags =
+    #set ($tagObject = $doc.getObject('XWiki.TagClass'))
+    #set ($tags = $tagObject.getValue('tags'))
+    {{html}}
+    #set ($discard = $xwiki.jsfx.use('uicomponents/suggest/suggestPropertyValues.js',
+      {'forceSkinAction': true, 'language': $xcontext.locale}))
+    #*
+    #set ($suggestParams = {
+          'class': 'suggest-propertyValues',
+          'multiple': 'multiple',
+          'data-className': 'XWiki.TagClass',
+          'data-propertyName': 'tags',
+          'value': $tags
+    })*#
+    ## The suggestions work best with the options below than with the TagClass
+    #set ($suggestParams = {
+      'class': 'suggest-propertyValues',
+      'placeholder': '',
+      'data-className': 'XWiki.DeFacto.Une.UneConfigClass',
+      'data-propertyName': 'tags',
+      'multiple': 'multiple',
+      'name': 'tags',
+      'value': $tags
+    })
+    #suggestInput($suggestParams)
+    {{/html}}
+
+    = $doc.displayPrettyName('mediaTopics', false, false) =
+    $doc.display('mediaTopics')
+
+    = $doc.displayPrettyName('locations', false, false) =
+    $doc.display('locations')
+
+    = $doc.displayPrettyName('categories', false, false) =
+    $doc.display('categories')
+
+    = $doc.displayPrettyName('media', false, false) =
+    $doc.display('media')
+  )))
+  (% role="tabpanel" class="tab-pane" id="review" %)(((
+    #set ($claimReview = $doc.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
+    #set ($discard = $doc.use($claimReview))
+
+    ## 'itemReviewedAppearanceDatePublished', 'itemReviewedAppearanceAuthorName', 'itemReviewedAppearancePublisherName'
+    #set ($propertyNames = ['claimReviewed', 'itemReviewedDatePublished', 'itemReviewedAuthorType', 'itemReviewedAuthorName', 'itemReviewedAuthorUrl', 'itemReviewedAppearanceUrl', 'reviewRatingValue', 'reviewRatingAlternateName'])
+    #foreach ($propertyName in $propertyNames)
+      = $doc.displayPrettyName($propertyName, false, false) =
+      (% class="defacto-claimreview-$propertyName" %)(((
+        $doc.display($propertyName)
+      )))
+    #end
+  )))
+#else
+      #if ("$!request.published" != '')
+        {{info}}
+        #if ($request.published == 'true')
+        Le fact-check a bien été publié.
+        #else
+        Le fact-check a bien été dépublié.
+        #end
+        {{/info}}
+      #end
+      (% class="defacto-fact-check-title" %)(((
+        = $doc.displayTitle =
+      )))
+
+      ; Auteur(s)
+      : $object.getValue('authors')
+
+       #set ($media = $object.getValue('media'))
+       #if ("$!media" != '')(((
+         #set ($mediaPage = $xwiki.getDocument($media))
+         #set ($mediaObject = $mediaPage.getObject('XWiki.DeFacto.Media.MediaClass'))
+         #set ($copyright = $mediaObject.getValue('copyright'))
+       )))
+       #end
+
+       #set ($pdate = $object.getValue('pdate'))
+       #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy à HH:mm').withLocale('fr'))
+       (% class="defacto-fact-check-publication-date" %)(((
+         Publié le $dateFormatter.print($pdate)
+       )))
+       #set ($udate = $object.getValue('updateDate'))
+       #if ("$!udate" != '')
+       (% class="defacto-fact-check-update-date" %)(((
+         – Mis à jour le $dateFormatter.print($pdate)
+       )))
+       #end
+
+      #set ($headerImage = $object.getValue('headerImage'))
+      #if ("$!headerImage" != '')
+        (% class="defacto-fact-check-header-image" %)(((
+          [[image:$headerImage]]
+          #set ($headerImageCaption = $object.getValue('headerImageCaption'))
+          #set ($headerImageCredits = $object.getValue('headerImageCredits'))
+          (% class="defacto-fact-check-header-media-legend" %)(((
+            #if ("$!headerImageCaption" != '')
+              (% class="defacto-fact-check-header-media-caption" %)(((
+                $headerImageCaption
+              )))
+            #end
+            #if ("$!headerImageCredits" != '')
+              (% class="defacto-fact-check-header-media-credits" %)((( ($headerImageCredits) )))
+            #end
+          )))
+        )))
+      #end
+
+      #set ($headerAudio = $object.getValue('headerAudio'))
+      #if ("$!headerAudio" != '')
+        {{html clean="false"}}
+          &lt;audio controls src="$headerAudio"&gt;
+            Le fichier audio ne peut être lu par votre navigateur car celui-ci ne peut interpréter la balise &lt;code&gt;audio&lt;/code&gt;.
+          &lt;/audio&gt;
+        {{/html}}
+      #end
+
+       #if ("$!copyright" != '')
+       (% class="defacto-fact-check-copyright" %)(((
+         $copyright
+       )))
+       #end
+
+
+      (% class="defacto-fact-check-chapeau" %)(((
+        $doc.display('chapeau')
+      )))
+
+      (% class="defacto-fact-check-body" %)(((
+        $doc.display('content')
+      )))
+
+      #set ($tagObject = $doc.getObject('XWiki.TagClass'))
+      #if ($tagObject != $NULL)
+        #set ($tags = $tagObject.getValue('tags'))
+        #if ($tags.size() &gt; 0)
+          (% class="defacto-fact-check-tags" %)(((
+          #foreach ($tag in $tags)
+            * [[$tag&gt;&gt;Main.Search||queryString="f_type=DOCUMENT&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)&amp;text=*&amp;f_class=XWiki.DeFacto.FactCheck.FactCheckClass"]]
+          #end
+          )))
+        #end
+      #end
+
+      #*
+      (% class="defacto-fact-check-content" %)(((
+        {{html clean="false"}}
+        $object.getValue('contentHtml')
+        {{/html}}
+      )))
+*#
+
+      #set ($link = $object.getValue('link'))
+      (% class="box defacto-box defacto-fact-check-source" %)(((
+        #if ($mediaObject != $NULL &amp;&amp; $hello == $NULL)
+        ## We use HTML because links can contain brackets and other wiki syntax characters
+          #set ($mediaSite = $mediaObject.getValue('site'))
+          #set ($mediaLogo = $mediaObject.getValue('logo'))
+          #if ("$!mediaLogo" != '')
+            (% class="defacto-media-logo" %)(((
+              [[image:$media@$mediaLogo]]
+            )))
+          #end
+          {{html clean="false"}}
+          #if ("$!link" != '')
+            Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt; :
+            &lt;em&gt;&lt;a href="$escapetool.xml($link)"&gt;$doc.title&lt;/a&gt;&lt;/em&gt;.
+          #else
+            Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
+          #end
+          {{/html}}
+        #end
+      )))
+#end
+)))
+
+{{/velocity}}</content>
+  <object>
+    <name>XWiki.DeFacto.FactCheck.FactCheckSheet</name>
+    <number>0</number>
+    <className>XWiki.JavaScriptExtension</className>
+    <guid>f539067c-7beb-4c37-815e-f03765c7ff6a</guid>
+    <class>
+      <name>XWiki.JavaScriptExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>require(['jquery'], function($) {
+  //  var objectNumber = $('input[name="defacto-tags-object-number"').val();
+  var objectNumber = 0;
+  $('select[name="tags"]').on('change', function(event) {
+    // Remove the tag inputs previously set
+    $('#mainContentArea &gt; form .defacto-tag-input').remove();
+    var form = $('#mainContentArea &gt; form');
+    var tags = $(this).val();
+    if (tags !== null) {
+      tags.each(function(item, index) {
+        var node = $('&lt;input type="hidden" class="defacto-tag-input" name="XWiki.TagClass_' + objectNumber + '_tags"/&gt;;');
+        node.attr('value', item);
+        form.append(node);
+      });
+    } else {
+      var node = $('&lt;input type="hidden" class="defacto-tag-input" name="XWiki.TagClass_' + objectNumber + '_tags"/&gt;;');
+      node.attr('value', '');
+      form.append(node);
+    }
+    /*form.find('.xwiki-pinned-child-pages li').each(function (index) {
+        var reference = $(this).data('reference')
+        var node = $('&amp;lt;input type="hidden" class="xwiki-pinned-child-pages-input" name="XWiki.PinnedChildPagesClass_' + objectNumber + '_pinnedChildPages"/&amp;gt;');
+        node.attr('value', reference);
+        form.append(node);
+    });*/
+  });
+});</code>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.DeFacto.FactCheck.FactCheckSheet</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>9585de55-b622-4c1a-a476-e8313249a427</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>#xwikicontent {
+  overflow-x: hidden; /* The overflowing image rule generates an horizontal overflow that we want to hide. */
+}
+
+#mainContentArea {
+  max-width: inherit;
+}
+
+#document-title {
+  display: none;
+}
+
+.document-header + hr {
+  display: none;
+}
+
+.defacto-fact-check {
+  font-size: 16px;
+  audio {
+    width: 100%;
+  }
+  .defacto-fact-check-title h1 {
+    font-size: 1.6em;
+    margin-bottom: 1em;
+    font-weight: 400;
+  }
+  .defacto-fact-check-update-date {
+    margin-left: 0.3em;
+  }
+
+  .defacto-fact-check-copyright {
+    text-align: center;
+    font-size: 0.9em;
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .defacto-fact-check-chapeau {
+    font-weight: 400;
+    font-size: 1.4em;
+    color: #5f727f;
+    line-height: 1.2em;
+  }
+  h3 {
+    font-weight: bold;
+    font-size: 1.4em;
+  }
+  .defacto-fact-check-body {
+    p {
+      margin-bottom: 2em;
+      b, strong {
+        font-weight: 500;
+      }
+    }
+  }
+  .defacto-fact-check-publication-date, .defacto-fact-check-update-date {
+    display: inline-block;
+  }
+
+  .defacto-fact-check-header-image {
+    .defacto-fact-check-header-media-caption, .defacto-fact-check-header-media-credits {
+      display: inline-block;
+      font-style: italic;
+      color: #96a3aa;
+    }
+    .defacto-fact-check-header-media-credits {
+      margin-left: 0.5em;
+    }
+  }
+  .defacto-fact-check-tags {
+    text-align: center;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding: 1em;
+    ul {
+      list-style: none;
+    }
+  }
+}
+
+/************************ AFP Factuel **********************/
+.image {
+  text-align: center;
+  .legend {
+    font-style: italic;
+    color: #96a3aa;
+    margin: 30px 30px 20px;
+    display: block;
+  }
+}
+
+/** g2web is used for tweets and YouTube videos embeds */
+.g2web {
+  width: 60%;
+  margin: auto;
+  padding-top: 0px;
+  padding-bottom: 36px;
+}
+
+div.grid-with-margin {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1em;
+}
+
+.defacto-fact-check-edit {
+  h1 {
+    text-transform: uppercase;
+    font-weight: normal;
+    font-size: 1em;
+  }
+  .defacto-claimreview-reviewRatingValue label {
+    display: inline-block;
+    margin-right: 0.5em;
+  }
+}
+
+@media (min-width: @screen-md-min) {
+  .defacto-fact-check {
+    font-size: 20px;
+    max-width: 50%;
+    margin: auto;
+    .defacto-fact-check-title h1 {
+      font-size: 2.4em;
+    }
+    .defacto-fact-check-header-image {
+      left: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      max-width: 100vw;
+      position: relative;
+      right: 50%;
+      width: 100vw;
+      text-align: center;
+      img {
+        object-fit: fill;
+        max-width: 80%;
+      }
+    }
+  }
+  .defacto-fact-check-source {
+    .defacto-media-logo {
+      float: left;
+      margin-right: 1em;
+      max-width: 180px;
+    }
+  }
+  #xdocFooter {
+    max-width: 50%;
+    margin: auto;
+    padding: 0;
+  }
+}
+
+</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+</xwikidoc>

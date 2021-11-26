@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.WebHome" locale="">
+  <web>XWiki.DeFacto.FactCheck</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>XWiki.DeFacto.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Fact-checks</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+  #set ($columnsProperties = {
+    'doc.title': {"link":"view"},
+    'authors': {'html': true},
+    'themes': {},
+    'pdate': {},
+    'published': {},
+    'media': {},
+    'doc.date': {'filterable': true},
+    'doc.author': {"link":"author"},
+    '_actions': {"sortable":false,"filterable":false,"html":true,"actions":["edit","delete"]}
+  })
+#set ($options = {
+    'className': 'XWiki.DeFacto.FactCheck.FactCheckClass',
+    'translationPrefix': 'factcheck.livetable.',
+    'tagCloud': true,
+    'rowCount': 100,
+    'maxPages': 10,
+    'selectedColumn': 'pdate',
+    'defaultOrder': 'desc'
+})
+#set ($columns = ['doc.title', 'authors', 'themes', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
+#livetable('factchecks' $columns $columnsProperties $options)
+{{/velocity}}</content>
+</xwikidoc>

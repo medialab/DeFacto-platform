@@ -1,0 +1,181 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Search.SolrSearchMacros" locale="">
+  <web>XWiki.DeFacto.Search</web>
+  <name>SolrSearchMacros</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.SolrSearch</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>SolrSearchMacros</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity output="false"}}
+
+## Customized to handle the case when the search is "embedded"
+#macro (displaySearchUI)
+  #set($void = $services.progress.startStep('#displaySearchUI'))
+  #set($void = $services.progress.pushLevel())
+  #set ($discard = $xwiki.ssx.use('Main.SolrSearch'))
+  #set ($discard = $xwiki.jsx.use('Main.SolrSearch'))
+  ## Disable the document extra data: comments, attachments, history...
+  #set ($displayDocExtra = false)
+  #processRequestParameters()
+  (% class="search-ui" %)(((
+    #if ($xcontext.action == 'get')
+      {{html clean="false"}}
+      ## The search UI is updated dynamically through AJAX and we need to pull the skin extensions.
+      ## We put the skin extension imports inside a &lt;noscript&gt; element to prevent jQuery from fetching the JavaScript
+      ## files automatically (we want to fetch only the new JavaScript files).
+      &lt;noscript class="hidden skin-extension-imports"&gt;#skinExtensionHooks&lt;/noscript&gt;
+      {{/html}}
+
+    #end
+    #displaySearchForm()
+    #if ($text != '')
+      #getSearchResults()
+      #if ($debug)
+        #displaySearchDebugInfo()
+      #end
+      #set ($embedded = $request.embedded)
+      (% class="search-results-container row" %)(((
+        #if ($facetEnabled)
+          #if ($embedded)
+            (% class="col-xs-12 col-sm-12 col-md-12" %)(((
+          #else
+            (% class="col-xs-12 col-sm-4 col-sm-push-8 col-md-3 col-md-push-9" %)(((
+          #end
+            #displaySearchFacets($searchResponse)
+          )))
+        #end
+        (% class="search-results-left col-xs-12#if ($facetEnabled) #if ($embedded) col-sm-12 col-md-12 #else col-sm-8 col-sm-pull-4 col-md-9 col-md-pull-3#end#end" %)
+        (((
+          #if (!$embedded)
+            #displaySearchResultsSort()
+          #end
+
+          #displaySearchResults()
+        )))
+      )))
+    #end
+  )))
+  #set($void = $services.progress.popLevel())
+  #set($void = $services.progress.endStep())
+#end
+
+
+## Customized to display results in rows and with pagination at the bottom only with results count
+#macro (displaySearchResults)
+  #set ($results = $searchResponse.results)
+  #set ($paginationParameters = {
+    'url': $doc.getURL('view', "$!request.queryString.replaceAll('firstIndex=[0-9]*', '')"),
+    'totalItems': $results.numFound,
+    'defaultItemsPerPage': $rows,
+    'position': 'top'
+  })
+  (% class="search-results defacto-search-results container-fluid" %)(((
+      (% class="row" %)(((
+        #foreach ($searchResult in $results)
+          ## Add clearfix every two columns for making column wrapping work with Bootstrap 3
+          #set ($r = $foreach.index % 2)
+          #if ($foreach.index &gt; 0 &amp;&amp; $r == 0)
+            (% class="clearfix" %)((()))
+          #end
+          #displaySearchResult($searchResult)
+        #end
+      )))
+  )))
+  ##set ($discard = $paginationParameters.put('position', 'bottom'))
+  {{html clean="false"}}#pagination($paginationParameters){{/html}}
+  #set ($embedded = $request.embedded)
+  #if ("$!embedded" != 'true')
+    #displayRSSLink()
+  #end
+#end
+
+
+## Customized to display results as columns and remove search-result class (to remove associated style)
+#macro (displaySearchResult $searchResult)
+  #set ($searchResultReference = $services.solr.resolve($searchResult))
+  (% class="type-$searchResult.type.toLowerCase() col-md-12 col-lg-6" %)(((
+    ## We use the HTML macro here mainly because we don't have a way to escape the wiki syntax in the data provided by the user.
+    {{html clean="false" wiki="true"}}
+    #evaluate("${escapetool.h}displaySearchResult_$searchResult.type.toLowerCase()(${escapetool.d}searchResult)")
+    #displaySearchResultHighlighting($searchResult)
+    {{/html}}
+    #if ($debug)
+
+      ## Scoring debug data.
+      ## The reason we used a separate HTML block with no cleaning is because the scoring debug data may contain some
+      ## characters that are considered invalid by JDOM library which is used for parsing the HTML when cleaning is on.
+      ## E.g. "0x0 is not a legal XML character" (org.jdom.IllegalDataException).
+      {{html clean="false"}}
+      &lt;div class="search-result-debug"&gt;$!escapetool.xml($searchResponse.explainMap.get($searchResult.id))&lt;/div&gt;
+      {{/html}}
+    #end
+  )))
+#end
+
+## Customized display
+#macro (displaySearchResult_document $searchResult)
+  #set ($page = $xwiki.getDocument($searchResultReference))
+  #set ($factCheck = $page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
+  #if ($factCheck != $NULL)
+    {{factCheckBox reference="$services.model.serialize($searchResultReference)"/}}
+  #else
+    #displaySearchResultTitle()
+  #end
+#end
+
+## Customized display
+#macro (displaySearchResultTitle)
+  #set ($showLocale = $searchResult.locale != '' &amp;&amp; $searchResult.locale != "$xcontext.locale")
+  #set ($titleURL = $xwiki.getURL($searchResultReference))
+  #if ($showLocale)
+    #set ($titleURL = $xwiki.getURL($searchResultReference, 'view', "language=$searchResult.locale"))
+  #end
+  &lt;h2 class="search-result-title"&gt;
+    &lt;a href="$titleURL"&gt;$escapetool.xml($searchResult.title_)&lt;/a&gt;
+    #if ($showLocale)
+      &lt;span title="$escapetool.xml($services.localization.render('solr.result.language'))"
+        class="search-result-language" &gt;($escapetool.xml($searchResult.locale))&lt;/span&gt;
+    #end
+  &lt;/h2&gt;
+#end
+
+## Customized to not display highlight / facet options
+#macro (displaySearchResultsSort)
+  #set ($defaultSortOrder = $solrConfig.sortFields.get($type))
+  #if (!$defaultSortOrder)
+    #set ($defaultSortOrder = {'score': 'desc'})
+  #end
+  #set ($sortOrderSymbol = {
+    'asc': $services.icon.render('caret-up'),
+    'desc': $services.icon.render('caret-down')
+  })
+
+  (% class="search-results-sort" %)
+  * {{translation key="solr.sortBy"/}}
+  #foreach ($entry in $defaultSortOrder.entrySet())
+    #set ($class = 'sort-item')
+    #set ($sortOrderIndicator = $NULL)
+    #set ($targetSortOrder = $entry.value)
+    #if ($sort == $entry.key)
+      #set ($class = "$class active")
+      #set ($sortOrderHint = $services.localization.render("solr.sortOrder.$sortOrder"))
+      #set ($sortOrderIndicator = "(% class=""sort-item-order"" title=""$sortOrderHint"" %)$sortOrderSymbol.get($sortOrder)(%%)")
+      #set ($targetSortOrder = "#if ($sortOrder == 'asc')desc#{else}asc#end")
+    #end
+    #extendQueryString($url {'sort': [$entry.key], 'sortOrder': [$targetSortOrder]})
+    * [[{{translation key="solr.sortBy.$entry.key"/}}$!sortOrderIndicator&gt;&gt;path:${url}||class="$class"]]
+  #end
+#end
+
+{{/velocity}}</content>
+</xwikidoc>

@@ -1,0 +1,256 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Media.MediaSheet" locale="">
+  <web>XWiki.DeFacto.Media</web>
+  <name>MediaSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#if ($xcontext.action == 'view')
+  #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Media.MediaSheet'))
+  #set ($object = $doc.getObject('XWiki.DeFacto.Media.MediaClass'))
+  #set ($site = $object.getValue('site'))
+  #set ($feed = $object.getValue('feed'))
+  #set ($logo = $object.getValue('logo'))
+
+  #if ($request.count != $NULL)
+    #set ($count = $mathtool.toInteger($request.count))
+    #if ($count == 0)
+      {{info}}
+      Aucun nouveau fact-check n'est disponible dans le flux.
+      {{/info}}
+    #elseif ($count == 1)
+      {{info}}
+      Un nouveau fact-check a été importé.
+      {{/info}}
+    #elseif ($count &gt; 1)
+      {{info}}
+      $count nouveaux fact-checks ont été importés.
+      {{/info}}
+    #end
+  #end
+
+  (% class="box defacto-box" %)(((
+    (% class="defacto-media" %)(((
+      (% class="defacto-media-logo" %)(((
+        [[image:$logo]]
+      )))
+      (% class="defacto-media-metadata" %)(((
+      * [[Site&gt;&gt;$site]]
+      * [[Fil RSS&gt;&gt;$feed]]
+      )))
+    )))
+
+    (% class="btn btn-primary" %)[[Importer les derniers fact-checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.Media.FeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
+  ##(% class="btn btn-primary" %)[[Créer un fact-check&gt;&gt;path:$xwiki.getURL($doc.documentReference, 'create')]](%%)
+  )))
+
+  #set ($columnsProperties = {
+    'doc.title': {"link":"view"},
+    'authors': {'html': true},
+    'themes': {},
+    'pdate': {},
+    'published': {},
+    'media': {'type': 'hidden'},
+    'doc.date': {'filterable': true},
+    'doc.author': {"link":"author"},
+    '_actions': {"sortable":false,"filterable":false,"html":true,"actions":["edit","delete"]}
+  })
+  #set ($parent = $services.model.serialize($doc.documentReference.parent, 'compactwiki'))
+  #set ($location = "${parent}")
+  ## We override the default 'queryFilter' in order to include hidden pages whatever the user preferences are, since 
+  ## the hidden field is used to distinguish between a published and non-published article.
+  #set ($options = {
+    'className': 'XWiki.DeFacto.FactCheck.FactCheckClass',
+    'translationPrefix': 'factcheck.livetable.',
+    'tagCloud': true,
+    'rowCount': 100,
+    'maxPages': 10,
+    'selectedColumn': 'pdate',
+    'defaultOrder': 'desc',
+    'queryFilters': '',
+    'extraParams': "&amp;location=$escapetool.url($location)&amp;media=$escapetool.url($services.model.serialize($doc.documentReference, 'compactwiki'))"
+  })
+  #set ($columns = ['doc.title', 'authors', 'themes', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
+  == Fact-checks ==#livetable('factchecks' $columns $columnsProperties $options)
+#else
+  (% class="xform " %)(((
+    #set ($object = $doc.getObject('XWiki.DeFacto.Media.MediaClass'))
+    = $doc.displayPrettyName('title', $object) =
+    $doc.display('title', $object)
+
+    = $doc.displayPrettyName('description', $object) =
+    #set ($rows = 5)
+    $doc.display('description', $object)
+
+    = $doc.displayPrettyName('logo', $object) =
+
+    {{html}}
+    #set ($attachmentPickerParams = {
+        'id': 'XWiki.DeFacto.Media.MediaClass_0_logo',
+        'name': 'XWiki.DeFacto.Media.MediaClass_0_logo',
+        'data-search-scope': "document:$services.model.serialize($doc.documentReference)",
+        'data-upload-allowed': $services.security.authorization.hasAccess('edit'),
+        'value': $object.getValue('logo')
+    })
+    #attachmentPicker($attachmentPickerParams)
+    {{/html}}
+
+    = $doc.displayPrettyName('site', $object) =
+    $doc.display('site', $object)
+
+    = $doc.displayPrettyName('feed', $object) =
+    $doc.display('feed', $object)
+
+    = $doc.displayPrettyName('copyright', $object) =
+    $doc.display('copyright', $object)
+  )))
+#end
+{{/velocity}}</content>
+  <object>
+    <name>XWiki.DeFacto.Media.MediaSheet</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>bbf0543f-bcef-44e6-be45-978b00a8cf89</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>.btn.btn-primary {
+  a {
+    color: white;
+  }
+}
+
+.defacto-media {
+  display: flex;
+  .defacto-media-logo {
+    width: 180px;
+  }
+  ul {
+    padding-left: 1em;
+    list-style: none;
+  }
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+</xwikidoc>

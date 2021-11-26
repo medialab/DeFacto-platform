@@ -1,0 +1,52 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="Themes.Sante.WebHome" locale="">
+  <web>Themes.Sante</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Themes.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Santé</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content/>
+  <object>
+    <name>Themes.Sante.WebHome</name>
+    <number>0</number>
+    <className>XWiki.DeFacto.Theme.ThemeClass</className>
+    <guid>4f4c052c-27de-40a2-a4c0-d8a98dad9eb9</guid>
+    <class>
+      <name>XWiki.DeFacto.Theme.ThemeClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <title>
+        <customDisplay>{{include reference="AppWithinMinutes.Title"/}}</customDisplay>
+        <disabled>0</disabled>
+        <hint/>
+        <name>title</name>
+        <number>1</number>
+        <prettyName>Title</prettyName>
+        <script/>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.ComputedFieldClass</classType>
+      </title>
+    </class>
+    <property>
+      <title/>
+    </property>
+  </object>
+</xwikidoc>

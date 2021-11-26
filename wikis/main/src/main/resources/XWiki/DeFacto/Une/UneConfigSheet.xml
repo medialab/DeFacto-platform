@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Une.UneConfigSheet" locale="">
+  <web>XWiki.DeFacto.Une</web>
+  <name>UneConfigSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($object = $doc.getObject('XWiki.DeFacto.Une.UneConfigClass'))
+#set ($discard = $doc.use($object))
+#set ($editing = $xcontext.action == 'edit')
+(% class="xform defacto-une-config" %)(((
+
+= Fact-check du jour =
+$doc.display('factCheckPick')
+
+)))
+
+{{/velocity}}</content>
+</xwikidoc>

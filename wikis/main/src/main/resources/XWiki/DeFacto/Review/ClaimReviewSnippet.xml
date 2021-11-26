@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Review.ClaimReviewSnippet" locale="">
+  <web>XWiki.DeFacto.Review</web>
+  <name>ClaimReviewSnippet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>ClaimReviewSnippet</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+## Tool for adding a ClaimReview object to all existing fact-checks which don't have one already: fact-checks which were
+## imported before a ClaimReview object was automatically added upon RSS feed import.
+#if ($request.action == 'add-claim-review')
+  #set ($hql = 'select obj.name from BaseObject as obj where obj.className = :class')
+  #set ($query = $services.query.hql($hql))
+  #set ($discard = $query.bindValue('class', 'XWiki.DeFacto.FactCheck.FactCheckClass'))
+  #set ($discard = $query.setLimit(1))
+  #set ($entries = $query.execute())
+  #foreach ($entry in $entries)
+    #set ($entryPage = $xwiki.getDocument($entry))
+    #set ($claimReview= $entryPage.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
+    #if ($claimReview == $NULL)
+      #set ($discard = $entryPage.newObject('XWiki.DeFacto.Review.ClaimReviewClass'))
+      #set ($discard = $entryPage.save())
+      * [[$entry]]
+    #end
+  #end
+#end
+{{/velocity}}</content>
+</xwikidoc>

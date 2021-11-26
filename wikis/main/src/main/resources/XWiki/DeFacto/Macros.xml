@@ -1,0 +1,217 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Macros" locale="">
+  <web>XWiki.DeFacto</web>
+  <name>Macros</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Macros</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity output="false"}}
+#macro (searchFactChecks $tag $excludes $return)
+  #set ($macro.clause = ["property.XWiki.TagClass.tags_string:""$tag""", 'property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean:1'])
+  #set ($macro.query = $services.query.createQuery('type:DOCUMENT', 'solr'))
+  #set ($macro.discard = $macro.query.bindValue('fq', $macro.clause))
+  #set ($macro.searchResponse = $macro.query.execute()[0])
+  #set ($return = $NULL)
+  #set ($macro.entries = [])
+  #foreach ($result in $macro.searchResponse.results)
+    #if ($excludes == $NULL || !$excludes.contains($result.fullname))
+      #set ($discard = $macro.entries.add([$result.fullname, $result.title_]))
+    #end
+  #end
+  #setVariable("$return" $macro.entries)
+#end
+
+#macro (getFactChecks $tagOrThemeName $propertyName $return)
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, DBStringListProperty as prop join prop.list list, DateProperty as pdate, IntegerProperty as top where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and list = :prop and pdate.id.id = obj.id and pdate.id.name = 'pdate' and top.id.id = obj.id and top.id.name = 'top' and top.value = 0 order by pdate.value desc")
+  #set ($macro.query = $services.query.hql($macro.hql))
+  #set ($discard = $macro.query.bindValue('class', $FACTCHECK_CLASS))
+  #set ($discard = $macro.query.bindValue('propName', $propertyName))
+  #set ($discard = $macro.query.bindValue('prop', $tagOrThemeName))
+  #set ($macro.entries = $macro.query.execute())
+  #set ($return = $NULL)
+  #setVariable("$return" $macro.entries)
+#end
+
+#macro (getResources $category $return)
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop")
+  #set ($macro.query = $services.query.hql($macro.hql))
+  #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Resource.ResourceClass'))
+  #set ($discard = $macro.query.bindValue('propName', 'categories'))
+  #set ($discard = $macro.query.bindValue('prop', $category))
+  #set ($macro.entries = $macro.query.execute())
+  #set ($return = $NULL)
+  #setVariable("$return" $macro.entries)
+#end
+
+#macro (getPublications $category $return)
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop")
+  #set ($macro.query = $services.query.hql($macro.hql))
+  #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Publication.PublicationClass'))
+  #set ($discard = $macro.query.bindValue('propName', 'category'))
+  #set ($discard = $macro.query.bindValue('prop', $category))
+  #set ($macro.entries = $macro.query.execute())
+  #set ($return = $NULL)
+  #setVariable("$return" $macro.entries)
+#end
+
+#macro (getNews $space $return)
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, DateProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and doc.fullName like :location and doc.fullName not like '%Template%' order by prop.value desc")
+  #set ($macro.query = $services.query.hql($macro.hql))
+  #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.News.NewsClass'))
+  #set ($discard = $macro.query.bindValue('propName', 'date'))
+  #if ("$!space" != '')
+    #set ($discard = $macro.query.bindValue('location', "${space}%"))
+  #else
+   #set ($discard = $macro.query.bindValue('location', "%%"))
+  #end
+  #set ($macro.entries = $macro.query.execute())
+  #set ($return = $NULL)
+  #setVariable("$return" $macro.entries)
+#end
+
+#macro (getSoftware $space $return)
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = :class and doc.fullName like :location order by doc.title")
+  #set ($macro.query = $services.query.hql($macro.hql))
+  #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Software.SoftwareClass'))
+  #set ($discard = $macro.query.bindValue('location', "${space}%"))
+  #set ($macro.entries = $macro.query.execute())
+  #set ($return = $NULL)
+  #setVariable("$return" $macro.entries)
+#end
+
+#macro (getThemes $return)
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = :class and doc.fullName not like '%Template%' order by doc.title")
+  #set ($macro.query = $services.query.hql($macro.hql))
+  #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Theme.ThemeClass'))
+  #set ($macro.entries = $macro.query.execute())
+  #set ($return = $NULL)
+  #setVariable("$return" $macro.entries)
+#end
+
+#macro (displayFactCheckList $list)
+  (% class="row" %)(((
+    #foreach ($entry in $list)
+      ## Add clearfix every two columns for making column wrapping work with Bootstrap 3
+      #set ($r = $foreach.index % 2)
+      #if ($foreach.index &gt; 0 &amp;&amp; $r == 0)
+        (% class="clearfix" %)((()))
+      #end
+      (% class="col-xs-12 col-md-6" %)(((
+        {{factCheckBox reference="$entry[0]"/}}
+      )))
+    #end
+  )))
+#end
+
+#macro (displayNewsList $list)
+  ## TODO: consider creating newsBox macro instead
+  #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.News.NewsSheet'))
+  #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy').withLocale('fr'))
+  #foreach ($entry in $list)
+    #set ($reference = $entry[0])
+    #set ($page = $xwiki.getDocument($reference))
+    #set ($object = $page.getObject('XWiki.DeFacto.News.NewsClass'))
+
+    {{box cssClass="defacto-box defacto-box-news"}}
+      (% class="defacto-box-image" %)(((
+        #set ($coverImage = $object.getValue('coverImage'))
+        #if ("$!coverImage" != '')
+          image:$reference@$coverImage
+        #end
+      )))
+      (% class="defacto-box-body" %)(((
+        {{html wiki="false" clean="false"}}
+          &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+        {{/html}}
+
+        #set ($date = $object.getValue('date'))
+        #set ($dateLabel = $object.getValue('dateLabel'))
+        #set ($schedule = $object.getValue('schedule'))
+        #if ("$!schedule" != '')
+          #set ($schedule = " - $schedule")
+        #end
+        #if ("$!dateLabel" == '')
+          #set ($dateInfo = $stringtool.capitalize($dateFormatter.print($date)))
+        #else
+          #set ($dateInfo = $dateLabel)
+        #end
+        $dateInfo$schedule
+        #set ($abstract = $object.getValue('abstract'))
+        #if ("$!abstract" != '')
+          (% class="defacto-news-abstract" %)(((
+            $abstract
+          )))
+        #end
+      )))
+    {{/box}}
+  #end
+#end
+
+#macro (displaySoftwareList $list)
+  (% class="row" %)(((
+    #foreach ($entry in $list)
+      ## Add clearfix every two columns for making column wrapping work with Bootstrap 3
+      #set ($r = $foreach.index % 2)
+      #if ($foreach.index &gt; 0 &amp;&amp; $r == 0)
+        (% class="clearfix" %)((()))
+      #end
+      (% class="col-xs-12 col-md-6" %)(((
+        #set ($reference = $entry[0])
+        #set ($page = $xwiki.getDocument($reference))
+        #set ($object = $page.getObject('XWiki.DeFacto.Software.SoftwareClass'))
+        #set ($abstract = $object.getValue('abstract'))
+        {{box cssClass="defacto-box defacto-box-publication"}}
+        (% class="defacto-box-body" %)(((
+          {{html wiki="false" clean="false"}}
+            &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+          {{/html}}
+
+          $abstract
+        )))
+        {{/box}}
+      )))
+    #end
+  )))
+#end
+
+#macro (displayPublicationList $list)
+  #foreach ($entry in $list)
+    #set ($reference = $entry[0])
+    #set ($page = $xwiki.getDocument($reference))
+    #set ($object = $page.getObject('XWiki.DeFacto.Publication.PublicationClass'))
+    #set ($abstract = $page.content)
+    #set ($intro = $stringtool.abbreviate($abstract, 400))
+    {{box cssClass="defacto-box defacto-box-publication"}}
+      (% class="defacto-box-body" %)(((
+        {{html wiki="false" clean="false"}}
+          &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+        {{/html}}
+
+        $intro
+      )))
+    {{/box}}
+
+  #end
+#end
+
+#macro (displayResourceList $list)
+  #foreach ($entry in $list)
+    #set ($reference = $entry[0])
+    {{resourceBox reference="$entry[0]"/}}
+
+  #end
+#end
+{{/velocity}}
+</content>
+</xwikidoc>

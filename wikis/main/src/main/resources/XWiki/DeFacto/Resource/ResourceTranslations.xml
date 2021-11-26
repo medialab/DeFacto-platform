@@ -1,0 +1,103 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Resource.ResourceTranslations" locale="">
+  <web>XWiki.DeFacto.Resource</web>
+  <name>ResourceTranslations</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content># Class fields
+XWiki.DeFacto.Resource.ResourceClass_title=Titre
+XWiki.DeFacto.Resource.ResourceClass_abstract=Abstract
+XWiki.DeFacto.Resource.ResourceClass_content=Contenu
+XWiki.DeFacto.Resource.ResourceClass_coverImage=Image de présentation
+XWiki.DeFacto.Resource.ResourceClass_categories=Catégorie
+XWiki.DeFacto.Resource.ResourceClass_categories_pedagogy=Outils pédagogiques
+XWiki.DeFacto.Resource.ResourceClass_categories_parenthood=Parentalité numérique
+XWiki.DeFacto.Resource.ResourceClass_categories_tutorials=Tutoriels
+XWiki.DeFacto.Resource.ResourceClass_url=Lien vers la publication d'origine
+
+# Sheet keys
+resource.sheet.description=This page controls how Resource pages are displayed in both view and edit modes.
+resource.sheet.noObject=The current page doesn't have the expected Resource object.
+resource.sheet.noFields=The Resource application doesn't have any fields to display.
+
+# Live table generic keys
+resource.livetable.doc.title=Titre de la page
+resource.livetable.doc.name=Nom de la page
+resource.livetable.doc.space=Espace
+resource.livetable.doc.fullname=Nom complet de la page
+resource.livetable.doc.location=Emplacement
+resource.livetable.doc.author=Dernier auteur
+resource.livetable.doc.creator=Créateur
+resource.livetable.doc.date=Date de dernière mise à jour
+resource.livetable.doc.creationDate=Date de création
+resource.livetable._avatar=Avatar
+resource.livetable._images=Images
+resource.livetable._attachments=Pièces jointes
+resource.livetable._actions=Actions
+resource.livetable._actions.edit=Modifier
+resource.livetable._actions.delete=Supprimer
+resource.livetable.emptyvalue=-
+
+# Live table specific keys
+resource.livetable.title=Titre
+resource.livetable.content=Contenu
+resource.livetable.coverImage=Image
+resource.livetable.abstract=Abstract
+
+# Other keys
+resource.entry.name=Ressource
+resource.entry.hint=Tutoriel, outil pédagogique, vidéo...
+
+# Deprecated keys
+resource.dataSpace.title=Data
+</content>
+  <object>
+    <name>XWiki.DeFacto.Resource.ResourceTranslations</name>
+    <number>0</number>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>615fcf77-98cf-4ef6-a16b-ce3ae7dd73b6</guid>
+    <class>
+      <name>XWiki.TranslationDocumentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>1</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <scope>WIKI</scope>
+    </property>
+  </object>
+</xwikidoc>

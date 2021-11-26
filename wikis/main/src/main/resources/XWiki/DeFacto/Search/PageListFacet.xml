@@ -1,0 +1,34 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Search.PageListFacet" locale="">
+  <web>XWiki.DeFacto.Search</web>
+  <name>PageListFacet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>PageListFacet</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#macro (displaySearchFacetValue_list $value)
+ #set ($valueDoc = $xwiki.getDocument($value))
+ #set ($prettyValue = $valueDoc.displayTitle)
+ $prettyValue
+#end
+#if ($facetValues)
+  {{html clean="false"}}
+  &lt;ul class="$facetField.name"&gt;
+    #displaySearchFacetValuesLimited($facetValues {} 'displaySearchFacetValue_list')
+  &lt;/ul&gt;
+  {{/html}}
+#end
+{{/velocity}}
+</content>
+</xwikidoc>

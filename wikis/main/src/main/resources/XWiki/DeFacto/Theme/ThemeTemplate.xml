@@ -1,0 +1,52 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Theme.ThemeTemplate" locale="">
+  <web>XWiki.DeFacto.Theme</web>
+  <name>ThemeTemplate</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content/>
+  <object>
+    <name>XWiki.DeFacto.Theme.ThemeTemplate</name>
+    <number>0</number>
+    <className>XWiki.DeFacto.Theme.ThemeClass</className>
+    <guid>ba4b8df8-e2b1-4cc2-b183-27c6f766cea0</guid>
+    <class>
+      <name>XWiki.DeFacto.Theme.ThemeClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <title>
+        <customDisplay>{{include reference="AppWithinMinutes.Title"/}}</customDisplay>
+        <disabled>0</disabled>
+        <hint/>
+        <name>title</name>
+        <number>1</number>
+        <prettyName>Title</prettyName>
+        <script/>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.ComputedFieldClass</classType>
+      </title>
+    </class>
+    <property>
+      <title/>
+    </property>
+  </object>
+</xwikidoc>

@@ -1,0 +1,814 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Une.HomeSheet" locale="">
+  <web>XWiki.DeFacto.Une</web>
+  <name>HomeSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{include reference="XWiki.DeFacto.Macros"/}}
+
+{{velocity}}
+#if ($xcontext.action == 'view')
+#set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Une.HomeSheet'))
+#set ($discard = $xwiki.jsx.use('XWiki.DeFacto.Une.HomeSheet'))
+
+(% class="container-fluid defacto-home" %)(((
+  (% class="defacto-home-comprendre" %)(((
+    = Analyses =
+
+    {{carousel reference="Comprendre.Carousel.WebHome" maxTextLength="400" mode="vertical"/}}
+
+    (% class="defacto-section-link" %)(((
+      [[+ Toutes les analyses&gt;&gt;Comprendre.WebHome]]
+    )))
+  )))
+  (% class="defacto-home-explorer" %)(((
+    = Boîte à outils =
+
+    {{carousel reference="Explorer.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
+
+    (% class="defacto-section-link" %)(((
+      [[+ Tous les outils&gt;&gt;Explorer.WebHome]]
+    )))
+
+    = Actus =
+
+    {{carousel reference="Actus.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
+    (% class="defacto-section-link" %)(((
+      [[+ Toutes les actus&gt;&gt;Actus.WebHome]]
+    )))
+
+  )))
+  #set ($uneConfigPage = $xwiki.getDocument('XWiki.DeFacto.Une.UneConfig'))
+  #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
+  #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
+  #if ("$!factCheckPick" != '')
+  (% class="defacto-home-factcheck-pick" %)(((
+    = Fact-check du jour =
+    {{factCheckBox reference="$factCheckPick" pick="true"/}}
+  )))
+  #end
+  (% class="defacto-home-fact-checks" %)(((
+    = Fact-checks =
+
+    #set ($uneConfigTags = $uneConfig.getValue('tags'))
+
+    {{html clean="false"}}
+      &lt;ul class="nav nav-tabs" role="tablist"&gt;
+        #if ("$!uneConfigTags" != '')
+          #foreach ($tag in $uneConfigTags)
+            #if ($foreach.index == 0)
+              #set ($cssClass = 'class="active"')
+            #else
+              #set ($cssClass = '')
+            #end
+            #set ($tagId = $services.modelvalidation.transformName($tag).toLowerCase())
+            &lt;li role="presentation"$cssClass&gt;&lt;a class="defacto-filter" data-filter-value="$tag" data-filter-type="tag" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("tag:$tag")" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
+          #end
+        #end
+        #getThemes($themes)
+        #foreach ($theme in $themes)
+          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-filter-value="$theme[0]" data-filter-type="theme" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("theme:$theme[0]")" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
+        #end
+        #* Mobile display
+        &lt;li&gt;
+          &lt;div class="btn-group defacto-themes"&gt;
+            &lt;button type="button" class="btn dropdown-toggle defacto-themes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;
+              Thèmes&lt;span class="caret"&gt;&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;ul class="dropdown-menu"&gt;
+              #getThemes($themes)
+              #foreach ($theme in $themes)
+                &lt;li&gt;&lt;a class="defacto-theme-filter" data-theme="$theme[0]" data-exclude="$escapetool.xml($factCheckPick)" href="#search" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
+              #end
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/li&gt;
+        *#
+      &lt;/ul&gt;
+    {{/html}}
+
+    (% class="tab-content" %)(((
+      (% role="tabpanel" class="tab-pane active" id="search" %)(((
+        (% class="search-ui" aria-busy="true" %)(((
+        )))
+        (% class="defacto-is-loading" %)(((
+          {{html clean="false"}}
+          &lt;div class="spinner-border text-warning" role="status"&gt;
+            &lt;span class="sr-only"&gt;Recherche...&lt;/span&gt;
+          &lt;/div&gt;
+          {{/html}}
+        )))
+      )))
+    )))
+  )))
+)))
+#end
+{{/velocity}}
+
+{{velocity}}
+#if ($xcontext.action == 'get')
+{{include reference="Main.SolrSearch"/}}
+#end
+{{/velocity}}</content>
+  <object>
+    <name>XWiki.DeFacto.Une.HomeSheet</name>
+    <number>0</number>
+    <className>XWiki.JavaScriptExtension</className>
+    <guid>4b3bc733-bcbf-4fe4-93a4-8755beb423f6</guid>
+    <class>
+      <name>XWiki.JavaScriptExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>/** Customized version of Main.SolrSearch JSX with following changes:
+ * - Add search function to search by tag or by theme
+ * - Fire search when a tab is activated
+ * - Reflect active tab in URL hash
+ * - Activate tab based on URL hash
+ * - Empty search UI when searching and show a spinner
+ */
+require(['jquery', 'bootstrap'], function($) {
+  var enhanceSearchResultHighlights = function() {
+    var highlights = $(this).removeClass('hidden').parent().prev('.search-result-highlights').addClass('preview');
+
+    // Workaround for IE8 which doesn't support :first-of-type CSS selector.
+    highlights.find('.search-result-highlight').first().addClass('first').parent('dd').addClass('first')
+      .prev('dt').addClass('first');
+
+    $(this).one('click', function(event) {
+      event.preventDefault();
+      $(event.target).remove();
+      highlights.removeClass('preview');
+    });
+  };
+
+  var collapseAllFacets = function(event) {
+    event.preventDefault();
+    $(event.target).closest('.search-facets').find('.search-facet').removeClass('expanded');
+    $(event.target).hide().parent().children('.search-facets-action-expandAll').show();
+  };
+
+  var expandAllFacets = function(event) {
+    event.preventDefault();
+    $(event.target).closest('.search-facets').find('.search-facet').addClass('expanded');
+    $(event.target).hide().parent().children('.search-facets-action-collapseAll').show();
+  };
+
+  var updateExpandCollapseAllFacetsState = function(facetsContainer) {
+    var facetCount = facetsContainer.find('.search-facet').size();
+    var expandedFacetCount = facetsContainer.find('.search-facet.expanded').size();
+    if (expandedFacetCount &gt; facetCount / 2) {
+      facetsContainer.find('.search-facets-action-collapseAll').show()
+        .parent().children('.search-facets-action-expandAll').hide();
+    } else {
+      facetsContainer.find('.search-facets-action-expandAll').show()
+        .parent().children('.search-facets-action-collapseAll').hide();
+    }
+  };
+
+  var addFacetValueCheckbox = function() {
+    var checkBox = $(document.createElement('input')).attr('type', 'checkbox');
+    checkBox.prop('checked', $(this).hasClass('selected'));
+    // Add the 'checked' attribute so that it can be easily located with CSS.
+    checkBox.prop('checked') &amp;&amp; checkBox.attr('checked', 'checked');
+    checkBox.click($.proxy(this, 'click'));
+    // Remove the 'selected' class because the selected state is marked using the check box.
+    $(this).removeClass('selected').before(checkBox);
+  };
+
+  var enhanceSearchFacets = function() {
+    var facetsContainer = $(this);
+
+    // Add the ability to collapse the facets pane on extra small screens (phones).
+    facetsContainer.find('.search-facets-header').click(function() {
+      facetsContainer.toggleClass('collapsed-xs');
+    });
+
+    // Global Expand/Collapse toggle.
+    facetsContainer.find('.search-facets-action-collapseAll').removeClass('hidden').click(collapseAllFacets);
+    facetsContainer.find('.search-facets-action-expandAll').removeClass('hidden').click(expandAllFacets);
+    updateExpandCollapseAllFacetsState(facetsContainer);
+
+    // Expand/Collapse toggle for each facet.
+    facetsContainer.find('.search-facet-header').click(function(event) {
+      $(event.target).parent('.search-facet').toggleClass('expanded');
+      updateExpandCollapseAllFacetsState(facetsContainer);
+    });
+
+    // Add a check box before each facet value. We do this from JavaScript because the behaviour of a check box inside
+    // a link is not consistent across different browsers (some follow the link when the check box is clicked, others
+    // don't) and having the check box outside the facet value link requires JavaScript to synchronize them.
+    facetsContainer.find('.search-facet-body a.itemName').each(addFacetValueCheckbox);
+  };
+
+  var getQueryString = function(url) {
+    var queryIndex = url.indexOf('?');
+    return queryIndex &lt; 0 ? '' : url.substr(queryIndex + 1);
+  };
+
+  var getSearchUIState = function() {
+    var expandedFacets = [];
+    $('.search-facet.expanded').each(function() {
+      expandedFacets.push($(this).attr('data-name'));
+    });
+    return {
+      'expandedFacets': expandedFacets
+    };
+  };
+
+  var setSearchUIState = function(state) {
+    state = state || {};
+    var expandedFacets = state.expandedFacets || [];
+    $('.search-facet').not('.expanded').each(function() {
+      if (expandedFacets.indexOf($(this).attr('data-name')) &gt;= 0) {
+        $(this).addClass('expanded');
+      }
+    });
+  };
+
+  var updateSearchUI = function(html) {
+    $('.search-ui').replaceWith(html);
+    enhanceSearchUI();
+    $(document).trigger('xwiki:dom:updated', {'elements': $('.search-ui').toArray()});
+  };
+
+  var searchRequest = null;
+
+  var pushSearchUIState = function(viewURL) {
+    // If there is a request in progress, abort it to prevent its callback from being called.
+    searchRequest &amp;&amp; searchRequest.abort();
+    $('.search-ui').attr('aria-busy', true);
+    $('.search-ui').empty();
+    var getURL = XWiki.currentDocument.getURL('get', getQueryString(viewURL));
+    searchRequest = $.get(getURL).done(function(html) {
+      var state = getSearchUIState();
+      updateSearchUI(html);
+      //setSearchUIState(state);
+      //window.history.replaceState &amp;&amp; window.history.replaceState(state, document.title);
+      // Make sure the browser address bar reflects the new state (and thus the new state can be bookmarked).
+      //window.history.pushState &amp;&amp; window.history.pushState(state, document.title, viewURL);
+    });
+  };
+
+  var reloadSearchUI = function(event) {
+    event.preventDefault();
+    var anchor = $(event.target).closest('a');
+    anchor.size() &gt; 0 &amp;&amp; $(document).trigger('xwiki:search:update', anchor.attr('href'));
+  };
+
+  // Others (e.g. a custom facet) can trigger a search UI update by firing this event.
+  $(document).on('xwiki:search:update', function(event, viewURL) {
+    pushSearchUIState(viewURL);
+  });
+
+  $(window).on('popstate', function(event) {
+    // If there is a request in progress, abort it to prevent its callback from being called.
+    searchRequest &amp;&amp; searchRequest.abort();
+    $('.search-ui').attr('aria-busy', true);
+    $('.search-ui').empty();
+    var state = event.originalEvent.state;
+    var getURL = XWiki.currentDocument.getURL('get', window.location.search.substr(1));
+    searchRequest = $.get(getURL).done(function(html) {
+      updateSearchUI(html);
+      setSearchUIState(state);
+    });
+  });
+
+  // Move the skin extension imports brought by AJAX updates to the head of the page.
+  $(document).on('xwiki:dom:updated', function(event, data) {
+    // We want to move only the new imports. For this we need to collect the existing imports (once).
+    var imports;
+    // We don't add the imports directly to the document because jQuery will fetch the JavaScript files, including the
+    // ones that have been already loaded. We append the imports to a detached element and add to the head of the page
+    // only those that are new. See https://api.jquery.com/jQuery.getScript/#caching-requests .
+    $(document.createElement('div')).append($(data.elements).find('noscript.skin-extension-imports').text())
+      .find('link, script').each(function() {
+        // Collect the existing imports once.
+        imports = imports || $('head').find('link, script').map(function () {
+          return $(this).attr('href') || $(this).attr('src');
+        }).get();
+        var url = $(this).attr('href') || $(this).attr('src');
+        // Move to the head of the page only the new imports.
+        if (url &amp;&amp; imports.indexOf(url) &lt; 0) {
+          $('head').append(this);
+        }
+      });
+    // Make sure this code is not executed twice.
+    $(data.elements).find('noscript.skin-extension-imports').remove();
+  });
+
+  var enhanceSearchUI = function() {
+    $('.search-result-highlightAll').each(enhanceSearchResultHighlights);
+    $('.search-facets').each(enhanceSearchFacets);
+    $([
+      '.search-results-sort a.sort-item',
+      '.search-options a.options-item',
+      '.pagination a',
+      '.controlPagination a',
+      'a.search-facets-action-reset',
+      '.search-facet a.itemName',
+      '.search-facet-body a.more',
+      '.search-facet-body .selectedLocation a'
+    ].join(',')).click(reloadSearchUI);
+  };
+
+
+  var search = function(filterValue, filterType, exclude) {
+    var hash = '#' + filterType + ':' + filterValue;
+
+    // Reflect search in URL hash
+    if(history.pushState) {
+      history.replaceState(null, null, hash);
+    } else {
+      location.hash = hash;
+    }
+
+    $('.search-ui').attr('aria-busy', true);
+    $('.search-ui').empty();
+    var solrServiceURL = new XWiki.Document('Search', 'Main').getURL('get');
+    var parameters =  {
+      sort: 'date',
+      sortOrder: 'desc',
+      highlight: false,
+      facet: true,
+      r: '1',
+      f_type: 'DOCUMENT',
+      text: '*',
+      f_class: 'XWiki.DeFacto.FactCheck.FactCheckClass',
+      embedded: true
+    };
+
+    parameters['f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean'] =  '1';
+
+    if (exclude !== undefined) {
+      parameters['exclude'] = exclude;
+    }
+
+    if (filterType === 'theme') {
+      parameters['f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string'] =  filterValue;
+    } else if (filterType === 'tag') {
+      parameters['f_property.XWiki.TagClass.tags_string'] = filterValue;
+    }
+
+    var query = $.get(solrServiceURL, parameters);
+    query.done(function(data) {
+      updateSearchUI(data);
+    });
+    query.fail(function(error) {
+      console.log('error: ' + error);
+    });
+  };
+
+  $('.defacto-filter').on('click', function(event) {
+    var $this = $(this);
+    var filterValue = $this.attr('data-filter-value');
+    var filterType = $this.attr('data-filter-type');
+    var exclude = $this.attr('data-exclude');
+    $this.parent().parent().find('li').each(function(index, element) {
+      $(element).removeClass('active');
+    });
+    search(filterValue, filterType, exclude);
+  });
+
+  var aTabIsActivated = false;
+  if(location.hash &amp;&amp; location.hash.length &gt; 1) {
+    var hash = decodeURIComponent(location.hash);
+    console.log('hash', hash);
+    hash = hash.substring(1).split(':');
+    var type = hash[0];
+    var value = hash[1];
+    console.log('type', type, value);
+    var tab = $('.nav-tabs a[data-filter-value="' + value + '"]');
+    if (tab.length &gt; 0 &amp;&amp; tab.tab !== undefined) {
+      var exclude = tab.attr('data-exclude');
+      search(value, type, exclude);
+      tab.tab('show');
+      aTabIsActivated = true;
+    }
+  }
+
+  if (!aTabIsActivated) {
+    var firstFilterElement = $('li.active .defacto-filter');
+    if (firstFilterElement.length === 1) {
+      var firstFilterValue = firstFilterElement.attr('data-filter-value');
+      var firstFilterType = firstFilterElement.attr('data-filter-type');
+      var exclude = firstFilterElement.attr('data-exclude');
+      search(firstFilterValue, firstFilterType, exclude);
+    }
+  }
+});</code>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.DeFacto.Une.HomeSheet</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>8bb971c7-6a5a-40c4-b988-962d43dfd847</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>#xwikicontent {
+  overflow: inherit; /** Without this rule, the dynamic fact-check search theme can cause a vertical scrollbar to appear. */
+}
+
+#hierarchy {
+  display: none;
+}
+
+.document-header {
+  display: none;
+  + hr {
+    display: none;
+  }
+}
+
+.defacto-home {
+  display: grid;
+  .defacto-home-factcheck-pick {
+    grid-row-start: 1;
+    .defacto-box {
+      flex-direction: column;
+      background: #fdf9eb;
+      margin-bottom: 0;
+      h2 {
+        font-size: 26px;
+      }
+      .defacto-box-image {
+        flex-basis: 50%;
+        img {
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+      .defacto-box-body {
+        flex-basis: 50%;
+        margin-right: 1em;
+      }
+    }
+  }
+
+  .defacto-home-fact-checks {
+    grid-row-start: 2;
+
+    .nav-tabs {
+      border-bottom: 1px solid @yellow;
+      li {
+        &amp;.active {
+          &gt; a, &gt; a:hover, &gt; a:focus {
+            border: 1px solid @yellow;
+            border-bottom-color: transparent;
+            background: white;
+            color: inherit;
+          }
+        }
+        &gt; a:hover, &gt; a:focus {
+          background-color: @yellow;
+          color: white;
+        }
+      }
+    }
+    .tab-content {
+      margin-top: 1em;
+    }
+  }
+
+  .defacto-home-research-and-tools {
+    grid-row-start: 3;
+  }
+
+  .defacto-section-link {
+    text-align: right;
+  }
+  /**
+  .defacto-themes {
+    margin: 0;
+    .defacto-themes-dropdown {
+      padding: 10px 15px;
+      box-shadow: none;
+      font-size: inherit;
+      border: 0;
+      background: @yellow;
+      .caret {
+        margin-left: 0.5em;
+      }
+    }
+    .dropdown-menu {
+      font-size: inherit;
+    }
+  }*/
+  .xwiki-carousel {
+    height: 500px;
+  }
+}
+
+.search-form.row {
+  display: none;
+}
+
+.search-facets {
+  display: none;
+}
+
+.defacto-home {
+  .search-results.defacto-search-results {
+    padding: 0;
+    border-top: none;
+  }
+}
+
+@media (min-width: @screen-md-min) {
+  .defacto-home {
+    grid-row-gap: 10px;
+    grid-column-gap: 30px;
+    grid-template-columns: ~"[col1-start] 35%  [col2-start] 65%  [col2-end]";
+    grid-template-rows: ~"[row1-start] fit-content(100%) [row2-start] 10fr [row2-end]";
+    .defacto-home-factcheck-pick {
+      grid-column: ~"col2-start / col2-end";
+      grid-row: row1-start;
+    }
+
+    .defacto-home-fact-checks {
+      grid-column: ~"col2-start / col2-end";
+      grid-row: row2-start;
+    }
+
+    .defacto-home-comprendre {
+      grid-column: col1-start;
+      grid-row: ~"row1-start";
+    }
+
+    .defacto-home-explorer {
+      grid-column: col1-start;
+      grid-row: ~"row2-start";
+    }
+
+  }
+  .xcontent {
+    width: inherit;
+    margin: auto;
+  }
+}
+
+.search-ui + .defacto-is-loading {
+  display: none;
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 4rem;
+  height: 4rem;
+  vertical-align: text-bottom;
+  border: 3px solid @yellow;
+  border-right-color: @yellow;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border 1s linear infinite;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+.search-ui[aria-busy="true"] + .defacto-is-loading {
+  display: block;
+  height: 300px;
+  text-align: center;
+  margin: 5em;
+}
+
+@media (min-width: @screen-lg-min) {
+  .defacto-home {
+    grid-template-columns: ~"[col1-start] 26%  [col2-start] 74%  [col2-end]";
+    .defacto-home-factcheck-pick {
+      grid-row-start: 1;
+      .defacto-box {
+        flex-direction: row-reverse;
+        h2 {
+          font-size: 26px;
+        }
+        .defacto-box-image {
+          flex-basis: 50%;
+          img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+          }
+        }
+        .defacto-box-body {
+          flex-basis: 50%;
+          margin-right: 1em;
+        }
+      }
+    }
+  }
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+</xwikidoc>

@@ -1,0 +1,119 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.FactCheckTranslations" locale="">
+  <web>XWiki.DeFacto.FactCheck</web>
+  <name>FactCheckTranslations</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content># Class fields
+XWiki.DeFacto.FactCheck.FactCheckClass_title=Titre
+XWiki.DeFacto.FactCheck.FactCheckClass_guid=Identifiant
+XWiki.DeFacto.FactCheck.FactCheckClass_link=Lien vers l'article d'origine
+XWiki.DeFacto.FactCheck.FactCheckClass_pdate=Date de publication
+XWiki.DeFacto.FactCheck.FactCheckClass_updateDate=Date de mise à jour
+XWiki.DeFacto.FactCheck.FactCheckClass_authors=Auteur(s)
+XWiki.DeFacto.FactCheck.FactCheckClass_subtitle=Sous-titre
+XWiki.DeFacto.FactCheck.FactCheckClass_headerImage=Image d'entête
+XWiki.DeFacto.FactCheck.FactCheckClass_headerMediaCaption=Légende de l'image d'entête
+XWiki.DeFacto.FactCheck.FactCheckClass_headerMediaCredits=Crédits de l'image d'entête
+XWiki.DeFacto.FactCheck.FactCheckClass_headerAudio=Audio d'entête
+XWiki.DeFacto.FactCheck.FactCheckClass_chapeau=Premier paragraphe
+XWiki.DeFacto.FactCheck.FactCheckClass_content=Contenu
+XWiki.DeFacto.FactCheck.FactCheckClass_contentHtml=Contenu HTML
+XWiki.DeFacto.FactCheck.FactCheckClass_themes=Thèmes
+XWiki.DeFacto.FactCheck.FactCheckClass_top=Fact-check du jour
+XWiki.DeFacto.FactCheck.FactCheckClass_published=Publié
+XWiki.DeFacto.FactCheck.FactCheckClass_mediaTopics=Media topics
+XWiki.DeFacto.FactCheck.FactCheckClass_categories=Catégories / Tags
+XWiki.DeFacto.FactCheck.FactCheckClass_media=Média
+XWiki.DeFacto.FactCheck.FactCheckClass_locations=Zones géographiques
+
+# Sheet keys
+factcheck.sheet.description=This page controls how FactCheck pages are displayed in both view and edit modes.
+factcheck.sheet.noObject=The current page doesn't have the expected FactCheck object.
+factcheck.sheet.noFields=The FactCheck application doesn't have any fields to display.
+
+# Live table generic keys
+factcheck.livetable.pdate=Date de publication
+factcheck.livetable.authors=Auteur(s)
+factcheck.livetable.themes=Thèmes
+factcheck.livetable.tags=Mots-clés
+factcheck.livetable.media=Média
+factcheck.livetable.published=Publié sur De Facto
+factcheck.livetable.doc.title=Titre de la page
+factcheck.livetable.doc.name=Nom de la page
+factcheck.livetable.doc.space=Espace
+factcheck.livetable.doc.fullname=Nom complet de la page
+factcheck.livetable.doc.location=Emplacement
+factcheck.livetable.doc.author=Dernier auteur
+factcheck.livetable.doc.creator=Créateur
+factcheck.livetable.doc.date=Date de dernière mise à jour
+factcheck.livetable.doc.creationDate=Date de création
+factcheck.livetable._avatar=Avatar
+factcheck.livetable._images=Images
+factcheck.livetable._attachments=Pièces jointes
+factcheck.livetable._actions=Actions
+factcheck.livetable._actions.edit=Modifier
+factcheck.livetable._actions.delete=Supprimer
+factcheck.livetable.emptyvalue=-
+
+
+# Live table specific keys
+factcheck.livetable.subtitle=Sous-titre
+
+# Other keys
+factcheck.entry.name=Fact-check
+factcheck.entry.hint=Fact-check destiné à être publié sur l'observatoire De Facto
+
+# Deprecated keys
+factcheck.dataSpace.title=Data
+</content>
+  <object>
+    <name>XWiki.DeFacto.FactCheck.FactCheckTranslations</name>
+    <number>0</number>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>104a00fd-3b65-4c20-a96c-ed6207cc9feb</guid>
+    <class>
+      <name>XWiki.TranslationDocumentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>1</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <scope>WIKI</scope>
+    </property>
+  </object>
+</xwikidoc>

@@ -1,0 +1,100 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.News.NewsTranslations" locale="">
+  <web>XWiki.DeFacto.News</web>
+  <name>NewsTranslations</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content># Class fields
+XWiki.DeFacto.News.NewsClass_title=Titre
+XWiki.DeFacto.News.NewsClass_type=Type
+XWiki.DeFacto.News.NewsClass_abstract=Abstract
+XWiki.DeFacto.News.NewsClass_content=Description
+XWiki.DeFacto.News.NewsClass_date=Date
+XWiki.DeFacto.News.NewsClass_dateLabel=Libellé de date
+XWiki.DeFacto.News.NewsClass_schedule=Horaire
+XWiki.DeFacto.News.NewsClass_coverImage=Image de présentation
+
+# Sheet keys
+news.sheet.description=This page controls how News pages are displayed in both view and edit modes.
+news.sheet.noObject=The current page doesn't have the expected News object.
+news.sheet.noFields=The News application doesn't have any fields to display.
+
+# Live table generic keys
+news.livetable.doc.title=Titre de la page
+news.livetable.doc.name=Nom de la page
+news.livetable.doc.space=Espace
+news.livetable.doc.fullname=Nom complet de la page
+news.livetable.doc.location=Emplacement
+news.livetable.doc.author=Dernier auteur
+news.livetable.doc.creator=Créateur
+news.livetable.doc.date=Date de dernière mise à jour
+news.livetable.doc.creationDate=Date de création
+news.livetable._avatar=Avatar
+news.livetable._images=Images
+news.livetable._attachments=Pièces jointes
+news.livetable._actions=Actions
+news.livetable._actions.edit=Modifier
+news.livetable._actions.delete=Supprimer
+news.livetable.emptyvalue=-
+
+# Live table specific keys
+news.livetable.content=content
+news.livetable.date=Date
+
+# Other keys
+news.entry.name=Actu
+news.entry.hint=Actu projet : conférence, séminaire, revue de presse...
+
+# Deprecated keys
+news.dataSpace.title=Data
+</content>
+  <object>
+    <name>XWiki.DeFacto.News.NewsTranslations</name>
+    <number>0</number>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>dc05b838-20d3-40e8-b1d6-34acebce2883</guid>
+    <class>
+      <name>XWiki.TranslationDocumentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>1</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <scope>WIKI</scope>
+    </property>
+  </object>
+</xwikidoc>

@@ -1,0 +1,553 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.Carousel.CarouselMacro" locale="">
+  <web>XWiki.Carousel</web>
+  <name>CarouselMacro</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>CarouselMacro</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content/>
+  <object>
+    <name>XWiki.Carousel.CarouselMacro</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>d9cb7446-66b7-4164-9c80-42fd80d6f3f2</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>.xwiki-carousel {
+  border: 1px solid #eaeaea;
+  background: #fcfcfc;
+  overflow: hidden; /** Prevent slide text to outgrow the carousel container in case of small screen width and when truncating the text is not enough. */
+  h2 {
+    margin-top: 0;
+  }
+  .item {
+    padding: 2em;
+  }
+  .carousel-control {
+    background-image: none;
+    width: inherit;
+  }
+  .xwiki-carousel-slide-body {
+    display: flex;
+    flex-direction: column;
+    .xwiki-carousel-slide-image {
+      text-align: center;
+      margin-bottom: 1em;
+      img {
+        max-width: 100%;
+        max-height: 250px;
+      }
+    }
+  }
+  .xwiki-carousel-action {
+    &amp;.xwiki-carousel-action-edit {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #fff;
+      font-size: 0.8em;
+      text-align: center;
+      width: 2em;
+      padding: 4px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      color: inherit;
+    }
+  }
+  &amp;.xwiki-carousel-mode-vertical {
+    .xwiki-carousel-slide-body {
+      flex-direction: column;
+      .xwiki-carousel-slide-image {
+        text-align: center;
+        margin-bottom: 1em;
+        img {
+          max-width: 100%;
+          max-height: 250px;
+        }
+      }
+    }
+  }
+  .carousel-action-prev {
+    left: 15px;
+  }
+  .carousel-action-next {
+    right: 15px;
+  }
+}
+
+@media (min-width: @screen-md-min) {
+  .xwiki-carousel {
+    height: 350px;
+    .xwiki-carousel-slide-body {
+      flex-direction: row;
+      .xwiki-carousel-slide-image {
+        margin-right: 1em;
+        img {
+          height: 250px;
+          width: 400px;
+          object-fit: contain;
+          max-width: inherit;
+        }
+      }
+    }
+    .item {
+      padding: 2em 3.5em;
+    }
+    .carousel-action-prev {
+      left: 30px;
+    }
+    .carousel-action-next {
+      right: 30px;
+    }
+  }
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.Carousel.CarouselMacro</name>
+    <number>0</number>
+    <className>XWiki.WikiMacroClass</className>
+    <guid>8839b081-92c5-4127-b45f-c3ef631e4289</guid>
+    <class>
+      <name>XWiki.WikiMacroClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <async_cached>
+        <defaultValue>0</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>async_cached</name>
+        <number>13</number>
+        <prettyName>Cached</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </async_cached>
+      <async_context>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>1</multiSelect>
+        <name>async_context</name>
+        <number>14</number>
+        <prettyName>Context elements</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>, </separator>
+        <separators>|, </separators>
+        <size>5</size>
+        <unmodifiable>0</unmodifiable>
+        <values>action=Action|doc.reference=Document|icon.theme=Thème des icônes|locale=Langue|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=URL de base pour la requête|request.parameters=Paramètres de la requête|request.url=URL de la requête|request.wiki=Wiki de la requête|user=Utilisateur|wiki=Wiki</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </async_context>
+      <async_enabled>
+        <defaultValue>0</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>async_enabled</name>
+        <number>12</number>
+        <prettyName>Asynchronous rendering</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </async_enabled>
+      <code>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>code</name>
+        <number>10</number>
+        <prettyName>Macro code</prettyName>
+        <rows>20</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentDescription>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>contentDescription</name>
+        <number>9</number>
+        <prettyName>Content description (Not applicable for "No content" type)</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </contentDescription>
+      <contentJavaType>
+        <cache>0</cache>
+        <defaultValue>Unknown</defaultValue>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <freeText>allowed</freeText>
+        <largeStorage>1</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentJavaType</name>
+        <number>8</number>
+        <picker>1</picker>
+        <prettyName>Macro content type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>|</separator>
+        <separators>|</separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>Unknown|Wiki</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentJavaType>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>7</number>
+        <prettyName>Macro content availability</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>|</separator>
+        <separators>|</separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>Optional|Mandatory|No content</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <defaultCategory>
+        <disabled>0</disabled>
+        <name>defaultCategory</name>
+        <number>4</number>
+        <prettyName>Default category</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </defaultCategory>
+      <description>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>description</name>
+        <number>3</number>
+        <prettyName>Macro description</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </description>
+      <id>
+        <disabled>0</disabled>
+        <name>id</name>
+        <number>1</number>
+        <prettyName>Macro id</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </id>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>2</number>
+        <prettyName>Macro name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <priority>
+        <disabled>0</disabled>
+        <name>priority</name>
+        <number>11</number>
+        <numberType>integer</numberType>
+        <prettyName>Priority</prettyName>
+        <size>10</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.NumberClass</classType>
+      </priority>
+      <supportsInlineMode>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>supportsInlineMode</name>
+        <number>5</number>
+        <prettyName>Supports inline mode</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </supportsInlineMode>
+      <visibility>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>visibility</name>
+        <number>6</number>
+        <prettyName>Macro visibility</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>|</separator>
+        <separators>|</separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>Current User|Current Wiki|Global</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </visibility>
+    </class>
+    <property>
+      <async_cached>0</async_cached>
+    </property>
+    <property>
+      <async_context/>
+    </property>
+    <property>
+      <async_enabled>0</async_enabled>
+    </property>
+    <property>
+      <code>{{velocity}}
+#macro (sortXWikiObjectsList $inputObjects $propertyName $outputObjects)
+  #set ($objectsMap = {})
+  #foreach ($object in $inputObjects)
+    #set ($key = $object.getProperty($propertyName).value)
+    #set ($sameKeyObjects = $objectsMap.get($key))
+    #if (!$sameKeyObjects)
+      #set ($sameKeyObjects = [])
+      #set ($discard = $objectsMap.put($key, $sameKeyObjects))
+    #end
+    #set ($discard = $sameKeyObjects.add($object))
+  #end
+  #foreach ($key in $sorttool.sort($objectsMap.keySet()))
+    #set ($sameKeyObjects = $objectsMap.get($key))
+    #foreach ($sameKeyObject in $sameKeyObjects)
+      #set ($discard = $outputObjects.add($sameKeyObject))
+    #end
+  #end
+#end
+#set ($discard = $xwiki.ssx.use('XWiki.Carousel.CarouselMacro'))
+#set ($reference = $services.model.resolveDocument($wikimacro.parameters.reference))
+#set ($mode = $wikimacro.parameters.mode)
+#set ($class = '')
+#if ("$!mode" != '')
+  #set ($class = " xwiki-carousel-mode-$mode")
+#end
+#set ($page = $xwiki.getDocument($reference))
+#set ($carouselId = $page.fullName.replaceAll('\.', '-'))
+#set ($carousel = $page.getObject('XWiki.Carousel.CarouselClass'))
+#set ($bgcolor = $carousel.getValue('bgcolor'))
+#set ($color = $carousel.getValue('color'))
+#set ($maxTextLength = $wikimacro.parameters.maxTextLength)
+#if ("$!maxTextLength" == '')
+  #set ($maxTextLength = 1500)
+#end
+{{html clean="false"}}
+&lt;div id="$carouselId" class="xwiki-carousel carousel slide$class" data-interval="false" data-ride="carousel"#if("$!bgcolor" != '') style="background: $bgcolor;"#end&gt;
+  &lt;div class="carousel-inner" role="listbox"#if("$!color" != '') style="color: $color;"#end&gt;
+    #set ($slides = $page.getObjects('XWiki.Carousel.SlideClass'))
+    #set ($sortedSlides = [])
+    #sortXWikiObjectsList($slides, 'index', $sortedSlides)
+    #foreach ($slide in $sortedSlides)
+      &lt;div class="xwiki-carousel-slide item#if ($foreach.index == 0) active#end"&gt;
+        #set ($slideName = $slide.getValue('page'))
+        #if ($xwiki.exists($slideName))
+          #set ($slidePage = $xwiki.getDocument($slideName))
+          #set ($coverImageObject = $slidePage.getFirstObject('coverImage'))
+          #set ($coverImage = $coverImageObject.getValue('coverImage'))
+          #set ($abstract = $coverImageObject.getValue('abstract'))
+          #if ("$!abstract" == '')
+            #set ($abstract = $slidePage.content.trim())
+          #end
+          &lt;div class="xwiki-carousel-slide-body"&gt;
+            #if ("$!coverImage" != '')
+              #set ($slideImageReference = $services.model.resolveAttachment($slideImage))
+              &lt;div class="xwiki-carousel-slide-image"&gt;
+                &lt;a href="$xwiki.getURL($slideName)"&gt;
+                  &lt;img src="$slidePage.getAttachmentURL($coverImage)"/&gt;
+                &lt;/a&gt;
+              &lt;/div&gt;
+            #end
+            &lt;div class="xwiki-carousel-slide-text"&gt;
+              &lt;h2 class="xwiki-carousel-slide-title"&gt;$slidePage.displayTitle&lt;/h2&gt;
+              #set ($abstractLength = $abstract.length())
+              #set ($max = $mathtool.min($maxTextLength, $abstractLength))
+              #set ($abstract = $stringtool.abbreviate($abstract, $max))
+              #set ($body = "$abstract [[[+]&gt;&gt;$slideName]]")
+              #set ($xdom = $services.rendering.parse($body, 'xwiki/2.1'))
+              $services.rendering.render($xdom, 'xhtml/1.0')
+            &lt;/div&gt;
+          &lt;/div&gt;
+        #end
+      &lt;/div&gt;
+    #end
+  &lt;/div&gt;
+  &lt;a class="left carousel-control" href="#$carouselId" role="button" data-slide="prev"&gt;
+    &lt;span class="carousel-action-prev glyphicon glyphicon-chevron-left" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="sr-only"&gt;Précédent&lt;/span&gt;
+  &lt;/a&gt;
+  &lt;a class="right carousel-control" href="#$carouselId" role="button" data-slide="next"&gt;
+    &lt;span class="carousel-action-next glyphicon glyphicon-chevron-right" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="sr-only"&gt;Suivant&lt;/span&gt;
+  &lt;/a&gt;
+  #if ($services.security.authorization.hasAccess('edit'))
+    &lt;a class="xwiki-carousel-action xwiki-carousel-action-edit" href="$xwiki.getURL($page.fullName)" role="button"&gt;
+      &lt;span class="xwiki-carousel-action-edit-icon"&gt;$services.icon.renderHTML('pencil')&lt;/span&gt;
+    &lt;/a&gt;
+  #end
+&lt;/div&gt;
+{{/html}}
+{{/velocity}}</code>
+    </property>
+    <property>
+      <contentDescription/>
+    </property>
+    <property>
+      <contentJavaType/>
+    </property>
+    <property>
+      <contentType>No content</contentType>
+    </property>
+    <property>
+      <defaultCategory/>
+    </property>
+    <property>
+      <description/>
+    </property>
+    <property>
+      <id>carousel</id>
+    </property>
+    <property>
+      <name>carousel</name>
+    </property>
+    <property>
+      <priority/>
+    </property>
+    <property>
+      <supportsInlineMode>0</supportsInlineMode>
+    </property>
+    <property>
+      <visibility>Current Wiki</visibility>
+    </property>
+  </object>
+</xwikidoc>

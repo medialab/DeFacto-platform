@@ -1,0 +1,97 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Media.MediaTranslations" locale="">
+  <web>XWiki.DeFacto.Media</web>
+  <name>MediaTranslations</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>MediaTranslations</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content># Class fields
+XWiki.DeFacto.Media.MediaClass_title=Nom
+XWiki.DeFacto.Media.MediaClass_description=Description
+XWiki.DeFacto.Media.MediaClass_logo=Logo
+XWiki.DeFacto.Media.MediaClass_site=Site
+XWiki.DeFacto.Media.MediaClass_feed=Flux RSS
+XWiki.DeFacto.Media.MediaClass_copyright=Informations de copyright
+
+# Sheet keys
+defacto.media.sheet.description=This page controls how Media pages are displayed in both view and edit modes.
+defacto.media.sheet.noObject=The current page doesn't have the expected Media object.
+defacto.media.sheet.noFields=The media application doesn't have any fields to display.
+
+# Live table generic keys
+defacto.media.livetable.doc.title=Titre de la page
+defacto.media.livetable.doc.name=Nom de la page
+defacto.media.livetable.doc.space=Espace
+defacto.media.livetable.doc.fullname=Nom complet de la page
+defacto.media.livetable.doc.location=Emplacement
+defacto.media.livetable.doc.author=Dernier auteur
+defacto.media.livetable.doc.creator=Créateur
+defacto.media.livetable.doc.date=Date de dernière mise à jour
+defacto.media.livetable.doc.creationDate=Date de création
+defacto.media.livetable._avatar=Avatar
+defacto.media.livetable._images=Images
+defacto.media.livetable._attachments=Pièces jointes
+defacto.media.livetable._actions=Actions
+defacto.media.livetable._actions.edit=Modifier
+defacto.media.livetable._actions.delete=Supprimer
+defacto.media.livetable.emptyvalue=-
+
+# Live table specific keys
+defacto.media.livetable.title=Title
+
+# Other keys
+defacto.media.entry.name=Média partenaire
+defacto.media.entry.hint=Média partenaire de l'observatoire
+
+# Deprecated keys
+defacto.media.dataSpace.title=Data
+</content>
+  <object>
+    <name>XWiki.DeFacto.Media.MediaTranslations</name>
+    <number>0</number>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>c23263de-8081-47bb-aefb-b0dfe3c90776</guid>
+    <class>
+      <name>XWiki.TranslationDocumentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>1</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <scope>WIKI</scope>
+    </property>
+  </object>
+</xwikidoc>

@@ -1,0 +1,402 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.LnF.Style" locale="">
+  <web>XWiki.DeFacto.LnF</web>
+  <name>Style</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Style</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content/>
+  <object>
+    <name>XWiki.DeFacto.LnF.Style</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>8f17a0a6-bbc5-40b0-8a74-01f4b47b5510</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>@font-face {
+  font-family: Intro;
+  src: url("$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.IntroFontFree', 'Intro.woff2')") format("woff2");
+}
+
+body {
+  font-family: Barlow, Open Sans, sans-serif;
+  font-size: 16px;
+}
+
+.document-header {
+  margin-bottom: 5px;
+  + hr {
+    margin-top: 0;
+  }
+}
+
+#tmCloudNavigation {
+  display: none;
+}
+
+.navbar-avatar {
+  &gt; a {
+    &gt; img {
+      width: 24px;
+      height: 24px;
+      margin-top: 0;
+    }
+  }
+}
+
+.drawer-default .drawer-brand {
+  background-color: @defacto-primary;
+  .brand-links .brand-user, a {
+    color: white;
+  }
+}
+
+#hierarchy.breadcrumb {
+  display: none;
+}
+
+body[class*="space-XWiki\.DeFacto"] {
+  #hierarchy.breadcrumb {
+    display: block;
+  }
+}
+
+#menuview {
+  /** Align menu vertically with content columns. */
+  padding-right: 15px;
+  padding-left: 15px;
+  .container-fluid {
+    display: flex;
+    .navbar-header {
+      float: inherit;
+      #companylogo {
+        padding: 1em;
+        .navbar-brand img {
+          height: 65px;
+          max-width: inherit;
+        }
+      }
+    }
+    #xwikimainmenu {
+      .navbar-right {
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          left: 0;
+          z-index: 10;
+          background: @yellow;
+          margin: 0;
+          li {
+            height: 50px;
+            line-height: inherit;
+            a {
+              line-height: inherit;
+              padding-top: 13px;
+              &amp;.icon-navbar {
+                background: inherit;
+                color: inherit;
+                &amp;:hover, &amp;:focus {
+                  background: inherit;
+                  color: inherit;
+                }
+              }
+            }
+            &amp;#tmNotifications {
+              display: none;
+            }
+            &amp;#tmMobileSearch a {
+              padding-right: 6px;
+            }
+            #globalsearch {
+               display: none;
+              .btn {
+                background-color: inherit;
+                color: inherit;
+                &amp;:hover, &amp;:focus {
+                  background-color: inherit;
+                  color: inherit;
+                }
+              }
+            }
+            .btn {
+              padding-top: 12px;
+              padding-right: 10px;
+            }
+            .btn .fa, a.icon-navbar .fa {
+              font-size: 1.2em;
+            }
+            &amp;.defacto-top-menu {
+              float: left;
+              display: flex;
+              align-items: center;
+              padding-left: 1em;
+              ul {
+                padding: 0;
+                li {
+                  font-family: Intro;
+                  display: inline;
+                  margin-right: 0.5em;
+                  &amp;.active {
+                    a {
+                      color: @defacto-link-hover;
+                    }
+                  }
+                  a {
+                    font-size: 11px;
+                    color: @defacto-primary;
+                    text-decoration: none;
+                    &amp;:hover {
+                      color: @defacto-link-hover;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+}
+
+.defacto-box {
+  box-shadow: none;
+  border-radius: 0;
+  font-weight: 300;
+  background: #fff;
+  h2 {
+    font-size: 25px;
+    margin-top: 0;
+  }
+}
+
+.nav-tabs &gt; li &gt; a {
+  font-size: 18px;
+}
+
+#footerglobal {
+  background: @defacto-primary;
+  color: #fff;
+  font-size: inherit;
+  a {
+    color: #fff;
+  }
+  .wikiexternallink {
+    background: inherit;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  padding-bottom: 100px; /** Leave space for the fixed menu bar at the bottom. */
+}
+
+.xwiki-relations-uix-container {
+  width: 100%;
+}
+
+#mainContentArea {
+  box-shadow: none;
+}
+
+@media (min-width: @screen-md-min) {
+  #menuview {
+    .container-fluid {
+      .navbar-header #companylogo .navbar-brand img {
+        height: 47px;
+        margin-top: 0.5em;
+      }
+      #xwikimainmenu {
+        flex-grow: 1;
+        .navbar-right {
+          position: relative;
+          background: inherit;
+          &gt; li {
+            height: 100px;
+            a.icon-navbar {
+              line-height: 78px;
+            }
+            #globalsearch .btn &gt; .fa, &gt; a.icon-navbar &gt; .fa {
+              font-size: 2em;
+            }
+            #globalsearch {
+              display: block;
+              line-height: 95px;
+            }
+            &amp;#tmNotifications {
+              display: block;
+            }
+            &amp;#tmMobileSearch {
+              display: none;
+            }
+          }
+          .notifications-count {
+            top: 23px;
+            right: 5px;
+          }
+          li.defacto-top-menu {
+            float: right;
+            padding-left: 1.5em;
+            ul {
+              li {
+                margin-right: 1.3em;
+                a {
+                  font-size: 1em;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  body[class*="space-A-propos"], body[class*="space-Actus"], body[class*="space-Comprendre"], body[class*="space-Explorer"], body[class*="space-Mentions-legales"] {
+    #mainContentArea, #xdocFooter {
+      max-width: 1100px;
+      margin: auto;
+    }
+  }
+
+  #footerglobal {
+    padding-bottom: 20px;
+  }
+}
+
+@media (min-width: @screen-lg-min) {
+  #menuview .container-fluid .navbar-header #companylogo .navbar-brand img {
+    height: 65px;
+    margin-top: 0;
+  }
+  #menuview .container-fluid #xwikimainmenu {
+    .navbar-right {
+      li.defacto-top-menu ul li a {
+        font-size: 1.2em;
+      }
+    }
+  }
+}
+</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>1</parse>
+    </property>
+    <property>
+      <use>always</use>
+    </property>
+  </object>
+</xwikidoc>

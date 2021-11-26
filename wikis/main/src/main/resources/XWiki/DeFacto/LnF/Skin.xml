@@ -1,0 +1,455 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.LnF.Skin" locale="">
+  <web>XWiki.DeFacto.LnF</web>
+  <name>Skin</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content/>
+  <object>
+    <name>XWiki.DeFacto.LnF.Skin</name>
+    <number>0</number>
+    <className>XWiki.XWikiSkinFileOverrideClass</className>
+    <guid>34bbe7e9-6d42-4f01-aa5c-b23d2a48de53</guid>
+    <class>
+      <name>XWiki.XWikiSkinFileOverrideClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <content>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>content</name>
+        <number>2</number>
+        <prettyName>Content</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </content>
+      <path>
+        <disabled>0</disabled>
+        <name>path</name>
+        <number>1</number>
+        <prettyName>Path</prettyName>
+        <size>255</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </path>
+    </class>
+    <property>
+      <content>#set ($displayDocExtra = false)
+#set ($FACTCHECK_CLASS = 'XWiki.DeFacto.FactCheck.FactCheckClass')
+</content>
+    </property>
+    <property>
+      <path>layoutExtraVars.vm</path>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.DeFacto.LnF.Skin</name>
+    <number>1</number>
+    <className>XWiki.XWikiSkinFileOverrideClass</className>
+    <guid>d5b090e5-4b1e-45a5-84a8-8801b5704b10</guid>
+    <class>
+      <name>XWiki.XWikiSkinFileOverrideClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <content>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>content</name>
+        <number>2</number>
+        <prettyName>Content</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </content>
+      <path>
+        <disabled>0</disabled>
+        <name>path</name>
+        <number>1</number>
+        <prettyName>Path</prettyName>
+        <size>255</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </path>
+    </class>
+    <property>
+      <content>## Customized footer
+#if($isInServletMode)## Visible only in a page
+  &lt;div id="footerglobal"&gt;
+    &lt;div class="container-fluid"&gt;
+      &lt;div class="row"&gt;
+        &lt;div class="col-xs-12 col-sm-4 text-left"&gt;
+          &lt;h2&gt;De Facto&lt;/h2&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href="$xwiki.getURL('A-propos.WebHome')"&gt;À propos&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="$xwiki.getURL('Mentions-legales.WebHome')"&gt;Mentions légales&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="mailto:contact@defacto-observatoire.fr"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+            #if ($isGuest)
+            &lt;li&gt;&lt;a href="$xwiki.getURL('XWiki.XWikiLogin', 'login')"&gt;Se connecter&lt;/a&gt;&lt;/li&gt;
+            #end
+          &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div class="col-xs-12 col-sm-4 text-left"&gt;
+          &lt;h2&gt;Le réseau EDMO&lt;/h2&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;a href="https://edmo.eu/" target="_blank"&gt;EDMO.eu&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;Hub 1&lt;/li&gt;
+            &lt;li&gt;Hub 2&lt;/li&gt;
+            &lt;li&gt;Hub 3&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div class="col-xs-12 col-sm-4 text-left"&gt;
+          &lt;h2&gt;Suivez-nous&lt;/h2&gt;
+          &lt;ul&gt;
+            &lt;li&gt;Twitter&lt;/li&gt;
+            &lt;li&gt;Newsletter&lt;/li&gt;
+            &lt;li&gt;RSS : 
+              &lt;a href="$xwiki.getURL('XWiki.DeFacto.Rss', 'get', 'outputSyntax=plain')"&gt;Site&lt;/a&gt; - 
+              &lt;a href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Rss', 'get', 'outputSyntax=plain')"&gt;Fact-checks&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+#end</content>
+    </property>
+    <property>
+      <path>footer.vm</path>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.DeFacto.LnF.Skin</name>
+    <number>2</number>
+    <className>XWiki.XWikiSkinFileOverrideClass</className>
+    <guid>146497ce-bba8-4df5-8a12-4a7db2661d60</guid>
+    <class>
+      <name>XWiki.XWikiSkinFileOverrideClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <content>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>content</name>
+        <number>2</number>
+        <prettyName>Content</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </content>
+      <path>
+        <disabled>0</disabled>
+        <name>path</name>
+        <number>1</number>
+        <prettyName>Path</prettyName>
+        <size>255</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </path>
+    </class>
+    <property>
+      <content>## ---------------------------------------------------------------------------
+## See the NOTICE file distributed with this work for additional
+## information regarding copyright ownership.
+##
+## This is free software; you can redistribute it and/or modify it
+## under the terms of the GNU Lesser General Public License as
+## published by the Free Software Foundation; either version 2.1 of
+## the License, or (at your option) any later version.
+##
+## This software is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+## Lesser General Public License for more details.
+##
+## You should have received a copy of the GNU Lesser General Public
+## License along with this software; if not, write to the Free
+## Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+## 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+## ---------------------------------------------------------------------------
+&lt;div class="row document-header"&gt;
+  &lt;div class="document-info col-xs-12 #if($displayContentMenu)col-md-7#end"&gt;
+    ## --------------------------------------------------------
+    ## Display UI Extensions before the title element
+    ## --------------------------------------------------------
+    #foreach ($uix in $services.uix.getExtensions('org.xwiki.platform.template.title.before'))
+      $services.rendering.render($uix.execute(), 'xhtml/1.0')
+    #end
+    &lt;div id="document-title"&gt;&lt;h1&gt;$titleToDisplay&lt;/h1&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  #if($displayContentMenu)
+    &lt;div class="document-menu col-xs-12 col-md-5"&gt;
+      #template("menus_content.vm")
+    &lt;/div&gt;
+  #end
+&lt;/div&gt;
+&lt;hr/&gt;
+</content>
+    </property>
+    <property>
+      <path>contentheader.vm</path>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.DeFacto.LnF.Skin</name>
+    <number>3</number>
+    <className>XWiki.XWikiSkinFileOverrideClass</className>
+    <guid>538adf6f-62ba-4cf0-a755-0e22ffa53754</guid>
+    <class>
+      <name>XWiki.XWikiSkinFileOverrideClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <content>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>content</name>
+        <number>2</number>
+        <prettyName>Content</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </content>
+      <path>
+        <disabled>0</disabled>
+        <name>path</name>
+        <number>1</number>
+        <prettyName>Path</prettyName>
+        <size>255</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </path>
+    </class>
+    <property>
+      <content>## Customized to show the drawer only for logged-in users
+#if ($isInServletMode)## Visible only in a page
+  #template("menus_macros.vm")
+  
+  ## Top Menu
+  #xwikitopmenustart()
+    
+    ## Left menu
+    #xwikitopmenuleftstart()
+      #displaySimpleSecureUIX('org.xwiki.platform.topmenu.left')
+    #xwikitopmenuleftend()
+    
+    ## Right menu
+    #xwikitopmenurightstart()
+      #if (!$isGuest)
+        #displayDrawerActivator()
+      #end
+      #displaySimpleSecureUIX('org.xwiki.platform.topmenu.right')
+    #xwikitopmenurightend()    
+    
+  ## End of Top Menu
+  #xwikitopmenuend()
+  #if (!$isGuest)
+    #template("drawer.vm")
+  #end
+#end
+#**
+ * Display the drawer activator with an humberger-style icon.
+ *#
+#macro(displayDrawerActivator)
+  &lt;li&gt;
+    &lt;a class="icon-navbar drawer-toggle" id="tmDrawerActivator" title="$services.localization.render('core.menu.drawer')"&gt;&lt;span class="sr-only"&gt;$services.localization.render('core.menu.toggleNavigation')&lt;/span&gt;$services.icon.renderHTML('menu')&lt;/a&gt;
+  &lt;/li&gt;
+#end
+</content>
+    </property>
+    <property>
+      <path>menus_view.vm</path>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.DeFacto.LnF.Skin</name>
+    <number>0</number>
+    <className>XWiki.XWikiSkins</className>
+    <guid>6758a920-d3c7-4805-af33-2b0bf475fe9a</guid>
+    <class>
+      <name>XWiki.XWikiSkins</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <baseskin>
+        <disabled>0</disabled>
+        <name>baseskin</name>
+        <number>2</number>
+        <prettyName>Base Skin</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </baseskin>
+      <edit.vm>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>edit.vm</name>
+        <number>10</number>
+        <prettyName>Edit</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </edit.vm>
+      <footer.vm>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>footer.vm</name>
+        <number>7</number>
+        <prettyName>Footer</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </footer.vm>
+      <header.vm>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>header.vm</name>
+        <number>6</number>
+        <prettyName>Header</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </header.vm>
+      <logo>
+        <disabled>0</disabled>
+        <name>logo</name>
+        <number>3</number>
+        <prettyName>Logo</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </logo>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <outputSyntax>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>outputSyntax</name>
+        <number>4</number>
+        <prettyName>Output Syntax</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>html/5.0=HTML 5|xhtml/1.0=XHTML 1.0</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </outputSyntax>
+      <style.css>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>style.css</name>
+        <number>5</number>
+        <prettyName>Style</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </style.css>
+      <view.vm>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>view.vm</name>
+        <number>9</number>
+        <prettyName>View</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </view.vm>
+      <viewheader.vm>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>viewheader.vm</name>
+        <number>8</number>
+        <prettyName>View Header</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </viewheader.vm>
+    </class>
+    <property>
+      <baseskin/>
+    </property>
+    <property>
+      <edit.vm/>
+    </property>
+    <property>
+      <footer.vm/>
+    </property>
+    <property>
+      <header.vm/>
+    </property>
+    <property>
+      <logo/>
+    </property>
+    <property>
+      <name>DeFacto Skin</name>
+    </property>
+    <property>
+      <outputSyntax/>
+    </property>
+    <property>
+      <style.css/>
+    </property>
+    <property>
+      <view.vm/>
+    </property>
+    <property>
+      <viewheader.vm/>
+    </property>
+  </object>
+</xwikidoc>

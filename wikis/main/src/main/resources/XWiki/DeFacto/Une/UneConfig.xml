@@ -1,0 +1,101 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Une.UneConfig" locale="">
+  <web>XWiki.DeFacto.Une</web>
+  <name>UneConfig</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>UneConfig</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content/>
+  <object>
+    <name>XWiki.DeFacto.Une.UneConfig</name>
+    <number>0</number>
+    <className>XWiki.DeFacto.Une.UneConfigClass</className>
+    <guid>cecd9d39-af00-4b6b-abdd-a49c8c1c4ba1</guid>
+    <class>
+      <name>XWiki.DeFacto.Une.UneConfigClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <factCheckPick>
+        <cache>0</cache>
+        <classname/>
+        <customDisplay/>
+        <defaultValue/>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <freeText/>
+        <hint/>
+        <idField/>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>factCheckPick</name>
+        <number>1</number>
+        <picker>1</picker>
+        <prettyName>factCheckPick</prettyName>
+        <relationalStorage>1</relationalStorage>
+        <separator> </separator>
+        <separators/>
+        <size>1</size>
+        <sort/>
+        <sql>select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = 'XWiki.DeFacto.FactCheck.FactCheckClass'</sql>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <valueField/>
+        <classType>com.xpn.xwiki.objects.classes.DBListClass</classType>
+      </factCheckPick>
+      <tags>
+        <cache>0</cache>
+        <classname/>
+        <customDisplay/>
+        <defaultValue/>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <freeText/>
+        <hint/>
+        <idField/>
+        <largeStorage>0</largeStorage>
+        <multiSelect>1</multiSelect>
+        <name>tags</name>
+        <number>2</number>
+        <picker>1</picker>
+        <prettyName>tags</prettyName>
+        <relationalStorage>1</relationalStorage>
+        <separator> </separator>
+        <separators/>
+        <size/>
+        <sort/>
+        <sql>select distinct tag from BaseObject as obj, DBStringListProperty as prop join prop.list as tag where obj.className='XWiki.TagClass' and obj.id=prop.id.id and prop.id.name='tags'</sql>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <valueField/>
+        <classType>com.xpn.xwiki.objects.classes.DBListClass</classType>
+      </tags>
+    </class>
+    <property>
+      <factCheckPick>Medias.Factuel.Fact-checks.Attention-a-ces-affirmations-sur-le-deremboursement-des-tests-PCR-pour-les-malades-du-cancer.WebHome</factCheckPick>
+    </property>
+    <property>
+      <tags>
+        <value>Covid-19</value>
+        <value>Présidentielle 2022</value>
+      </tags>
+    </property>
+  </object>
+</xwikidoc>

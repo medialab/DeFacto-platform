@@ -1,0 +1,41 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.Publish" locale="">
+  <web>XWiki.DeFacto.FactCheck</web>
+  <name>Publish</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Publish</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($reference = $request.reference)
+## TODO: do real admin check and protect page
+#if ($hasAdmin &amp;&amp; "$!reference" != '')
+  #set ($action = $request.action)
+  #set ($flag = false)
+  #set ($integerFlag = 1)
+  #if ($action == 'unpublish')
+    #set ($flag = true)
+    #set ($integerFlag = 0)
+  #end
+  #set ($source = $services.model.resolveDocument($reference))
+  #set ($page = $xwiki.getDocument($source))
+  #set ($factCheck = $page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
+  #set ($discard = $page.setHidden($flag))
+  #set ($discard = $factCheck.set('published', $integerFlag))
+  #set ($discard = $page.save())
+  #set ($nflag = !$flag)
+  $response.sendRedirect($xwiki.getURL($source, 'view', "published=$nflag"))
+#end
+
+{{/velocity}}</content>
+</xwikidoc>

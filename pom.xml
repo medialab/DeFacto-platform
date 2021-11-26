@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.xwiki.contrib</groupId>
+    <artifactId>parent-platform</artifactId>
+    <version>13.4</version>
+  </parent>
+  <groupId>com.xwiki.projects.defacto.platform</groupId>
+  <artifactId>xwiki-defacto-platform-parent</artifactId>
+  <packaging>pom</packaging>
+  <name>XWiki Projects - De Facto Platform - Parent POM</name>
+  <version>0.1-SNAPSHOT</version>
+  <!-- Reset the description, mask the default "Contrib extension depending on ..." -->
+  <description />
+  <!-- Set the URL of the artifacts to something else than extensions.xwiki.org -->
+  <url>https://xwiki.com</url>
+  <properties>
+    <!-- ********** Release definitions ********** -->
+    <!-- Disable release staging and directly deploy on the configured distributionManagement -->
+    <xwiki.nexus.skipLocalStaging>true</xwiki.nexus.skipLocalStaging>
+    <xwiki.nexus.skipStaging>true</xwiki.nexus.skipStaging>
+
+    <!-- ********** General Build definitions ********** -->
+    <!-- skip clirr, we don't need to check for api breakage (inherited from parent) -->
+    <xwiki.clirr.skip>true</xwiki.clirr.skip>
+    <xwiki.license.skip>true</xwiki.license.skip>
+    <xwiki.revapi.skip>true</xwiki.revapi.skip>
+
+    <extraXarEntryTypes.version>1.0</extraXarEntryTypes.version>
+  </properties>
+  <scm>
+    <connection>scm:git:git://git.xwikisas.com/defacto/defacto-platform.git</connection>
+    <developerConnection>scm:git:git@git.xwikisas.com:defacto/defacto-platform.git</developerConnection>
+    <url>https://git.xwikisas.com/defacto/defacto-platform</url>
+    <tag>HEAD</tag>
+  </scm>
+  <developers>
+    <developer>
+      <id>slauriere</id>
+      <name>slauriere</name>
+    </developer>
+  </developers>
+  <repositories>
+    <repository>
+      <id>git.xwikisas.com</id>
+      <url>https://git.xwikisas.com/api/v4/projects/276/packages/maven</url>
+    </repository>
+  </repositories>
+  <distributionManagement>
+    <repository>
+      <id>git.xwikisas.com</id>
+      <url>https://git.xwikisas.com/api/v4/projects/276/packages/maven</url>
+    </repository>
+    <snapshotRepository>
+      <id>git.xwikisas.com</id>
+      <url>https://git.xwikisas.com/api/v4/projects/276/packages/maven</url>
+    </snapshotRepository>
+  </distributionManagement>
+  <build>
+    <!-- Needed to add support for the XAR packaging -->
+    <extensions>
+      <extension>
+        <groupId>org.xwiki.commons</groupId>
+        <artifactId>xwiki-commons-tool-extension-plugin</artifactId>
+        <version>${commons.version}</version>
+      </extension>
+    </extensions>
+    <plugins>
+      <plugin>
+        <groupId>org.xwiki.commons</groupId>
+        <artifactId>xwiki-commons-tool-xar-plugin</artifactId>
+        <version>${commons.version}</version>
+        <configuration>
+          <formatLicense>true</formatLicense>
+          <defaultLanguage>fr</defaultLanguage>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--
+          Make sure that the WagonTransporter will be used instead of the HttpTransporter when uploading the artifacts.
+          We do this because the HttpTransporter doesn't use the <configuration> provided as part of the <server> defined in the Maven settings.
+          As such, the HttpTransporter would not send the proper HTTP Headers for authentication against the GitLab Registry.
+        -->
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <arguments>-Daether.priority.org.eclipse.aether.transport.wagon.WagonTransporterFactory=100.0</arguments>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <modules>
+    <module>wikis</module>
+  </modules>
+</project>

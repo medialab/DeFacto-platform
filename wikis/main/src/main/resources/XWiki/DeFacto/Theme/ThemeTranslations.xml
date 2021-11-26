@@ -1,0 +1,92 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Theme.ThemeTranslations" locale="">
+  <web>XWiki.DeFacto.Theme</web>
+  <name>ThemeTranslations</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content># Class fields
+XWiki.DeFacto.Theme.ThemeClass_title=Title
+
+# Sheet keys
+theme.sheet.description=This page controls how Theme pages are displayed in both view and edit modes.
+theme.sheet.noObject=The current page doesn't have the expected Theme object.
+theme.sheet.noFields=The Theme application doesn't have any fields to display.
+
+# Live table generic keys
+theme.livetable.doc.title=Titre de la page
+theme.livetable.doc.name=Nom de la page
+theme.livetable.doc.space=Espace
+theme.livetable.doc.fullname=Nom complet de la page
+theme.livetable.doc.location=Emplacement
+theme.livetable.doc.author=Dernier auteur
+theme.livetable.doc.creator=Créateur
+theme.livetable.doc.date=Date de dernière mise à jour
+theme.livetable.doc.creationDate=Date de création
+theme.livetable._avatar=Avatar
+theme.livetable._images=Images
+theme.livetable._attachments=Pièces jointes
+theme.livetable._actions=Actions
+theme.livetable._actions.edit=Modifier
+theme.livetable._actions.delete=Supprimer
+theme.livetable.emptyvalue=-
+
+# Live table specific keys
+theme.livetable.title=Title
+
+# Other keys
+theme.entry.name=Thème
+theme.entry.hint=Thématique de classement des fact-checks
+
+# Deprecated keys
+theme.dataSpace.title=Data
+</content>
+  <object>
+    <name>XWiki.DeFacto.Theme.ThemeTranslations</name>
+    <number>0</number>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>a5339713-96e6-4e31-8468-ee73d1a639f6</guid>
+    <class>
+      <name>XWiki.TranslationDocumentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>1</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <scope>WIKI</scope>
+    </property>
+  </object>
+</xwikidoc>
