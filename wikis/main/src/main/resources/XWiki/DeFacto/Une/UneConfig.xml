@@ -89,13 +89,10 @@
       </tags>
     </class>
     <property>
-      <factCheckPick>Medias.Factuel.Fact-checks.Attention-a-ces-affirmations-sur-le-deremboursement-des-tests-PCR-pour-les-malades-du-cancer.WebHome</factCheckPick>
+      <factCheckPick/>
     </property>
     <property>
-      <tags>
-        <value>Covid-19</value>
-        <value>Présidentielle 2022</value>
-      </tags>
+      <tags/>
     </property>
   </object>
 </xwikidoc>
