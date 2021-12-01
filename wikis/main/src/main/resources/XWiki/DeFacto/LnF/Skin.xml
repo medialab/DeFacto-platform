@@ -102,7 +102,7 @@
   &lt;div id="footerglobal"&gt;
     &lt;div class="container-fluid"&gt;
       &lt;div class="row"&gt;
-        &lt;div class="col-xs-12 col-sm-4 text-left"&gt;
+        &lt;div class="col-xs-12 col-sm-3 text-left"&gt;
           &lt;h2&gt;De Facto&lt;/h2&gt;
           &lt;ul&gt;
             &lt;li&gt;&lt;a href="$xwiki.getURL('A-propos.WebHome')"&gt;À propos&lt;/a&gt;&lt;/li&gt;
@@ -113,7 +113,7 @@
             #end
           &lt;/ul&gt;
         &lt;/div&gt;
-        &lt;div class="col-xs-12 col-sm-4 text-left"&gt;
+        &lt;div class="col-xs-12 col-sm-3 text-left"&gt;
           &lt;h2&gt;Le réseau EDMO&lt;/h2&gt;
           &lt;ul&gt;
             &lt;li&gt;&lt;a href="https://edmo.eu/" target="_blank"&gt;EDMO.eu&lt;/a&gt;&lt;/li&gt;
@@ -122,7 +122,7 @@
             &lt;li&gt;Hub 3&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/div&gt;
-        &lt;div class="col-xs-12 col-sm-4 text-left"&gt;
+        &lt;div class="col-xs-12 col-sm-3 text-left"&gt;
           &lt;h2&gt;Suivez-nous&lt;/h2&gt;
           &lt;ul&gt;
             &lt;li&gt;Twitter&lt;/li&gt;
@@ -131,6 +131,10 @@
               &lt;a href="$xwiki.getURL('XWiki.DeFacto.Rss', 'get', 'outputSyntax=plain')"&gt;Site&lt;/a&gt; - 
               &lt;a href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Rss', 'get', 'outputSyntax=plain')"&gt;Fact-checks&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div class="col-xs-12 col-sm-3 text-left defacto-footer-ec"&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'logo-ce-vertical-fr-neg-lr.png')"/&gt;
+          &lt;p&gt;De Facto est un projet cofinancé par la Commission Européeenne.&lt;/p&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;

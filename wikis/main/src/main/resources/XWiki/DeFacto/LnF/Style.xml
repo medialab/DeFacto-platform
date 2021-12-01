@@ -297,6 +297,16 @@ body[class*="space-XWiki\.DeFacto"] {
     padding: 0;
   }
   padding-bottom: 100px; /** Leave space for the fixed menu bar at the bottom. */
+  .defacto-footer-ec {
+    display: flex;
+    margin-top: 22px;
+    flex-direction: column;
+    img {
+      margin-right: 1em;
+      margin-bottom: 1em;
+      width: 170px;
+    }
+  }
 }
 
 .xwiki-relations-uix-container {
@@ -368,6 +378,10 @@ body[class*="space-XWiki\.DeFacto"] {
 
   #footerglobal {
     padding-bottom: 20px;
+   .defacto-footer-ec {
+      flex-direction: row;
+      align-items: center;
+    }
   }
 }
 
