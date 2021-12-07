@@ -157,8 +157,8 @@
 {{html clean="false"}}
 &lt;li class="defacto-top-menu" id="defacto-top-menu"&gt;
   &lt;ul&gt;
-    #addMenuItem('Main', 'À la une', '')
-    #addMenuItem('Explorer', 'Explorer', '')
+    #addMenuItem('Main', 'À la une', 'defacto-top-menu-une')
+    #addMenuItem('Explorer', 'Explorer', 'defacto-top-menu-explorer')
     #addMenuItem('Comprendre', 'Comprendre', 'defacto-top-menu-comprendre')
     #addMenuItem('A-propos', 'À propos', 'defacto-top-menu-a-propos')
   &lt;/ul&gt;
