@@ -328,6 +328,11 @@
     <property>
       <code>.defacto-administration-medias {
   margin-top: 1em;
+}
+
+.defacto-box h2 a {
+  color: @blue;
+  font-weight: inherit;
 }</code>
     </property>
     <property>
