@@ -656,12 +656,13 @@ require(['jquery', 'bootstrap'], function($) {
 
 .defacto-home {
   display: grid;
+  grid-row-gap: 10px;
   .wikiexternallink {
     background: none;
     padding: 0;
   }
   .defacto-home-factcheck-pick {
-    grid-row-start: 1;
+    grid-row-start: 2;
     .defacto-box {
       flex-direction: column;
       background: #f0f0f0;
@@ -684,6 +685,7 @@ require(['jquery', 'bootstrap'], function($) {
   }
 
   .defacto-home-about {
+    grid-row-start: 1;
     .defacto-box {
       background: @lightgrey;
       color: white;
@@ -694,14 +696,14 @@ require(['jquery', 'bootstrap'], function($) {
         grid-template-columns: 50% 50%;
       img {
         align-self: center;
-            padding: 1em;
-            max-width: 180px;
+            padding: 0.5em;
+            max-width: 130px;
       }
     }
   }
 
   .defacto-home-fact-checks {
-    grid-row-start: 2;
+    grid-row-start: 5;
 
     .nav-tabs {
       border-bottom: 1px solid @yellow;
@@ -764,10 +766,12 @@ require(['jquery', 'bootstrap'], function($) {
     }
   }
   .defacto-teaser-box-one {
+    grid-row-start: 3;
     border: 1px solid @darkyellow;
     padding: 1em;
   }
   .defacto-teaser-box-two {
+    grid-row-start: 4;
     border: 1px solid @darkyellow;
     padding: 1em;
   }
@@ -791,6 +795,9 @@ require(['jquery', 'bootstrap'], function($) {
       }
     }
   }
+  .defacto-home-explorer {
+    grid-row-start: 6;
+  }
 }
 
 .search-form.row {
@@ -810,10 +817,16 @@ require(['jquery', 'bootstrap'], function($) {
 
 @media (min-width: @screen-md-min) {
   .defacto-home {
-    grid-row-gap: 10px;
     grid-column-gap: 30px;
     grid-template-columns: ~"[col1-start] 35%  [col2-start] 65%  [col2-end]";
     grid-template-rows: ~"[row1-start] fit-content(100%) [row2-start] fit-content(100%) [row3-start] 10fr [row3-end]";
+
+    .xwiki-defacto-logos {
+      img {
+        padding: 1em;
+        max-width: 180px;
+      }
+    }
 
     .defacto-home-factcheck-pick {
       grid-column: ~"col2-start / col2-end";
