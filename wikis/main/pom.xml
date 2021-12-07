@@ -34,11 +34,15 @@
           <formatLicense>false</formatLicense>
           <defaultLanguage>fr</defaultLanguage>
           <entries>
-            <!-- Groups -->
+            <entry>
+              <document>XWiki.DeFacto.Une.UneConfig</document>
+              <type>configuration</type>
+            </entry>
             <entry>
               <document>XWiki.XWikiPreferences</document>
               <type>configuration</type>
             </entry>
+            <!-- Groups -->
             <entry>
               <document>Main.WebHome</document>
               <type>noedit-nodelete-overwrite</type>
@@ -57,12 +61,12 @@
           </visibleTechnicalPages>
           <contentPages>
             <contentPage>.*/A-propos/.*\.xml</contentPage>
-            <contentPage>.*/Actus/.*\.xml</contentPage>
-            <contentPage>.*/Comprendre/.*\.xml</contentPage>
-            <contentPage>.*/Explorer/.*\.xml</contentPage>
+            <contentPage>${basedir}/src/main/resources/Actus/.*\.xml</contentPage>
+            <contentPage>${basedir}/src/main/resources/Comprendre/.*\.xml</contentPage>
+            <contentPage>${basedir}/src/main/resources/Explorer/.*\.xml</contentPage>
             <contentPage>.*/Medias/.*\.xml</contentPage>
             <contentPage>.*/Mentions-legales/.*\.xml</contentPage>
-            <contentPage>.*/Themes/.*\.xml</contentPage>
+            <contentPage>${basedir}/src/main/resources/Themes/.*\.xml</contentPage>
           </contentPages>
         </configuration>
       </plugin>
