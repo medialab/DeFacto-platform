@@ -213,9 +213,6 @@ body[class*="space-XWiki\.DeFacto"] {
             &amp;#tmNotifications {
               display: none;
             }
-            &amp;#tmMobileSearch a {
-              padding-right: 6px;
-            }
             #globalsearch {
                display: none;
               .btn {
@@ -258,6 +255,22 @@ body[class*="space-XWiki\.DeFacto"] {
                       color: @defacto-link-hover;
                     }
                   }
+                  &amp;.defacto-top-menu-explorer {
+                    a:hover, a:focus {
+                      color: @green;
+                    }
+                    &amp;.active a {
+                      color: @green;
+                    }
+                  }
+                  &amp;.defacto-top-menu-comprendre {
+                    a:hover, a:focus {
+                      color: @red;
+                    }
+                    &amp;.active a {
+                      color: @red;
+                    }
+                  }
                 }
               }
             }
@@ -275,6 +288,10 @@ body[class*="space-XWiki\.DeFacto"] {
   h2 {
     font-size: 25px;
     margin-top: 0;
+    a {
+      color: black;
+      font-weight: bold;
+    }
   }
 }
 
@@ -304,13 +321,17 @@ body[class*="space-XWiki\.DeFacto"] {
     img {
       margin-right: 1em;
       margin-bottom: 1em;
-      width: 170px;
+      width: 130px;
     }
   }
 }
 
 .xwiki-relations-uix-container {
   width: 100%;
+}
+
+#document-title {
+  text-transform: uppercase;
 }
 
 #mainContentArea {

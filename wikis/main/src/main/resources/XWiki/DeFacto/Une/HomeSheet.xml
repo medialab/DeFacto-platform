@@ -24,16 +24,24 @@
 #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.Une.HomeSheet'))
 
 (% class="container-fluid defacto-home" %)(((
-  (% class="defacto-home-comprendre" %)(((
-    = Analyses =
+  (% class="defacto-home-block defacto-home-about" %)(((
+     = Qui sommes-nous ? =
+     (% class="box defacto-box" style="height: 500px" %)(((
+     De Facto est la plateforme française du collectif international [[EDMO&gt;&gt;https://edmo.eu/]]. Elle est portée par SciencesPo, l'AFP, le CLEMI et XWiki.
+
+Retrouvez sur De Facto les fact-checks de ses partenaires médias – l'AFP, Le Monde, 20 Minutes, Libération, Les Surligneurs, France Télévisions – ainsi que des outils pour aider les enseignants, les chercheurs et le grand public à travailler avec les fake-news.
+     )))
+  )))
+  
+  (% class="defacto-home-block defacto-home-explorer" %)(((
+   = Analyses =
 
     {{carousel reference="Comprendre.Carousel.WebHome" maxTextLength="400" mode="vertical"/}}
 
     (% class="defacto-section-link" %)(((
       [[+ Toutes les analyses&gt;&gt;Comprendre.WebHome]]
     )))
-  )))
-  (% class="defacto-home-explorer" %)(((
+
     = Boîte à outils =
 
     {{carousel reference="Explorer.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
@@ -54,12 +62,27 @@
   #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
   #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
   #if ("$!factCheckPick" != '')
-  (% class="defacto-home-factcheck-pick" %)(((
+  (% class="defacto-home-block defacto-home-factcheck-pick" %)(((
     = Fact-check du jour =
     {{factCheckBox reference="$factCheckPick" pick="true"/}}
   )))
   #end
-  (% class="defacto-home-fact-checks" %)(((
+
+  (% class="defacto-teaser-box defacto-teaser-box-one" %)(((
+    (% class="defacto-box-icon" %)(((
+      $services.icon.render('envelope')
+    )))
+     Abonnez-vous à notre newsletter mensuelle pour rester informé(e) des dernières publications et des événéments !
+  )))
+  (% class="defacto-teaser-box defacto-teaser-box-two" %)(((
+    (% class="defacto-box-icon" %)(((
+      $services.icon.render('lightbulb')
+    )))
+       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis lectus magna fringilla urna. Vitae nunc sed velit dignissim sodales ut. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit. Velit dignissim sodales ut eu. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien. Molestie a iaculis at erat pellentesque adipiscing commodo elit. 
+  )))
+
+  (% class="defacto-home-block defacto-home-fact-checks" %)(((
+  
     = Fact-checks =
 
     #set ($uneConfigTags = $uneConfig.getValue('tags'))
@@ -623,7 +646,7 @@ require(['jquery', 'bootstrap'], function($) {
     grid-row-start: 1;
     .defacto-box {
       flex-direction: column;
-      background: #fdf9eb;
+      background: #f0f0f0;
       margin-bottom: 0;
       h2 {
         font-size: 26px;
@@ -642,6 +665,14 @@ require(['jquery', 'bootstrap'], function($) {
     }
   }
 
+  .defacto-home-about {
+    .defacto-box {
+      background: @lightgrey;
+      color: white;
+      font-weight: 400;
+    }
+  }
+
   .defacto-home-fact-checks {
     grid-row-start: 2;
 
@@ -650,25 +681,25 @@ require(['jquery', 'bootstrap'], function($) {
       li {
         &amp;.active {
           &gt; a, &gt; a:hover, &gt; a:focus {
-            border: 1px solid @yellow;
-            border-bottom-color: transparent;
             background: white;
+            border-bottom-color: transparent;
             color: inherit;
           }
         }
-        &gt; a:hover, &gt; a:focus {
+        &gt; a {
+          border: 1px solid @yellow;
           background-color: @yellow;
-          color: white;
+          color: black;
+        }
+        &gt; a:hover, &gt; a:focus {
+          background: white;
+          border-bottom-color: transparent;
         }
       }
     }
     .tab-content {
       margin-top: 1em;
     }
-  }
-
-  .defacto-home-research-and-tools {
-    grid-row-start: 3;
   }
 
   .defacto-section-link {
@@ -694,6 +725,37 @@ require(['jquery', 'bootstrap'], function($) {
   .xwiki-carousel {
     height: 500px;
   }
+  .defacto-home-block &gt; h1 {
+    text-transform: uppercase;
+  }
+  .defacto-teaser-box {
+    .defacto-box-icon {
+      float: left;
+      margin-right: 0.5em;
+      font-size: 2.5em;
+      color: @darkyellow;
+    }
+  }
+  .defacto-teaser-box-one {
+    border: 1px solid @darkyellow;
+    padding: 1em;
+    
+  }
+  .defacto-teaser-box-two {
+    border: 1px solid @darkyellow;
+    padding: 1em;
+  }
+  /*
+  .defacto-teaser {
+    display: flex;
+    .defacto-teaser-box {
+      &amp;.defacto-teaser-box-one, &amp;.defacto-teaser-box-two {
+        background: @darkgrey;
+        color: white;
+        padding: 1em;
+      }
+    }
+  }*/
 }
 
 .search-form.row {
@@ -716,7 +778,8 @@ require(['jquery', 'bootstrap'], function($) {
     grid-row-gap: 10px;
     grid-column-gap: 30px;
     grid-template-columns: ~"[col1-start] 35%  [col2-start] 65%  [col2-end]";
-    grid-template-rows: ~"[row1-start] fit-content(100%) [row2-start] 10fr [row2-end]";
+    grid-template-rows: ~"[row1-start] fit-content(100%) [row2-start] fit-content(100%) [row3-start] 10fr [row3-end]";
+
     .defacto-home-factcheck-pick {
       grid-column: ~"col2-start / col2-end";
       grid-row: row1-start;
@@ -724,17 +787,27 @@ require(['jquery', 'bootstrap'], function($) {
 
     .defacto-home-fact-checks {
       grid-column: ~"col2-start / col2-end";
-      grid-row: row2-start;
+      grid-row: row3-start;
     }
 
-    .defacto-home-comprendre {
+    .defacto-home-about {
       grid-column: col1-start;
       grid-row: ~"row1-start";
     }
 
+    .defacto-teaser-box-one {
+      grid-column: col1-start;
+      grid-row: row2-start;
+    }
+
+    .defacto-teaser-box-two {
+      grid-column: col2-start;
+      grid-row: row2-start;
+    }
+
     .defacto-home-explorer {
       grid-column: col1-start;
-      grid-row: ~"row2-start";
+      grid-row: ~"row3-start";
     }
 
   }

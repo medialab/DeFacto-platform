@@ -183,13 +183,21 @@
   li {
     &amp;.active {
       &gt; a, &gt; a:hover, &gt; a:focus {
+        background: white;
         border: 1px solid @green;
         border-bottom-color: transparent;
+        color: inherit;
       }
     }
+    &gt; a {
+      border: 1px solid @green;
+      background-color: @green;
+      color: black;
+    }
     &gt; a:hover, &gt; a:focus {
-      background-color: #12d3b0;
-      color: white;
+      background: white;
+      border: 1px solid @green;
+      border-bottom-color: transparent;
     }
   }
 }
