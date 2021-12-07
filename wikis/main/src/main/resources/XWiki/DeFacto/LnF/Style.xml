@@ -338,6 +338,11 @@ body[class*="space-XWiki\.DeFacto"] {
   box-shadow: none;
 }
 
+/** Display all tabs when editing tabbed content, eg in page A-propos */
+.cke_editable .tab-content &gt; .tab-pane {
+  display: block !important;
+}
+
 @media (min-width: @screen-md-min) {
   #menuview {
     .container-fluid {
@@ -419,6 +424,7 @@ body[class*="space-XWiki\.DeFacto"] {
     }
   }
 }
+
 </code>
     </property>
     <property>
