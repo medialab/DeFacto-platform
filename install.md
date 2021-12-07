@@ -35,6 +35,7 @@ No specific configuration.
 
 * Delete page "Main.WebHome" without deleting its children.
 * Download XAR 
+* Update wiki to monolingual, French only (check)
 * Import XAR with Admin account, with options "reset history to 1.1", and "import as backup package" activated
 
 ### Upgrade
