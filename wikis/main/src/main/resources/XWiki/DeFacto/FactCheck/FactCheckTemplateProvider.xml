@@ -221,9 +221,7 @@
       <action>edit</action>
     </property>
     <property>
-      <creationRestrictions>
-        <value>Contributions</value>
-      </creationRestrictions>
+      <creationRestrictions/>
     </property>
     <property>
       <creationRestrictionsAreSuggestions>1</creationRestrictionsAreSuggestions>
