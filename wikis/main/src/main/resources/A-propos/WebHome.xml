@@ -4,7 +4,7 @@
   <web>A-propos</web>
   <name>WebHome</name>
   <language/>
-  <defaultLanguage>fr</defaultLanguage>
+  <defaultLanguage/>
   <translation>0</translation>
   <creator>xwiki:XWiki.Admin</creator>
   <parent>Main.WebHome</parent>
@@ -16,27 +16,122 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>false</hidden>
-  <content>{{velocity}}
-{{html clean="false"}}
-  &lt;ul class="defacto-a-propos nav nav-tabs" role="tablist"&gt;
-    &lt;li role="presentation" class="active"&gt;&lt;a href="#manifeste" aria-controls="manifeste" role="tab" data-toggle="tab"&gt;Manifeste&lt;/a&gt;&lt;/li&gt;
-    &lt;li role="presentation"&gt;&lt;a href="#qui-sommes-nous" aria-controls="qui-sommes-nous" role="tab" data-toggle="tab"&gt;Qui sommes-nous ?&lt;/a&gt;&lt;/li&gt;
-    &lt;li role="presentation"&gt;&lt;a href="#reseau" aria-controls="reseau" role="tab" data-toggle="tab"&gt;Le réseau européen&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-{{/html}}
+  <content>(% class="tab-content" %)
+(((
+(% class="tab-pane active" id="manifeste" role="tabpanel" %)
+(((
+= Manifeste =
 
-(% class="tab-content" %)(((
-  (% role="tabpanel" class="tab-pane active" id="manifeste" %)(((
-    {{include reference="A-propos.Manifeste.WebHome"/}}
-  )))
-  (% role="tabpanel" class="tab-pane" id="qui-sommes-nous" %)(((
-    {{include reference="A-propos.Qui-sommes-nous.WebHome"/}}
-  )))
-  (% role="tabpanel" class="tab-pane" id="reseau" %)(((
-    {{include reference="A-propos.Le-reseau-europeen.WebHome"/}}
-  )))
+cf [[Draft Google Doc&gt;&gt;https://docs.google.com/document/d/1M0WAObpcqfaXuhDdsaK5aAObprx-EAdJwcwLEu4a-GQ/edit]]
+
+**Jamais encore, chercheurs, journalistes et professionnels de l’éducation aux médias et à l’information n’avaient travaillé ensemble sur les multiples maux dont souffre l’espace informationnel : la désinformation, la qualité du débat public, la hiérarchie de l’information ou  la régulation des plateformes numériques. A partir du 1er janvier 2022, DE FACTO entend ouvrir un espace ouvert et pluriel pour mettre en perspective les enjeux de l’information à l’ère numérique en facilitant la vérification, l’analyse et l’éducation aux médias.**
+
+La révolution numérique a bouleversé la manière dont est produite et consommée l’information. Abondante et véloce, elle emprunte des circuits que ne maîtrisent plus les grands médias. Souvent riche et originale, l’information numérique peut aussi être erronée, virale ou trompeuse. Ceux qui la produisent ne contrôlent plus tout à fait  la manière dont elle est lue. Ceux qui la lisent ne savent plus très bien s’ils peuvent faire confiance à ceux qui la promeuvent. Nous vivons une profonde mutation de l’écosystème informationnel. Après avoir été investie de beaucoup d’espérances, celle-ci suscite aujourd’hui craintes et paniques. Sommes-nous enfermés dans des chambres d’échos ? Les fake news ne risque-t-elle pas de déstabiliser les choix politiques des citoyens ? Des manœuvres extérieures contribuent-elles à polariser l’opinion publique ? Les algorithmes des plateformes amplifient-ils les polémiques et la haine ? Face à ces soubresauts, le site De Facto propose de nous aider à y voir plus clair en associant étroitement la pratique du fact checking, une meilleure compréhension des transformations de l’espace public numérique et une éducation de tous les publics afin de mieux discerner les risques comme les promesses des nouveaux circuits de l’information numérique. 
+
+== Pourquoi regrouper nos forces ? ==
+
+Face aux désordres de l’information numérique, il nous semble plus que jamais important de réagir, de comprendre et d’éduquer. **Réagir** d’abord, au quotidien, en mutualisant les pratiques reconnues de fact-check des grandes rédactions françaises pour faire face aux campagnes de  désinformation. **Comprendre**, ensuite, les origines et les impacts de la désinformation en la resituant dans le contexte des grandes transformations de l’économie des médias et de la transition numérique. **Éduquer**, enfin, en développant chez tous les publics le sens du discernement, l’esprit critique et l’autonomie. Ces trois exigences sont au cœur du projet de réunir journalistes, chercheurs et professionnels de l’éducation au sein de De Facto. 
+
+== Qui fabrique De Facto ? ==
+
+De Facto associe **Sciences-Po** dont le médialab étudie depuis de nombreuses années les transformations de l’écosystème informationnel, l’**AFP**, qui a développé depuis ces quatre dernières années des activités de fact checking dans 80 pays en près de 20 langues, et le **CLEMI**, Centre pour l’éducation aux médias et à l’information, qui organise notamment la Semaine de la presse et des médias à l'École dans les établissements scolaires.
+
+Mais la vocation de DE FACTO est d’être fondamentalement coopérative et ouverte. Sciences Po anime un réseau de chercheurs dans de nombreuses universités françaises et contribuera à la mise en visibilité des travaux de recherches sur la transformation de l’information à l’ère numérique. L’AFP rassemble sur le site de De Facto la plupart des grands fact checkeurs français dont Le Monde, Libération, Radio France, France Télévisions, 20 minutes ou les Surligneurs. Et le CLEMI œuvre à la mise en place d’un réseau de partenaires (médias, journalistes, associations, réseaux d’éducation prioritaires) engagés à ses côtés dans l’éducation aux médias et à l’information, producteurs de ressources et de contenus en éducation aux médias et à l’information.
+
+== Quels sont nos principes ? ==
+
+* **Le travail collaboratif**, qui permet de confronter les points de vue, d’avoir une approche plus riche et plus profonde des phénomènes de désinformation. 
+* **Le pluralisme**. Nous allons être un carrefour de rencontre de nombreux fact checkeurs afin que la plus grande diversité soit proposée aux visiteurs du site. Nous n’hésiterons pas à propos de la même information à proposer plusieurs fact-checks afin que le public puisse voir comment telle ou telle rédaction a enquêté.
+* **L’indépendance éditoriale**. Aidé financièrement par la Commission européenne, le projet pose en préalable l’indépendance éditoriale absolue de ses participants qui choisiront en toute liberté les thèmes qu’ils entendent aborder et la façon dont ils les aborderont, que ce soit dans les études de recherches, les articles de fact checks ou les actions d’éducation aux médias et à l’information.
+* **La prise de distance.**
+* **Donner des outils.** L’espace de discussion ouvert par De Facto souhaite aussi contribuer à offrir à des publics différents des outils et des données permettant de décrypter les mécanismes de l’information.
+
+== Que voulons-nous faire ? ==
+
+**Respirer.** Et grâce à ce travail, de sortir du débat réducteur entre le camp du bien et celui du mal, entre « biens informés et complotistes ».
+
+* **Réflexivité - boîte à outils, “trucs et astuces”, extension cognitive.** Outiller les acteurs de l’écosystème et les citoyens d’outils réflexifs permet
+* **L’écologie de l’information** : Nous souhaitons, à notre échelle, contribuer à la qualité de l’écosystème informationnel. Le développement du sens du discernement chez toutes les générations passe par l’acquisition d’une vision globale de ce qu’est une information avant même d’aborder les enjeux de désinformation. Maîtriser la notion d’information, connaître les circuits de l’information, les différentes facettes du métier de journaliste et les enjeux de la publication sont des prérequis essentiels à acquérir en parallèle du développement de l’esprit critique. 
+* **Parler à tous les publics.** s’adresser à tous les publics et à toutes les générations : journalistes, professionnels de l’éducation, familles. Aujourd’hui toutes les générations sont confrontées aux processus de désinformation. Il est essentiel d’encourager un dialogue au sein des familles sur les pratiques informationnelles de chacun et de sensibiliser chaque génération sur le rôle qu’elle a à jouer dans la circulation d’informations fiables et vérifiées.
+* et enfin **apprendre** au public à s’émanciper des fausses nouvelles, en lui montrant tout simplement comment elles sont fabriquées et quels outils et techniques on peut utiliser pour les démonter. Lui apprendre à développer son sens du discernement, son esprit critique, son autonomie face à l’avalanche de publications de tous ordres, à penser par lui-même. Ce sera le travail des experts de l’éducation aux médias et à l’information et des tutoriels que vous trouverez sur le site.
 )))
-{{/velocity}}
 
-</content>
+(% class="tab-pane" id="qui-sommes-nous" role="tabpanel" %)
+(((
+= Partenaires =
+
+== Sciences Po ==
+
+* **Vulgariser et synthétiser** la production scientifique. Les recherches sur la désinformation sont désormais extraordinairement nombreuses et d’une très inégale qualité. L’équipe de Sciences Po propose de réaliser des synthèses en mettant en avant les travaux donnant des résultats stables, méthodiquement bien construits et réguliers pour produire un savoir cumulatif sur la désinformation.
+* **Comparaisons internationales.** Les travaux de recherche sur la désinformation s’enrichissent grandement de comparaisons internationales. L’équipe de Sciences Po contribue à la mise en perspective de ces travaux au regard du cas français.
+* **Re-situer la désinformation dans un contexte plus large.** Comprendre la désinformation comme un fait social implique de situer les producteurs de désinformation dans un contexte plus large, d’observer leur circulation dans un écosystème complet et d’observer, dans leur variété, les contextes de réception et les usages que d’autres acteurs font de la désinformation. Approche cartographique et statistique.
+* **Proposer et innover**  en construisant des propositions et des dispositifs de régulation de la désinformation (policy lab). En s’impliquant dans le débat sur la régulation de la modération des contenus, les équipes de recherche associées au projet proposeront un ensemble de policy paper.
+
+== AFP ==
+
+* **Pluralisme et diversité :** nous avons contacté tous les partenaires (Le Monde, Libé, 20 minutes, Radio France, les Surligneurs). Tout le monde est on board. On met en place le workflow technique. Les quatre premiers feront trois FC par mois chacun. Les Surligneurs 1. On ajoute aussi les révélateurs de France TV qui viennent de se créer et en feront 1/mois.
+* L’ensemble de leur production va atterrir dans notre back office. On choisira nous-mêmes ce qui fait sens pour la plateforme sachant qu’on fait moins de politique. Donc on prendra beaucoup de politique chez eux. TOUS leurs fact checks iront en top fact check afin de garantir sur le site un maximum de diversité. Puis ils atterriront dans les boîtes thématiques (environnement, politique, société, économie, sports, santé).
+* Dans la mesure du possible on évitera les doublons sur un même sujet. En revanche, on publiera parfois deux FC en une sur le même sujet s’ils sont complémentaires.
+* La plupart d’entre eux sont OK pour une publication intégrale, sauf Le Monde qui va nous dire combien de paras on peut reprendre avant renvoi sur leur site.
+* Pour les Fact checks enrichis on pense que le mieux serait de choisir des FC qui sont de véritables investigations de longue haleine. On les publie, on vous les signale et s'ils vous paraissent intéressants vous ajoutez sous votre responsabilité éditoriale une partie de recherche/impact. Ça permettra d’éviter une dilution de nos copyrights respectifs qui est toujours très complexe en cas de contestation : qui est responsable de quoi, etc ? Au moins les choses seront claires. Donc typiquement on fait un FC très investigué. Puis avec vos outils vous apportez des précisions soit sur l’impact, et/ou les sources, les tendances auxquelles cette désinformation est reliée, etc. Il nous semble important que vous ayez la main sur cet enrichissement.
+
+== CLEMI ==
+
+* **Contribuer à une communauté EMI à l’échelle européenne :** les enjeux de l’éducation aux médias et à l’information se posent pour tous les Etats membres mais les réponses apportées par chacun sont diverses (dans leur forme, dans les partenaires engagés). EDMO doit permettre de créer une communauté d’échanges de pratiques et de contenus sur ces enjeux et le CLEMI apportera son expertise sur ces sujets.
+* **Rappeler l’importance du travail sur les fondamentaux de l’information :** le développement du sens du discernement chez toutes les générations passe essentiellement par l’acquisition d’une vision globale de ce qu’est une information avant même d’aborder les enjeux de désinformation. Maîtriser la notion d’information, connaître les circuits de l’information, les différentes facettes du métier de journaliste et les enjeux de la publication sont des prérequis essentiels à acquérir en parallèle du développement de l’esprit critique.
+* **Encourager les usages de la pédagogie active :** il s’agit d’un pan essentiel de l’éducation aux médias et à l’information car elle permet de sensibiliser les élèves aux processus de l’information par l’action : en essayant de créer la meilleure information dont ils sont capables, les élèves peuvent comprendre comment est faite l’information, comment travaillent les médias.
+* **S’adresser à tous les publics et les soutenir dans leurs pratiques :** aujourd’hui toutes les générations sont confrontées aux processus de désinformation. Il est essentiel d’encourager un dialogue au sein des familles sur les pratiques informationnelles de chacun et de sensibiliser chaque génération sur le rôle qu’elle a à jouer dans la circulation d’informations fiables et vérifiées. Pour cela chacun doit se sentir acteur et contributeur de cette écologie de l’information. En étant responsabilisés et encouragés dans leurs pratiques, chacun peut agir en citoyen libre, éclairé et engagé dans cette dynamique.
+)))
+
+(% class="tab-pane" id="reseau" role="tabpanel" %)
+(((
+= Le réseau européen =
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis lectus magna fringilla urna. Vitae nunc sed velit dignissim sodales ut. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit. Velit dignissim sodales ut eu. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien. Molestie a iaculis at erat pellentesque adipiscing commodo elit. Erat pellentesque adipiscing commodo elit at imperdiet dui accumsan. Id volutpat lacus laoreet non curabitur. Dictum non consectetur a erat nam. Tellus id interdum velit laoreet id donec ultrices. Rhoncus urna neque viverra justo nec ultrices dui sapien. Sit amet justo donec enim diam vulputate. Sollicitudin tempor id eu nisl nunc. Tincidunt tortor aliquam nulla facilisi cras fermentum. Gravida arcu ac tortor dignissim convallis aenean et. Nulla pellentesque dignissim enim sit amet venenatis urna cursus eget.
+)))
+)))</content>
+  <object>
+    <name>A-propos.WebHome</name>
+    <number>0</number>
+    <className>XWiki.DocumentSheetBinding</className>
+    <guid>9e5254bb-1475-47e9-9365-1a7d5fb935af</guid>
+    <class>
+      <name>XWiki.DocumentSheetBinding</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <sheet>
+        <cache>0</cache>
+        <classname/>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <hint/>
+        <idField/>
+        <multiSelect>0</multiSelect>
+        <name>sheet</name>
+        <number>1</number>
+        <picker>1</picker>
+        <prettyName>Sheet</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators/>
+        <size>30</size>
+        <sort>none</sort>
+        <sql/>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <valueField/>
+        <classType>com.xpn.xwiki.objects.classes.PageClass</classType>
+      </sheet>
+    </class>
+    <property>
+      <sheet>XWiki.DeFacto.LnF.AboutSheet</sheet>
+    </property>
+  </object>
 </xwikidoc>

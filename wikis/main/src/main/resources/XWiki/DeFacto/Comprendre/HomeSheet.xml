@@ -188,13 +188,21 @@
   li {
     &amp;.active {
       &gt; a, &gt; a:hover, &gt; a:focus {
+        background: white;
         border: 1px solid @red;
         border-bottom-color: transparent;
+        color: inherit;
       }
     }
-    &gt; a:hover, &gt; a:focus {
+    &gt; a {
+      border: 1px solid @red;
       background-color: @red;
-      color: white;
+      color: black;
+    }
+    &gt; a:hover, &gt; a:focus {
+      background: white;
+      border: 1px solid @red;
+      border-bottom-color: transparent;
     }
   }
 }

@@ -960,6 +960,9 @@
 @green: #12d3b0;
 @red: #ff7a79;
 @darkyellow: #8d7100;
+@lightgrey: #5f727f;
+@darkgrey: #24262e;
+@blue: #03b4fe;
 @xwiki-drawer-bg: @yellow;
 @xwiki-drawer-brand-bg: @yellow;
 @defacto-primary: #24262e;
