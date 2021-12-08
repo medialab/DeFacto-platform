@@ -27,17 +27,22 @@
         <configuration>
           <includeDependencies>true</includeDependencies>
           <excludes>
-            <!-- Exclude XWikiPreferences in case rights were updated in production -->
+            <!-- Exclude XWikiPreferences and Administration.WebPreferences in case rights were updated in production
+             -->
             <exclude>**/XWiki/XWikiPreferences.xml</exclude>
+            <exclude>**/Administration/WebPreferences.xml</exclude>
+            <!-- Exclude configuration pages -->
+            <exclude>**/XWiki/DeFacto/Une/UneConfig.xml</exclude>
             <!-- Exclude groups -->
-            <!-- Exclude content pages -->
-            <exclude>**/A-propos/**</exclude>
-            <exclude>**/Actus/**</exclude>
-            <exclude>**/Comprendre/**</exclude>
-            <exclude>**/Explorer/**</exclude>
-            <exclude>**/Medias/**</exclude>
-            <exclude>**/Mentions-legales/**</exclude>
-            <exclude>**/Themes/**</exclude>
+            <exclude>**/XWiki/ConsortiumGroup.xml</exclude>
+            <!-- Exclude content pages without excluding content pages sheets -->
+            <exclude>.*/A-propos/.*\.xml</exclude>
+            <exclude>${basedir}/src/main/resources/Actus/.*\.xml</exclude>
+            <exclude>${basedir}/src/main/resources/Comprendre/.*\.xml</exclude>
+            <exclude>${basedir}/src/main/resources/Explorer/.*\.xml</exclude>
+            <exclude>.*/Medias/.*\.xml</exclude>
+            <exclude>.*/Mentions-legales/.*\.xml</exclude>
+            <exclude>${basedir}/src/main/resources/Themes/.*\.xml</exclude>
           </excludes>
         </configuration>
       </plugin>

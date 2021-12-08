@@ -35,17 +35,17 @@
           <defaultLanguage>fr</defaultLanguage>
           <entries>
             <entry>
+              <document>Main.WebHome</document>
+              <type>noedit-nodelete-overwrite</type>
+            </entry>
+            <!-- Configurations -->
+            <entry>
               <document>XWiki.DeFacto.Une.UneConfig</document>
               <type>configuration</type>
             </entry>
             <entry>
               <document>XWiki.XWikiPreferences</document>
               <type>configuration</type>
-            </entry>
-            <!-- Groups -->
-            <entry>
-              <document>Main.WebHome</document>
-              <type>noedit-nodelete-overwrite</type>
             </entry>
             <entry>
               <document>XWiki.EntityNameValidation.Configuration</document>
@@ -54,6 +54,11 @@
             <entry>
               <document>XWiki.Like.LikeConfiguration</document>
               <type>edit-nodelete-owerwrite</type>
+            </entry>
+            <!-- Groups -->
+            <entry>
+              <document>XWiki.ConsortiumGroup</document>
+              <type>configuration</type>
             </entry>
           </entries>
           <visibleTechnicalPages>
