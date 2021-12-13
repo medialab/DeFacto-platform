@@ -42,18 +42,36 @@
   #end
 
   (% class="box defacto-box" %)(((
-    (% class="defacto-media" %)(((
-      (% class="defacto-media-logo" %)(((
-        [[image:$logo]]
-      )))
-      (% class="defacto-media-metadata" %)(((
-      * [[Site&gt;&gt;$site]]
-      * [[Fil RSS&gt;&gt;$feed]]
+    (% class="col-sm-4" %)(((
+      (% class="defacto-media" %)(((
+        (% class="defacto-media-logo" %)(((
+          [[image:$logo]]
+        )))
+        (% class="defacto-media-metadata" %)(((
+        * [[Site&gt;&gt;$site]]
+        * [[Fil RSS&gt;&gt;$feed]]
+        )))
       )))
     )))
+    #if ($services.security.authorization.hasAccess('edit', $doc.fullName))
+    (% class="col-sm-4" %)(((
+      = Import RSS =
+      (% class="btn btn-primary" %)[[Importer les derniers fact-checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.Media.FeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
+    )))
+    (% class="col-sm-4" %)(((
+      = Nouvel article =
+      {{html clean="false"}}
+         &lt;form action="$xwiki.getURL('XWiki.DeFacto.FactCheck.Create')" method="POST" class="xform"&gt;
+           &lt;input type="hidden" name="form_token" value="$!{services.csrf.getToken()}" /&gt;
+           &lt;input type="hidden" name="media" value="$services.model.serialize($doc.documentReference.parent)"/&gt;
+           &lt;dl&gt;
+             &lt;dd&gt;&lt;input type="text" class="article-title" name="article-title" placeholder="Titre" required/&gt; &lt;input class="btn btn-primary" type="submit" name="create" value="Créer"/&gt;&lt;/dd&gt;
+           &lt;/dl&gt;
+         &lt;/form&gt;
+      {{/html}}
+    )))
+    #end
 
-    (% class="btn btn-primary" %)[[Importer les derniers fact-checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.Media.FeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
-  ##(% class="btn btn-primary" %)[[Créer un fact-check&gt;&gt;path:$xwiki.getURL($doc.documentReference, 'create')]](%%)
   )))
 
   #set ($columnsProperties = {
@@ -77,7 +95,7 @@
     'tagCloud': true,
     'rowCount': 100,
     'maxPages': 10,
-    'selectedColumn': 'pdate',
+    'selectedColumn': 'doc.date',
     'defaultOrder': 'desc',
     'queryFilters': '',
     'extraParams': "&amp;location=$escapetool.url($location)&amp;media=$escapetool.url($services.model.serialize($doc.documentReference, 'compactwiki'))"
@@ -237,6 +255,15 @@
   ul {
     padding-left: 1em;
     list-style: none;
+  }
+}
+
+.defacto-box {
+  h1 {
+    margin-top: 0;
+  }
+  .xform .article-title {
+    width: 70%;
   }
 }</code>
     </property>

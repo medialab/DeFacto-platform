@@ -143,9 +143,19 @@
     <property>
       <content>{{velocity}}
 {{html clean="false"}}
+  #template('drawer_macros.vm')
   #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
-    #template('drawer_macros.vm')
     #drawerItem($xwiki.getURL('Administration.WebHome'), 'file', 'Back office', 'defacto-drawer-item-contribute')
+  #else
+    #set ($hql = "select doc.fullName from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = :class and doc.fullName not like '%Template%' order by doc.title")
+    #set ($query = $services.query.hql($hql))
+    #set ($discard = $query.bindValue('class', 'XWiki.DeFacto.Media.MediaClass'))
+    #set ($entries = $query.execute())
+    #foreach ($entry in $entries)
+      #if ($services.security.authorization.hasAccess('edit', $entry))
+        #drawerItem($xwiki.getURL($entry), 'file', 'Back office', 'defacto-drawer-item-contribute')
+      #end
+    #end
   #end
 {{/html}}
 {{/velocity}}</content>

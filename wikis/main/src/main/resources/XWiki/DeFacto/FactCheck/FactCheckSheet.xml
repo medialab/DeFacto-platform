@@ -110,14 +110,16 @@
     #suggestInput($suggestParams)
     {{/html}}
 
-    = $doc.displayPrettyName('mediaTopics', false, false) =
-    $doc.display('mediaTopics')
+    #if ($doc.fullName.startsWith('Medias.Factuel.'))
+      = $doc.displayPrettyName('mediaTopics', false, false) =
+      $doc.display('mediaTopics')
 
-    = $doc.displayPrettyName('locations', false, false) =
-    $doc.display('locations')
+      = $doc.displayPrettyName('locations', false, false) =
+      $doc.display('locations')
 
-    = $doc.displayPrettyName('categories', false, false) =
-    $doc.display('categories')
+      = $doc.displayPrettyName('categories', false, false) =
+      $doc.display('categories')
+    #end
 
     = $doc.displayPrettyName('media', false, false) =
     $doc.display('media')
@@ -149,28 +151,34 @@
         = $doc.displayTitle =
       )))
 
-      ; Auteur(s)
-      : $object.getValue('authors')
+      #set ($authors = $object.getValue('authors'))
+      #if ("$!authors" != '')
+        ; Auteur(s)
+        : $authors
+      #end
 
-       #set ($media = $object.getValue('media'))
-       #if ("$!media" != '')(((
-         #set ($mediaPage = $xwiki.getDocument($media))
-         #set ($mediaObject = $mediaPage.getObject('XWiki.DeFacto.Media.MediaClass'))
-         #set ($copyright = $mediaObject.getValue('copyright'))
-       )))
-       #end
+      #set ($media = $object.getValue('media'))
+      #if ("$!media" != '')
+        (((
+          #set ($mediaPage = $xwiki.getDocument($media))
+          #set ($mediaObject = $mediaPage.getObject('XWiki.DeFacto.Media.MediaClass'))
+          #set ($copyright = $mediaObject.getValue('copyright'))
+        )))
+      #end
 
-       #set ($pdate = $object.getValue('pdate'))
-       #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy à HH:mm').withLocale('fr'))
-       (% class="defacto-fact-check-publication-date" %)(((
-         Publié le $dateFormatter.print($pdate)
-       )))
-       #set ($udate = $object.getValue('updateDate'))
-       #if ("$!udate" != '')
-       (% class="defacto-fact-check-update-date" %)(((
-         – Mis à jour le $dateFormatter.print($pdate)
-       )))
-       #end
+      #set ($pdate = $object.getValue('pdate'))
+      #if ("$!pdate" != '')
+        #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy à HH:mm').withLocale('fr'))
+        (% class="defacto-fact-check-publication-date" %)(((
+          Publié le $dateFormatter.print($pdate)
+        )))
+      #end
+      #set ($udate = $object.getValue('updateDate'))
+      #if ("$!udate" != '')
+        (% class="defacto-fact-check-update-date" %)(((
+          – Mis à jour le $dateFormatter.print($pdate)
+        )))
+      #end
 
       #set ($headerImage = $object.getValue('headerImage'))
       #if ("$!headerImage" != '')
@@ -200,12 +208,11 @@
         {{/html}}
       #end
 
-       #if ("$!copyright" != '')
-       (% class="defacto-fact-check-copyright" %)(((
-         $copyright
-       )))
-       #end
-
+      #if ("$!copyright" != '')
+      (% class="defacto-fact-check-copyright" %)(((
+        $copyright
+      )))
+      #end
 
       (% class="defacto-fact-check-chapeau" %)(((
         $doc.display('chapeau')
@@ -234,7 +241,6 @@
         {{/html}}
       )))
 *#
-
       #set ($link = $object.getValue('link'))
       (% class="box defacto-box defacto-fact-check-source" %)(((
         #if ($mediaObject != $NULL &amp;&amp; $hello == $NULL)
