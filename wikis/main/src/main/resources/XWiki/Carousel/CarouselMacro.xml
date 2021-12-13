@@ -126,8 +126,12 @@
   border: 1px solid #eaeaea;
   background: #fcfcfc;
   overflow: hidden; /** Prevent slide text to outgrow the carousel container in case of small screen width and when truncating the text is not enough. */
-  h2 {
+  .xwiki-carousel-slide-title {
     margin-top: 0;
+    a {
+      font-weight: bold;
+      color: inherit;
+    }
   }
   .item {
     padding: 2em;
@@ -489,7 +493,7 @@
               &lt;/div&gt;
             #end
             &lt;div class="xwiki-carousel-slide-text"&gt;
-              &lt;h2 class="xwiki-carousel-slide-title"&gt;$slidePage.displayTitle&lt;/h2&gt;
+              &lt;h2 class="xwiki-carousel-slide-title"&gt;&lt;a href="$xwiki.getURL("$slideName")"&gt;$slidePage.displayTitle&lt;/a&gt;&lt;/h2&gt;
               #set ($abstractLength = $abstract.length())
               #set ($max = $mathtool.min($maxTextLength, $abstractLength))
               #set ($abstract = $stringtool.abbreviate($abstract, $max))
@@ -511,7 +515,7 @@
     &lt;span class="sr-only"&gt;Suivant&lt;/span&gt;
   &lt;/a&gt;
   #if ($services.security.authorization.hasAccess('edit'))
-    &lt;a class="xwiki-carousel-action xwiki-carousel-action-edit" href="$xwiki.getURL($page.fullName)" role="button"&gt;
+    &lt;a class="xwiki-carousel-action xwiki-carousel-action-edit" href="$xwiki.getURL($page.fullName, 'edit', 'editor=object')" role="button"&gt;
       &lt;span class="xwiki-carousel-action-edit-icon"&gt;$services.icon.renderHTML('pencil')&lt;/span&gt;
     &lt;/a&gt;
   #end
