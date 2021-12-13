@@ -27,27 +27,32 @@
   (% class="defacto-home-block defacto-home-about" %)(((
      = Qui sommes-nous ? =
      (% class="box defacto-box" style="height: 500px" %)(((
-     De Facto est la plateforme française du collectif international [[EDMO&gt;&gt;https://edmo.eu/]]. Elle est portée par SciencesPo, l'AFP, le CLEMI et XWiki.
+       #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
+         {{html clean="false"}}
+           &lt;a class="defacto-action-edit" href="$xwiki.getURL('XWiki.DeFacto.Une.QuiSommesNous', 'edit')" role="button"&gt;
+            &lt;span class="defacto-action-edit-icon"&gt;$services.icon.renderHTML('pencil')&lt;/span&gt;
+           &lt;/a&gt;
+         {{/html}}
+       #end
 
-  Retrouvez sur De Facto les fact-checks de ses partenaires médias – l'AFP, Le Monde, 20 Minutes, Libération, Les Surligneurs, France Télévisions – ainsi que des tutoriels, des analyses et des outils pour aider les enseignants, les chercheurs et le grand public à travailler avec les fake-news. [[[+]&gt;&gt;A-propos.WebHome]]
+       {{include reference="XWiki.DeFacto.Une.QuiSommesNous"/}}
 
-  {{html clean="false"}}
-  &lt;div class="xwiki-defacto-logos"&gt;
-    &lt;a href="https://medialab.sciencespo.fr/" target="_blank"&gt;
-      &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.svg')"/&gt;
-    &lt;/a&gt;
-    &lt;a href="https://www.afp.com" target="_blank"&gt;
-      &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp.svg')"/&gt;
-    &lt;/a&gt;
-    &lt;a href="https://www.clemi.fr/" target="_blank"&gt;
-      &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi.jpg')"/&gt;
-    &lt;/a&gt;
-    &lt;a href="https://www.xwiki.com/" target="_blank"&gt;
-      &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki.svg')"/&gt;
-    &lt;/a&gt;
-  &lt;/div&gt;
-  {{/html}}
-
+       {{html clean="false"}}
+        &lt;div class="xwiki-defacto-logos"&gt;
+        &lt;a href="https://medialab.sciencespo.fr/" target="_blank"&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.svg')"/&gt;
+        &lt;/a&gt;
+        &lt;a href="https://www.afp.com" target="_blank"&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp.svg')"/&gt;
+        &lt;/a&gt;
+        &lt;a href="https://www.clemi.fr/" target="_blank"&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi.jpg')"/&gt;
+        &lt;/a&gt;
+        &lt;a href="https://www.xwiki.com/" target="_blank"&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki.svg')"/&gt;
+        &lt;/a&gt;
+        &lt;/div&gt;
+        {{/html}}
     )))
   )))
 
@@ -92,10 +97,17 @@
      Abonnez-vous à notre newsletter mensuelle pour rester informé(e) des dernières publications et des événéments !
   )))
   (% class="defacto-teaser-box defacto-teaser-box-two" %)(((
-    (% class="defacto-box-icon" %)(((
-      $services.icon.render('lightbulb')
-    )))
-       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Venenatis lectus magna fringilla urna. Vitae nunc sed velit dignissim sodales ut. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit. Velit dignissim sodales ut eu. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar sapien. Molestie a iaculis at erat pellentesque adipiscing commodo elit. 
+
+    #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
+      {{html clean="false"}}
+        &lt;a class="defacto-action-edit" href="$xwiki.getURL('XWiki.DeFacto.Une.ConsultationIntro', 'edit')" role="button"&gt;
+          &lt;span class="defacto-action-edit-icon"&gt;$services.icon.renderHTML('pencil')&lt;/span&gt;
+        &lt;/a&gt;
+      {{/html}}
+    #end
+
+    {{include reference="XWiki.DeFacto.Une.ConsultationIntro"/}}
+
   )))
 
   (% class="defacto-home-block defacto-home-fact-checks" %)(((
@@ -106,15 +118,11 @@
 
     {{html clean="false"}}
       &lt;ul class="nav nav-tabs" role="tablist"&gt;
+        &lt;li role="presentation" class="active"&gt;&lt;a class="defacto-filter" data-filter-value="*" data-filter-type="une" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("une:all")" aria-controls="search" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
         #if ("$!uneConfigTags" != '')
           #foreach ($tag in $uneConfigTags)
-            #if ($foreach.index == 0)
-              #set ($cssClass = 'class="active"')
-            #else
-              #set ($cssClass = '')
-            #end
             #set ($tagId = $services.modelvalidation.transformName($tag).toLowerCase())
-            &lt;li role="presentation"$cssClass&gt;&lt;a class="defacto-filter" data-filter-value="$tag" data-filter-type="tag" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("tag:$tag")" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
+            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-filter-value="$tag" data-filter-type="tag" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("tag:$tag")" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
           #end
         #end
         #getThemes($themes)
@@ -737,6 +745,10 @@ require(['jquery', 'bootstrap'], function($) {
 
   .defacto-section-link {
     text-align: right;
+    a {
+      color: @blue !important;
+      font-weight: normal !important;
+    }
   }
   /**
   .defacto-themes {
@@ -818,6 +830,24 @@ require(['jquery', 'bootstrap'], function($) {
     border-top: none;
   }
 }
+
+.defacto-home-about .defacto-box, .defacto-teaser-box {
+  position: relative;
+  .defacto-action-edit {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    font-size: 0.8em;
+    text-align: center;
+    width: 2em;
+    padding: 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    color: #333;
+  }
+}
+
 
 @media (min-width: @screen-md-min) {
   .defacto-home {

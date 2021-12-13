@@ -36,7 +36,7 @@
     'class': 'Main.SolrClassFacet',
     'property.XWiki.DeFacto.FactCheck.FactCheckClass.sections_string': 'XWiki.DeFacto.Search.PageListFacet'
   },
-  'facetPaginationStep': 10,
+  'facetPaginationStep': 8,
   'highlightEnabled' : false
 })
 {{/velocity}}</content>
