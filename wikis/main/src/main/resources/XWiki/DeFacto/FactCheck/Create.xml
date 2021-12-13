@@ -35,6 +35,7 @@
     #set ($discard = $page.setTitle($articleTitle))
     #set ($discard = $page.setDefaultLocale('fr'))
     #set ($object = $page.newObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
+    #set ($claimReviewObject = $page.newObject('XWiki.DeFacto.Review.ClaimReviewClass'))
     #set ($discard = $object.set('published', 0))
     #set ($discard = $object.set('media', "${media}.WebHome"))
     #set ($discard = $page.save())
