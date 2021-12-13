@@ -144,7 +144,7 @@
       <content>{{velocity}}
 ## TODO: check AdminGroup instead of hasAdmin
 #set ($factCheck = $doc.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
-#if ($factCheck != $NULL &amp;&amp; $hasAdmin)
+#if ($factCheck != $NULL &amp;&amp; $services.security.authorization.hasAccess('edit', 'XWiki.DeFacto.Une.UneConfig'))
   #set ($title = 'Publier')
   #set ($action = 'publish')
   #set ($published = $factCheck.getValue('published'))
@@ -154,7 +154,7 @@
   #end
   {{html clean='false'}}
   &lt;div class="btn-group" id="tmPublish"&gt;
-    &lt;a class="btn btn-default title="$title" href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Publish', 'view', "reference=$escapetool.url($doc.fullName)&amp;action=$action")" role="button"&gt;
+    &lt;a class="btn btn-default title="$title" href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Publish', 'view', "reference=$escapetool.url($doc.fullName)&amp;amp;action=$action&amp;amp;token=$services.csrf.getToken()")" role="button"&gt;
       $services.icon.renderHTML('check')
       &lt;span class="btn-label"&gt;$title&lt;/span&gt;
     &lt;/a&gt;

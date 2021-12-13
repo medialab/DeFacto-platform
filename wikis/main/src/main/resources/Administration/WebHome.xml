@@ -19,6 +19,7 @@
   <content>{{velocity}}
 #set ($discard = $xwiki.ssx.use('Administration.WebHome'))
 #set ($discard = $xwiki.jsx.use('Administration.WebHome'))
+#set ($discard = $xwiki.jsx.use('XWiki.DeFacto.LnF.TabsJSX'))
 (% class="defacto-administration-home" %)(((
 
     {{html clean="false"}}
@@ -183,13 +184,11 @@
     restUrl += '/objects/XWiki.DeFacto.Une.UneConfigClass/0?media=json';
     var selectedPageElement = $('select[name="factCheckPick"] option:selected');
     var factCheckPick = $(selectedPageElement).attr('value');
-    console.log('FC: ' + factCheckPick);
     var selectedTagsElements = $('select[name="tags"] option:selected');
     var selectedTags = [];
     selectedTagsElements.each(function(index, item) {
       selectedTags.push($(item).attr('value'));
     })
-    console.log('tags: ', selectedTags);
     var params = {
       'property#tags': selectedTags.join('|'),
       'property#factCheckPick': factCheckPick
@@ -329,11 +328,7 @@
       <code>.defacto-administration-medias {
   margin-top: 1em;
 }
-
-.defacto-box h2 a {
-  color: @blue;
-  font-weight: inherit;
-}</code>
+</code>
     </property>
     <property>
       <contentType>LESS</contentType>

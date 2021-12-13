@@ -18,8 +18,8 @@
   <hidden>true</hidden>
   <content>{{velocity}}
 #set ($reference = $request.reference)
-## TODO: do real admin check and protect page
-#if ($hasAdmin &amp;&amp; "$!reference" != '')
+#set ($token = $request.token)
+#if ("$!reference" != '' &amp;&amp; $services.csrf.isTokenValid($token) &amp;&amp; $services.security.authorization.hasAccess('edit', 'XWiki.DeFacto.Une.UneConfig'))
   #set ($action = $request.action)
   #set ($flag = false)
   #set ($integerFlag = 1)
@@ -30,11 +30,13 @@
   #set ($source = $services.model.resolveDocument($reference))
   #set ($page = $xwiki.getDocument($source))
   #set ($factCheck = $page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
-  #set ($discard = $page.setHidden($flag))
-  #set ($discard = $factCheck.set('published', $integerFlag))
-  #set ($discard = $page.save())
-  #set ($nflag = !$flag)
-  $response.sendRedirect($xwiki.getURL($source, 'view', "published=$nflag"))
+  #if ($factCheck != $NULL)
+    #set ($discard = $page.setHidden($flag))
+    #set ($discard = $factCheck.set('published', $integerFlag))
+    #set ($discard = $page.save())
+    #set ($nflag = !$flag)
+    $response.sendRedirect($xwiki.getURL($source, 'view', "published=$nflag"))
+  #end
 #end
 
 {{/velocity}}</content>
