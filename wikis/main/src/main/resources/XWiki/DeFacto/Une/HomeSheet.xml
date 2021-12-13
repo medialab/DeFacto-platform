@@ -34,12 +34,16 @@
   {{html clean="false"}}
   &lt;div class="xwiki-defacto-logos"&gt;
     &lt;a href="https://medialab.sciencespo.fr/" target="_blank"&gt;
-    &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.svg')"/&gt;
-    &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp.svg')"/&gt;
+      &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.svg')"/&gt;
+    &lt;/a&gt;
+    &lt;a href="https://www.afp.com" target="_blank"&gt;
+      &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp.svg')"/&gt;
     &lt;/a&gt;
     &lt;a href="https://www.clemi.fr/" target="_blank"&gt;
-    &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi.jpg')"/&gt;
-    &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki.svg')"/&gt;
+      &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi.jpg')"/&gt;
+    &lt;/a&gt;
+    &lt;a href="https://www.xwiki.com/" target="_blank"&gt;
+      &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki.svg')"/&gt;
     &lt;/a&gt;
   &lt;/div&gt;
   {{/html}}
@@ -48,12 +52,11 @@
   )))
 
   (% class="defacto-home-block defacto-home-explorer" %)(((
-   = Analyses =
+    = Actus =
 
-    {{carousel reference="Comprendre.Carousel.WebHome" maxTextLength="400" mode="vertical"/}}
-
+    {{carousel reference="Actus.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
     (% class="defacto-section-link" %)(((
-      [[+ Toutes les analyses&gt;&gt;Comprendre.WebHome]]
+      [[+ Toutes les actus&gt;&gt;Actus.WebHome]]
     )))
 
     = Boîte à outils =
@@ -64,13 +67,13 @@
       [[+ Tous les outils&gt;&gt;Explorer.WebHome]]
     )))
 
-    = Actus =
+    = Analyses =
 
-    {{carousel reference="Actus.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
+    {{carousel reference="Comprendre.Carousel.WebHome" maxTextLength="400" mode="vertical"/}}
+
     (% class="defacto-section-link" %)(((
-      [[+ Toutes les actus&gt;&gt;Actus.WebHome]]
+      [[+ Toutes les analyses&gt;&gt;Comprendre.WebHome]]
     )))
-
   )))
   #set ($uneConfigPage = $xwiki.getDocument('XWiki.DeFacto.Une.UneConfig'))
   #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
@@ -96,7 +99,7 @@
   )))
 
   (% class="defacto-home-block defacto-home-fact-checks" %)(((
-  
+
     = Fact-checks =
 
     #set ($uneConfigTags = $uneConfig.getValue('tags'))
@@ -499,11 +502,9 @@ require(['jquery', 'bootstrap'], function($) {
   var aTabIsActivated = false;
   if(location.hash &amp;&amp; location.hash.length &gt; 1) {
     var hash = decodeURIComponent(location.hash);
-    console.log('hash', hash);
     hash = hash.substring(1).split(':');
     var type = hash[0];
     var value = hash[1];
-    console.log('type', type, value);
     var tab = $('.nav-tabs a[data-filter-value="' + value + '"]');
     if (tab.length &gt; 0 &amp;&amp; tab.tab !== undefined) {
       var exclude = tab.attr('data-exclude');
@@ -692,12 +693,15 @@ require(['jquery', 'bootstrap'], function($) {
       font-weight: 400;
     }
     .xwiki-defacto-logos {
-        display: grid;
-        grid-template-columns: 50% 50%;
-      img {
-        align-self: center;
-            padding: 0.5em;
-            max-width: 130px;
+      display: grid;
+      grid-template-columns: 50% 50%;
+      a {
+        text-align: center;
+        img {
+          align-self: center;
+          padding: 0.5em;
+          max-width: 130px;
+        }
       }
     }
   }
@@ -821,13 +825,6 @@ require(['jquery', 'bootstrap'], function($) {
     grid-template-columns: ~"[col1-start] 35%  [col2-start] 65%  [col2-end]";
     grid-template-rows: ~"[row1-start] fit-content(100%) [row2-start] fit-content(100%) [row3-start] 10fr [row3-end]";
 
-    .xwiki-defacto-logos {
-      img {
-        padding: 1em;
-        max-width: 180px;
-      }
-    }
-
     .defacto-home-factcheck-pick {
       grid-column: ~"col2-start / col2-end";
       grid-row: row1-start;
@@ -856,6 +853,9 @@ require(['jquery', 'bootstrap'], function($) {
     .defacto-home-explorer {
       grid-column: col1-start;
       grid-row: ~"row3-start";
+    }
+    .defacto-box {
+      overflow: hidden;
     }
 
   }
@@ -913,6 +913,31 @@ require(['jquery', 'bootstrap'], function($) {
         .defacto-box-body {
           flex-basis: 50%;
           margin-right: 1em;
+        }
+      }
+    }
+    .defacto-home-about {
+      .xwiki-defacto-logos {
+        a {
+          img {
+            padding: 1em;
+            max-width: 150px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1600px) {
+  .defacto-home {
+    .defacto-home-about {
+      .xwiki-defacto-logos {
+        a {
+          img {
+            padding: 1em;
+            max-width: 180px;
+          }
         }
       }
     }
