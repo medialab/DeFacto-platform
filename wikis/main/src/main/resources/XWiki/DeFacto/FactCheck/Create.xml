@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.Create" locale="">
+  <web>XWiki.DeFacto.FactCheck</web>
+  <name>Create</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Create</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($articleTitle = $request['article-title'])
+#set ($media = $request['media'])
+#if ($services.csrf.isTokenValid($request.form_token) &amp;&amp; "$!articleTitle" != '' &amp;&amp; "$!media" != '')
+  #set ($pageName = $services.modelvalidation.transformName($articleTitle))
+  #set ($mediaReference = $services.model.resolveSpace($media))
+  #set ($factChecksSpace = $services.model.createSpaceReference('Fact-checks', $mediaReference))
+  #set ($articleSpace = $services.model.createSpaceReference($pageName, $factChecksSpace))
+  #set ($reference = $services.model.createDocumentReference('WebHome', $articleSpace))
+  #if ($xwiki.exists($reference))
+    {{warning}}
+    Un article avec cette référence existe déjà : [[$reference]]
+    {{/warning}}
+  #else
+    #set ($page = $xwiki.getDocument($reference))
+    #set ($discard = $page.setHidden(true))
+    #set ($discard = $page.setTitle($articleTitle))
+    #set ($discard = $page.setDefaultLocale('fr'))
+    #set ($object = $page.newObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
+    #set ($discard = $object.set('published', 0))
+    #set ($discard = $object.set('media', "${media}.WebHome"))
+    #set ($discard = $page.save())
+    #set ($url = $xwiki.getURL($reference, 'edit'))
+    $response.sendRedirect($url)
+  #end
+#end
+{{/velocity}}</content>
+</xwikidoc>
