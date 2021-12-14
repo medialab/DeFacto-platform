@@ -405,7 +405,6 @@ body[class*="space-XWiki\.DeFacto"] {
   #footerglobal {
     padding-bottom: 20px;
    .defacto-footer-ec {
-      flex-direction: row;
       align-items: center;
     }
   }
