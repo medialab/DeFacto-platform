@@ -135,7 +135,7 @@
           &lt;/ul&gt;
         &lt;/div&gt;
         &lt;div class="col-xs-12 col-sm-3 text-left defacto-footer-ec"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'logo-ce-vertical-fr-neg-lr.png')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'european-union.jpg')"/&gt;
           &lt;p&gt;Projet cofinancé par la Commission européenne dans le cadre du Connecting Europe Facility (CEF) - Telecommunications Sector (Contrat n° INEA/CEF/ICT/A2020/2394372).&lt;/p&gt;
         &lt;/div&gt;
       &lt;/div&gt;
