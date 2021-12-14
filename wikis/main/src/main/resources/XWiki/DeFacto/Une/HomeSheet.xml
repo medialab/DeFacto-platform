@@ -468,6 +468,7 @@ require(['jquery', 'bootstrap'], function($) {
       sortOrder: 'desc',
       highlight: false,
       facet: true,
+      rows: 8,
       r: '1',
       f_type: 'DOCUMENT',
       text: '*',
