@@ -40,7 +40,7 @@
        {{html clean="false"}}
         &lt;div class="xwiki-defacto-logos"&gt;
         &lt;a href="https://medialab.sciencespo.fr/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.svg')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.jpg')"/&gt;
         &lt;/a&gt;
         &lt;a href="https://www.afp.com" target="_blank"&gt;
           &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp.svg')"/&gt;
@@ -704,6 +704,7 @@ require(['jquery', 'bootstrap'], function($) {
     .xwiki-defacto-logos {
       display: grid;
       grid-template-columns: 50% 50%;
+      align-items: center;
       a {
         text-align: center;
         img {
