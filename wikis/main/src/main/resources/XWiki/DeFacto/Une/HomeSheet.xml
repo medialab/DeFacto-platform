@@ -40,16 +40,16 @@
        {{html clean="false"}}
         &lt;div class="xwiki-defacto-logos"&gt;
         &lt;a href="https://medialab.sciencespo.fr/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.png')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo-w.png')"/&gt;
         &lt;/a&gt;
         &lt;a href="https://www.afp.com" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp.png')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp-w.png')"/&gt;
         &lt;/a&gt;
         &lt;a href="https://www.clemi.fr/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi-1.png')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi-w.png')"/&gt;
         &lt;/a&gt;
         &lt;a href="https://www.xwiki.com/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki.png')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki-w.png')"/&gt;
         &lt;/a&gt;
         &lt;/div&gt;
         {{/html}}
