@@ -40,16 +40,16 @@
        {{html clean="false"}}
         &lt;div class="xwiki-defacto-logos"&gt;
         &lt;a href="https://medialab.sciencespo.fr/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.jpg')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo.png')"/&gt;
         &lt;/a&gt;
         &lt;a href="https://www.afp.com" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp.svg')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp.png')"/&gt;
         &lt;/a&gt;
         &lt;a href="https://www.clemi.fr/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi.jpg')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi-1.png')"/&gt;
         &lt;/a&gt;
         &lt;a href="https://www.xwiki.com/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki.svg')"/&gt;
+          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki.png')"/&gt;
         &lt;/a&gt;
         &lt;/div&gt;
         {{/html}}
@@ -697,13 +697,14 @@ require(['jquery', 'bootstrap'], function($) {
   .defacto-home-about {
     grid-row-start: 1;
     .defacto-box {
-      background: @lightgrey;
+      background: #7ba3b5;
       color: white;
       font-weight: 400;
     }
     .xwiki-defacto-logos {
       display: grid;
       grid-template-columns: 50% 50%;
+      grid-row-gap: 10px;
       align-items: center;
       a {
         text-align: center;
