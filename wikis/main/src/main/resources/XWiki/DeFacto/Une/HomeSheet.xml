@@ -86,7 +86,7 @@
   #if ("$!factCheckPick" != '')
   (% class="defacto-home-block defacto-home-factcheck-pick" %)(((
     = Fact-check du jour =
-    {{factCheckBox reference="$factCheckPick" pick="true"/}}
+    {{pageBox reference="$factCheckPick" pick="true"/}}
   )))
   #end
 
@@ -685,6 +685,7 @@ require(['jquery', 'bootstrap'], function($) {
         img {
           width: 100%;
           object-fit: cover;
+          max-height: inherit;
         }
       }
       .defacto-box-body {

@@ -343,6 +343,10 @@ body[class*="space-XWiki\.DeFacto"] {
   display: block !important;
 }
 
+#xdocTags, #xdocAuthors {
+  display: none;
+}
+
 @media (min-width: @screen-md-min) {
   #menuview {
     .container-fluid {
@@ -396,10 +400,15 @@ body[class*="space-XWiki\.DeFacto"] {
   }
 
   body[class*="space-A-propos"], body[class*="space-Actus"], body[class*="space-Comprendre"], body[class*="space-Explorer"], body[class*="space-Mentions-legales"] {
-    #mainContentArea, #xdocFooter {
+    #mainContentArea {
       max-width: 1100px;
       margin: auto;
     }
+  }
+
+  #xdocFooter {
+    margin: auto;
+    padding: 0;
   }
 
   #footerglobal {

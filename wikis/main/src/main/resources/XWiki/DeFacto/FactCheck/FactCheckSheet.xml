@@ -228,7 +228,7 @@
         #if ($tags.size() &gt; 0)
           (% class="defacto-fact-check-tags" %)(((
           #foreach ($tag in $tags)
-            * [[$tag&gt;&gt;Main.Search||queryString="f_type=DOCUMENT&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)&amp;text=*&amp;f_class=XWiki.DeFacto.FactCheck.FactCheckClass"]]
+            * [[$tag&gt;&gt;Main.Search||queryString="f_type=DOCUMENT&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)&amp;text=*"]]
           #end
           )))
         #end
@@ -643,11 +643,6 @@ div.grid-with-margin {
       margin-right: 1em;
       max-width: 180px;
     }
-  }
-  #xdocFooter {
-    max-width: 50%;
-    margin: auto;
-    padding: 0;
   }
 }
 

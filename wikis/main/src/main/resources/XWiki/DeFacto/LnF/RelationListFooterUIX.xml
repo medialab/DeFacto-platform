@@ -127,10 +127,21 @@ $object.content
     <property>
       <code>.xwiki-relations-uix-container {
   margin-top: 1em;
+  .defacto-relations-title {
+    text-align: center;
+    margin-bottom: 2em;
+    border-top: 1px solid @xwiki-border-color;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    h1 {
+      color: #333;
+    }
+  }
 }</code>
     </property>
     <property>
-      <contentType/>
+      <contentType>LESS</contentType>
     </property>
     <property>
       <name/>
@@ -139,7 +150,7 @@ $object.content
       <parse/>
     </property>
     <property>
-      <use/>
+      <use>onDemand</use>
     </property>
   </object>
   <object>
@@ -276,11 +287,8 @@ $object.content
 #end
 #if ($showUix)
 #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.LnF.RelationListFooterUIX'))
-(% class="xwiki-relations-uix-container panel panel-default" %)(((
-  (% class="panel-heading" %)((($services.localization.render('relations.title'))))
-  (% class="panel-body" %)(((
-    {{relations/}}
-  )))
+(% class="xwiki-relations-uix-container" %)(((
+  {{relations/}}
 )))
 #end
 {{/velocity}}</content>

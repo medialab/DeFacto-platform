@@ -1,0 +1,237 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.Relations.Code.RelationService" locale="">
+  <web>XWiki.Relations.Code</web>
+  <name>RelationService</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Relation Service</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity output="false"}}
+#set ($IS_RELATED_TO_CLASS = 'XWiki.Relations.IsRelatedToClass')
+
+#macro(displayAddRelationForm $referent)
+  {{html clean="false"}}
+  &lt;form class="xformInline xwiki-relations-add-form" action=""&gt;
+    &lt;div class="row"&gt;
+      &lt;div class="xwiki-relations-add-suggest col-xs-12"&gt;
+        #set ($parameters = {'name': 'complement', 'class': 'suggest-pages', 'placeholder': 'Select a page'})
+        #suggestInput($parameters)
+      &lt;/div&gt;
+      &lt;div class="buttonwrapper xwiki-relations-add-actions col-xs-12"&gt;
+        &lt;input class="btn btn-primary" type="submit" value="$services.localization.render('relations.add.submit')"/&gt;
+        &lt;input type="button" class="btn btn-default xwiki-relations-add-cancel" value="$services.localization.render('relations.add.cancel')"/&gt;
+        &lt;input type="hidden" name="subject" value="$subject"/&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+  {{/html}}
+#end
+
+#macro(addRelation $subject $complement)
+  #if ($services.csrf.isTokenValid($request.csrf) &amp;&amp; $services.security.authorization.hasAccess('edit', $subject))
+    #try('relationException')
+      #set ($macro.page = $xwiki.getDocument($subject))
+      #set ($macro.index = $macro.page.createNewObject($IS_RELATED_TO_CLASS))
+      #set ($macro.object = $macro.page.getObject($IS_RELATED_TO_CLASS, $macro.index))
+      #set ($macro.discard = $macro.object.set('page', $complement))
+      #set ($discard = $macro.page.save())
+    #end
+    #if ("$!relationException" != '')
+      $response.setStatus(500)
+      $!exceptiontool.getMessage($relationException)
+    #end
+  #else
+   $response.setStatus(403)
+   $services.localization.render('relations.notAllowed')
+  #end
+#end
+
+#macro(removeRelation $subject $complement)
+  #set ($subjectReference = $services.model.resolveDocument($subject))
+  #if ($services.csrf.isTokenValid($request.csrf) &amp;&amp; $services.security.authorization.hasAccess('edit', $subjectReference))
+    #try('relationException')
+      #set ($macro.page = $xwiki.getDocument($subjectReference))
+      #set ($complementReference = $services.model.resolveDocument($complement))
+      #set ($complement = $services.model.serialize($complementReference, $subjectReference))
+      #set ($macro.object = $macro.page.getObject($IS_RELATED_TO_CLASS, 'page', $complement))
+      ## In some cases, the complement can be stored with an absolute reference in the relation even if it is in
+      ## the same wiki as the subject: this can happen when exporting and importing relations between wikis.
+      ## Hence if the local reference is not found, try with the absolute one.
+      #if ($macro.object == $NULL)
+        #set ($complement = $services.model.serialize($complementReference, 'default'))
+        #set ($macro.object = $macro.page.getObject($IS_RELATED_TO_CLASS, 'page', $complement))
+      #end
+      #if ($macro.object != $NULL)
+        #set ($discard = $macro.page.removeObject($macro.object))
+        #if ($discard == true)
+          #set ($discard = $macro.page.save())
+        #else
+         $response.setStatus(404)
+         $services.localization.render('relations.remove.error.notFound')
+        #end
+      #else
+        $response.setStatus(404)
+        $services.localization.render('relations.remove.error.notFound')
+      #end
+    #end
+    #if ("$!relationException" != '')
+      $response.setStatus(500)
+      $!exceptiontool.getMessage($relationException)
+    #end
+  #else
+   $response.setStatus(403)
+   $services.localization.render('relations.notAllowed')
+  #end
+#end
+
+#macro(maybeAddSeeAlsoBlockTitle $counter)
+  #if ($counter == 0)
+    (% class="defacto-relations-title" %)(((= Articles liés =)))
+    (% class="defacto-see-also-items" %)(((
+  #end
+#end
+
+#macro(searchTagInSpaces $tag $spaces $result)
+  #set ($macro.statement = "type:DOCUMENT AND property.XWiki.TagClass.tags:""$tag"" AND (")
+  #foreach ($space in $spaces)
+    #if ($foreach.index &gt; 0)
+      #set ($macro.statement = "$macro.statement OR ")
+    #end
+    #set ($macro.statement = "${macro.statement}spaces:$space")
+  #end
+  #set ($macro.statement = "${macro.statement})")
+  #set ($macro.query = $services.query.createQuery($macro.statement, 'solr'))
+  #set ($searchResponse = $macro.query.execute()[0])
+  #set ($return = $NULL)
+  #setVariable("$return" $searchResponse)
+#end
+
+#macro(displayRelations $subject)
+  ## Get direct relations
+  #set ($macro.reference = $services.model.resolveDocument($subject))
+  #set ($macro.page = $xwiki.getDocument($macro.reference))
+  #set ($macro.outRelations = $macro.page.getObjects($IS_RELATED_TO_CLASS))
+  #set ($macro.allRelations = [])
+  #foreach($item in $macro.outRelations)
+    #set ($macro.target = $item.getValue('page'))
+    #set ($macro.isViewable = $services.security.authorization.hasAccess('view', $macro.target))
+    #if ($macro.isViewable)
+      #set ($macro.targetPage = $xwiki.getDocument($macro.target))
+      #set ($discard = $macro.allRelations.add({'id': $macro.target, 'title': $macro.targetPage.displayTitle, 'direct': true}))
+    #end
+  #end
+  ## Get inverse relations, querying pages which contain the current subject as a relation either with its full identifier (including
+  ## the wiki name), or with an identifier that does not contain the wiki name (because the complement is in the same wiki as the subject).
+  #set ($relativeSubjectId = $services.model.serialize($macro.reference, 'compactwiki'))
+  #set ($macro.solrStatement = "type:DOCUMENT AND ((property.${IS_RELATED_TO_CLASS}.page:(""$relativeSubjectId"") AND wiki:${xcontext.wiki}) OR (property.${IS_RELATED_TO_CLASS}.page:""$subject""))")
+  #set ($query = $services.query.createQuery($macro.solrStatement, 'solr'))
+  #set ($searchResponse = $query.execute()[0])
+  ## NB: no need to perform a view access check on the results returned by Solr since the SolrQueryExecutor
+  ## already performs a check on the current user.
+  #foreach ($searchResult in $searchResponse.results)
+    #set ($discard = $macro.allRelations.add({'id': "${searchResult.wiki}:${searchResult.fullname}", 'title': "$!searchResult.title_", 'direct': false}))
+  #end
+  ## Sort relations by title
+  #set ($macro.allRelations = $collectiontool.sort($macro.allRelations, 'title'))
+
+  ## First display relations, then documents with same tags, starting with the ones in spaces Comprendre or Explorer
+  #set ($counter = 0)
+  #set ($seeAlsoItems = [])
+  #foreach ($item in $macro.allRelations)
+    #if ($counter &lt; 10)
+      #maybeAddSeeAlsoBlockTitle($counter)
+      #set ($counter = $mathtool.add($counter, 1))
+      #if ($item.direct == true)
+        #set ($macro.subject = $macro.reference)
+        #set ($macro.complement = $item.id)
+      #else
+        #set ($macro.subject = $item.id)
+        #set ($macro.complement = $macro.reference)
+      #end
+      #set ($macro.isRemovable = $services.security.authorization.hasAccess('edit', $macro.subject))
+      {{pageBox reference="$item.id" isRemovableRelation="$macro.isRemovable" subject="$macro.subject" complement="$macro.complement"/}}
+
+    #end
+  #end
+  #set ($macro.tags = $xwiki.tag.getTagsFromDocument($subject))
+  #foreach ($tag in $macro.tags)
+    #searchTagInSpaces($tag, ['Explorer', 'Comprendre'], $searchResponse)
+    #foreach ($searchResult in $searchResponse.results)
+      #if ($counter &lt; 10)
+        #maybeAddSeeAlsoBlockTitle($counter)
+        #set ($counter = $mathtool.add($counter, 1))
+        {{pageBox reference="$searchResult.fullname"/}}
+
+      #end
+    #end
+  #end
+  #foreach ($tag in $macro.tags)
+    #searchTagInSpaces($tag, ['Medias'], $searchResponse)
+    #foreach ($searchResult in $searchResponse.results)
+      #if ($counter &lt; 10 &amp;&amp; $services.model.resolveDocument($searchResult.fullname) != $services.model.resolveDocument($subject) &amp;&amp; $seeAlsoItems.indexOf($searchResult.fullname) &lt; 0)
+        #maybeAddSeeAlsoBlockTitle($counter)
+        #set ($counter = $mathtool.add($counter, 1))
+        #set ($discard = $seeAlsoItems.add($searchResult.fullname))
+        {{pageBox reference="$searchResult.fullname"/}}
+
+      #end
+    #end
+  #end
+  #if ($counter &gt; 0)
+    )))
+  #end
+
+  {{html clean="false"}}
+  &lt;div class="modal fade" id="xwiki-relations-statement-removal-modal" tabindex="-1" role="dialog"&gt;
+    &lt;div class="modal-dialog" role="document"&gt;
+      &lt;div class="modal-content"&gt;
+        &lt;div class="modal-header"&gt;
+          &lt;button type="button" class="close" data-dismiss="modal"&gt;
+            &lt;span aria-hidden="true"&gt;&amp;times;&lt;/span&gt;
+          &lt;/button&gt;
+          &lt;div class="modal-title"&gt;$services.localization.render('relations.remove.confirmation.title')&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="modal-body"&gt;
+          $services.localization.render('relations.remove.confirmation.message')
+        &lt;/div&gt;
+        &lt;div class="modal-footer"&gt;
+          &lt;button type="button" class="btn btn-danger confirm-button"&gt;$services.localization.render('relations.remove.confirmation.confirm')&lt;/button&gt;
+          &lt;button type="button" class="btn btn-default close-button" data-dismiss="modal"&gt;$services.localization.render('cancel')&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  {{/html}}
+
+#end
+
+{{/velocity}}
+
+{{velocity output="true"}}
+#set ($action = "$!{request.action}")
+#set ($subject = "$!request.subject")
+#if ($action == 'get-relations')
+  #displayRelations($subject)
+#elseif ($action == 'get-add-relation-form')
+  #displayAddRelationForm($xreferent)
+#elseif ($action == 'add-relation')
+  #set ($complement = "$!request.complement")
+  #addRelation($subject, $complement)
+#elseif ($action == 'remove-relation')
+  #set ($complement = "$!request.complement")
+  #removeRelation($subject, $complement)
+#end
+{{/velocity}}
+</content>
+</xwikidoc>

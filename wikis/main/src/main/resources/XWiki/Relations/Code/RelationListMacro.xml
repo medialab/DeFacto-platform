@@ -111,6 +111,18 @@
     $('.xwiki-relations-list').html("&lt;img src='$xwiki.getSkinFile('icons/xwiki/spinner.gif')'/&gt;");
     sendRequest("get-relations", subject, null, 'html').done(function(data) {
       $('.xwiki-relations-list').html(data);
+      var seeAlsoItemBoxes = $('.defacto-see-also-items .defacto-box');
+      var seeAlsoItemBoxesCount = seeAlsoItemBoxes.length;
+      if (seeAlsoItemBoxesCount &gt; 0 &amp;&amp; seeAlsoItemBoxesCount &lt; 5) {
+        var gridTemplateColumns = '';
+        for (var i = 0; i &lt; seeAlsoItemBoxesCount; i++) {
+          gridTemplateColumns += 'auto ';
+        }
+        $('.defacto-see-also-items').css('grid-template-columns', gridTemplateColumns.trim());
+        if (seeAlsoItemBoxesCount == 2) {
+          $('.defacto-see-also-items').css('width', '50%');
+        }
+      }
       registerListeners();
     });
   }
@@ -178,7 +190,7 @@
       const $target = $(event.relatedTarget);
       const subject = $target.data('subject');
       const complement = $target.data('complement');
-      const $element = $target.parents('.xwiki-relations-statement-li');
+      const $element = $target.parents('.defacto-box');
       confirmationModal.data('statement', {subject: subject, complement: complement, element: $element})
     });
     confirmationModal.on('click', '.modal-footer .confirm-button', function(event) {
@@ -195,6 +207,7 @@
     }
     const subject = statement.subject;
     const complement = statement.complement;
+    console.log('statement', statement);
     const element = statement.element;
     var notification = new XWiki.widgets.Notification("$services.localization.render('relations.remove.processing')", "inprogress");
     sendRequest('remove-relation', subject, complement, 'plain').done(function (data) {
@@ -225,7 +238,6 @@
       cache: false,
     });
   }
-  console.log('hhhdhdsf')
   loadRelations();
 });
 
@@ -382,6 +394,10 @@
   }
 }
 
+.xwiki-relations-add-section {
+  margin-bottom: 1em;
+}
+
 .xwiki-relations-uix-container {
   .panel-heading p {
     margin: 0;
@@ -410,6 +426,30 @@
           width: 30%;
         }
       }
+    }
+  }
+}
+
+.defacto-see-also-items {
+  display: grid;
+  grid-column-gap: 1em;
+  grid-template-columns: auto;
+  margin: auto;
+  .defacto-box {
+    .defacto-box-abstract, .defacto-factcheck-date, .defacto-factcheck-source {
+      display: none;
+    }
+  }
+}
+
+
+@media (min-width: @screen-md-min) {
+  .defacto-see-also-items {
+    grid-template-columns: auto auto auto auto auto;
+    .defacto-box {
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 }</code>
@@ -447,7 +487,7 @@
         <displayFormType>select</displayFormType>
         <displayType/>
         <name>async_cached</name>
-        <number>12</number>
+        <number>13</number>
         <prettyName>Cached</prettyName>
         <unmodifiable>0</unmodifiable>
         <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
@@ -460,7 +500,7 @@
         <largeStorage>0</largeStorage>
         <multiSelect>1</multiSelect>
         <name>async_context</name>
-        <number>13</number>
+        <number>14</number>
         <prettyName>Context elements</prettyName>
         <relationalStorage>0</relationalStorage>
         <separator>, </separator>
@@ -476,7 +516,7 @@
         <displayFormType>select</displayFormType>
         <displayType/>
         <name>async_enabled</name>
-        <number>11</number>
+        <number>12</number>
         <prettyName>Asynchronous rendering</prettyName>
         <unmodifiable>0</unmodifiable>
         <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
@@ -581,6 +621,16 @@
         <unmodifiable>0</unmodifiable>
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </name>
+      <priority>
+        <disabled>0</disabled>
+        <name>priority</name>
+        <number>11</number>
+        <numberType>integer</numberType>
+        <prettyName>Priority</prettyName>
+        <size>10</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.NumberClass</classType>
+      </priority>
       <supportsInlineMode>
         <disabled>0</disabled>
         <displayFormType>select</displayFormType>
@@ -626,6 +676,7 @@
   #set ($discard = $xwiki.ssx.use($idx))
   #set ($discard = $xwiki.jsx.use($idx))
   #set ($discard = $xwiki.jsx.use('XWiki.Relations.Code.SolrSuggestPages'))
+  #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.LnF.PageBoxMacro'))
   {{html clean="false"}}
   &lt;div class="xwiki-relations-container"&gt;
     &lt;div class="xwiki-relations-list"&gt;&lt;/div&gt;
@@ -663,6 +714,9 @@
     </property>
     <property>
       <name>Relations</name>
+    </property>
+    <property>
+      <priority/>
     </property>
     <property>
       <supportsInlineMode>0</supportsInlineMode>

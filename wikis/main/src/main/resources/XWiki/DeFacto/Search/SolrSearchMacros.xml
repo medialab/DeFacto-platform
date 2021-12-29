@@ -124,13 +124,7 @@
 
 ## Customized display
 #macro (displaySearchResult_document $searchResult)
-  #set ($page = $xwiki.getDocument($searchResultReference))
-  #set ($factCheck = $page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
-  #if ($factCheck != $NULL)
-    {{factCheckBox reference="$services.model.serialize($searchResultReference)"/}}
-  #else
-    #displaySearchResultTitle()
-  #end
+  {{pageBox reference="$services.model.serialize($searchResultReference)"/}}
 #end
 
 ## Customized display
