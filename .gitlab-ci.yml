@@ -1,0 +1,15 @@
+# Depend on the main CI configuration, that will provide most of the environment configuration and jobs definition
+include:
+  - project: ci/resources
+    ref: stable-2.x
+    file: /ci.yml
+
+variables:
+  # Define the extensions that should be installed on the snapshot and release instances.
+  # For each of the namespaces on which one or multiple extensions should be installed, define a variable EXTENSION_IDS_NAMESPACE (replacing NAMESPACE by the name of your namespace, all caps)
+  # Then, the value of this variable should be a space sparated list of extension IDs.
+  # The following example installs the job macro and the publication workflow application on the "xwiki" namespace :
+  # EXTENSION_IDS_XWIKI: "org.xwiki.contrib:macro-job org.xwiki.contrib:workflow-publication"
+  XWIKI_SNAPSHOT_REST_URL: "https://observatoire.defacto-staging.devxwiki.com/xwiki/rest"
+  XWIKI_REST_URL: "https://defacto-observatoire.fr/xwiki/rest"
+  EXTENSION_IDS_XWIKI: "com.xwiki.projects.defacto.platform:xwiki-defacto-platform-wikis-main-upgrade"
