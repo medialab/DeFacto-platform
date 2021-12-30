@@ -44,17 +44,17 @@
   <repositories>
     <repository>
       <id>git.xwikisas.com</id>
-      <url>https://git.xwikisas.com/api/v4/projects/276/packages/maven</url>
+      <url>https://git.xwikisas.com/api/v4/projects/308/packages/maven</url>
     </repository>
   </repositories>
   <distributionManagement>
     <repository>
       <id>git.xwikisas.com</id>
-      <url>https://git.xwikisas.com/api/v4/projects/276/packages/maven</url>
+      <url>https://git.xwikisas.com/api/v4/projects/308/packages/maven</url>
     </repository>
     <snapshotRepository>
       <id>git.xwikisas.com</id>
-      <url>https://git.xwikisas.com/api/v4/projects/276/packages/maven</url>
+      <url>https://git.xwikisas.com/api/v4/projects/308/packages/maven</url>
     </snapshotRepository>
   </distributionManagement>
   <build>
