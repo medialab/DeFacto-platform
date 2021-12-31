@@ -111,18 +111,6 @@
     $('.xwiki-relations-list').html("&lt;img src='$xwiki.getSkinFile('icons/xwiki/spinner.gif')'/&gt;");
     sendRequest("get-relations", subject, null, 'html').done(function(data) {
       $('.xwiki-relations-list').html(data);
-      var seeAlsoItemBoxes = $('.defacto-see-also-items .defacto-box');
-      var seeAlsoItemBoxesCount = seeAlsoItemBoxes.length;
-      if (seeAlsoItemBoxesCount &gt; 0 &amp;&amp; seeAlsoItemBoxesCount &lt; 5) {
-        var gridTemplateColumns = '';
-        for (var i = 0; i &lt; seeAlsoItemBoxesCount; i++) {
-          gridTemplateColumns += 'auto ';
-        }
-        $('.defacto-see-also-items').css('grid-template-columns', gridTemplateColumns.trim());
-        if (seeAlsoItemBoxesCount == 2) {
-          $('.defacto-see-also-items').css('width', '50%');
-        }
-      }
       registerListeners();
     });
   }
@@ -434,10 +422,10 @@
   display: grid;
   grid-column-gap: 1em;
   grid-template-columns: auto;
-  margin: auto;
-  .defacto-box {
-    .defacto-box-abstract, .defacto-factcheck-date, .defacto-factcheck-source {
-      display: none;
+  .defacto-box.defacto-page-box {
+    flex-direction: row;
+    .defacto-box-image img {
+      max-height: 300px;
     }
   }
 }
@@ -445,11 +433,7 @@
 
 @media (min-width: @screen-md-min) {
   .defacto-see-also-items {
-    grid-template-columns: auto auto auto auto auto;
     .defacto-box {
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
     }
   }
 }</code>

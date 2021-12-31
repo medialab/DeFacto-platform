@@ -131,7 +131,7 @@
     img {
       width: 100%;
       max-width: inherit;
-      max-height: 300px;
+      max-height: 400px;
       object-fit: contain;
     }
   }
@@ -424,10 +424,7 @@
           #set ($udate = $object.getValue('updateDate'))
           #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy à HH:mm').withLocale('fr'))
           (% class="defacto-factcheck-date" %)(((
-            #if ("$!udate" != '')Mis à jour le $dateFormatter.print($udate)#{else}Publié le $dateFormatter.print($pdate)#end
-          )))
-          (% class="defacto-factcheck-source" %)(((
-            Source : $mediaPage.displayTitle
+            #if ("$!udate" != '')Mis à jour le $dateFormatter.print($udate)#{else}Publié le $dateFormatter.print($pdate)#end - Source : $mediaPage.displayTitle
           )))
         #end
       )))

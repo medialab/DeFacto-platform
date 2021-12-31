@@ -44,7 +44,7 @@
 #end
 
 #macro (getResources $category $return)
-  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop")
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop order by doc.date desc")
   #set ($macro.query = $services.query.hql($macro.hql))
   #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Resource.ResourceClass'))
   #set ($discard = $macro.query.bindValue('propName', 'categories'))
@@ -55,7 +55,7 @@
 #end
 
 #macro (getPublications $category $return)
-  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop")
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop order by doc.date desc")
   #set ($macro.query = $services.query.hql($macro.hql))
   #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Publication.PublicationClass'))
   #set ($discard = $macro.query.bindValue('propName', 'category'))
@@ -99,19 +99,19 @@
   #setVariable("$return" $macro.entries)
 #end
 
-#macro (displayFactCheckList $list)
-  (% class="row" %)(((
-    #foreach ($entry in $list)
-      ## Add clearfix every two columns for making column wrapping work with Bootstrap 3
-      #set ($r = $foreach.index % 2)
-      #if ($foreach.index &gt; 0 &amp;&amp; $r == 0)
-        (% class="clearfix" %)((()))
-      #end
-      (% class="col-xs-12 col-md-6" %)(((
-        {{factCheckBox reference="$entry[0]"/}}
-      )))
-    #end
-  )))
+#macro (displayNewsScheduleInfo $object $dateFormatter)
+  #set ($date = $object.getValue('date'))
+  #set ($dateLabel = $object.getValue('dateLabel'))
+  #set ($schedule = $object.getValue('schedule'))
+  #if ("$!schedule" != '')
+    #set ($schedule = " - $schedule")
+  #end
+  #if ("$!dateLabel" == '')
+    #set ($dateInfo = $stringtool.capitalize($dateFormatter.print($date)))
+  #else
+    #set ($dateInfo = $dateLabel)
+  #end
+  $dateInfo$schedule
 #end
 
 #macro (displayNewsList $list)
@@ -135,18 +135,7 @@
           &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
         {{/html}}
 
-        #set ($date = $object.getValue('date'))
-        #set ($dateLabel = $object.getValue('dateLabel'))
-        #set ($schedule = $object.getValue('schedule'))
-        #if ("$!schedule" != '')
-          #set ($schedule = " - $schedule")
-        #end
-        #if ("$!dateLabel" == '')
-          #set ($dateInfo = $stringtool.capitalize($dateFormatter.print($date)))
-        #else
-          #set ($dateInfo = $dateLabel)
-        #end
-        $dateInfo$schedule
+        #displayNewsScheduleInfo($object, $dateFormatter)
         #set ($abstract = $object.getValue('abstract'))
         #if ("$!abstract" != '')
           (% class="defacto-news-abstract" %)(((

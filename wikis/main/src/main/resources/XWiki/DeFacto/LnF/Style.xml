@@ -347,6 +347,14 @@ body[class*="space-XWiki\.DeFacto"] {
   display: none;
 }
 
+#mainContentArea, #xdocFooter {
+  box-shadow: none;
+}
+
+#xdocFooter {
+  font-size: inherit;
+}
+
 @media (min-width: @screen-md-min) {
   #menuview {
     .container-fluid {
@@ -400,15 +408,18 @@ body[class*="space-XWiki\.DeFacto"] {
   }
 
   body[class*="space-A-propos"], body[class*="space-Actus"], body[class*="space-Comprendre"], body[class*="space-Explorer"], body[class*="space-Mentions-legales"] {
-    #mainContentArea {
+    #mainContentArea, #xdocFooter {
       max-width: 1100px;
       margin: auto;
     }
   }
 
-  #xdocFooter {
-    margin: auto;
-    padding: 0;
+  .defacto-sheet-cover-image {
+    float: right;
+    margin: 0 0 2em 2em;
+    img {
+      max-height: 400px;
+    }
   }
 
   #footerglobal {
