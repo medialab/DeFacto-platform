@@ -36,6 +36,7 @@
 }))
 #set ($discard = $doc.use($object))
 #set ($editing = $xcontext.action == 'edit')
+#if ($editing)
 {{html wiki="true" clean="false"}}
 &lt;div class="xform"&gt;
   &lt;dl&gt;
@@ -141,5 +142,22 @@
   &lt;/dl&gt;
 &lt;/div&gt;
 {{/html}}
+#else
+$doc.display('content', $object)
+
+== $doc.displayPrettyName('pubLink', false, false) ==
+
+$doc.display('pubLink', $object)
+
+== $doc.displayPrettyName('authors', false, false) ==
+
+$doc.display('authors', $object)
+
+#if ($object.getValue('reference') != '')
+  == $doc.displayPrettyName('reference', false, false) ==
+
+  $doc.display('reference', $object)
+#end
+#end
 {{/velocity}}</content>
 </xwikidoc>

@@ -95,6 +95,21 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </coverImage>
+    <displayCoverImageInContent>
+      <customDisplay/>
+      <defaultValue/>
+      <disabled>0</disabled>
+      <displayFormType>radio</displayFormType>
+      <displayType/>
+      <hint/>
+      <name>displayCoverImageInContent</name>
+      <number>6</number>
+      <prettyName>displayCoverImageInContent</prettyName>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+    </displayCoverImageInContent>
     <title>
       <customDisplay>{{include reference="AppWithinMinutes.Title"/}}</customDisplay>
       <disabled>0</disabled>
@@ -113,7 +128,7 @@
       <disabled>0</disabled>
       <hint/>
       <name>url</name>
-      <number>6</number>
+      <number>7</number>
       <picker>0</picker>
       <prettyName>url</prettyName>
       <size>30</size>

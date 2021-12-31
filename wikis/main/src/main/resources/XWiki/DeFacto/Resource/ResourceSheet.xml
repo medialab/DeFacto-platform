@@ -36,6 +36,7 @@
 }))
 #set ($discard = $doc.use($object))
 #set ($editing = $xcontext.action == 'edit')
+#if ($editing)
 {{html wiki="true" clean="false"}}
 &lt;div class="xform"&gt;
   &lt;dl&gt;
@@ -88,6 +89,15 @@
     #end
     &lt;dt #if (!$editing &amp;&amp; $hasEdit)
         class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('displayCoverImageInContent').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.Resource.ResourceClass_0_displayCoverImageInContent"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('displayCoverImageInContent', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('displayCoverImageInContent')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
         data-property="$escapetool.xml($services.model.serialize($object.getProperty('categories').reference))"
         data-property-type="object"#end&gt;
       &lt;label#if ($editing) for="XWiki.DeFacto.Resource.ResourceClass_0_categories"#end&gt;
@@ -107,5 +117,15 @@
   &lt;/dl&gt;
 &lt;/div&gt;
 {{/html}}
+#else
+  #set ($displayCoverImageInContent = $object.getValue('displayCoverImageInContent'))
+  #set ($coverImage = $object.getValue('coverImage'))
+  #if ("$!coverImage" != '' &amp;&amp; "$!displayCoverImageInContent" != '0')
+  (% class="defacto-sheet-cover-image" %)(((
+    image:$doc.fullName@$coverImage
+  )))
+  #end
+  $doc.display('content')
+#end
 {{/velocity}}</content>
 </xwikidoc>

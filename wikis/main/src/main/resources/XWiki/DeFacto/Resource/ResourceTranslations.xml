@@ -21,6 +21,7 @@ XWiki.DeFacto.Resource.ResourceClass_title=Titre
 XWiki.DeFacto.Resource.ResourceClass_abstract=Abstract
 XWiki.DeFacto.Resource.ResourceClass_content=Contenu
 XWiki.DeFacto.Resource.ResourceClass_coverImage=Image de présentation
+XWiki.DeFacto.Resource.ResourceClass_displayCoverImageInContent=Afficher l'image de présentation dans le contenu
 XWiki.DeFacto.Resource.ResourceClass_categories=Catégorie
 XWiki.DeFacto.Resource.ResourceClass_categories_pedagogy=Outils pédagogiques
 XWiki.DeFacto.Resource.ResourceClass_categories_parenthood=Parentalité numérique

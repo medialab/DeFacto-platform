@@ -16,7 +16,9 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
-  <content>{{velocity}}
+  <content>{{include reference="XWiki.DeFacto.Macros"/}}
+
+{{velocity}}
 #set ($object = $doc.getObject('XWiki.DeFacto.News.NewsClass'))
 #if (!$object)
   #set ($messageKey = 'news.sheet.description')
@@ -36,6 +38,7 @@
 }))
 #set ($discard = $doc.use($object))
 #set ($editing = $xcontext.action == 'edit')
+#if ($editing)
 {{html wiki="true" clean="false"}}
 &lt;div class="xform"&gt;
   &lt;dl&gt;
@@ -125,6 +128,18 @@
   &lt;/dl&gt;
 &lt;/div&gt;
 {{/html}}
+#else
+  #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy').withLocale('fr'))
+  #displayNewsScheduleInfo($object, $dateFormatter)
+  ----
+  #set ($coverImage = $object.getValue('coverImage'))
+  #if ("$!coverImage" != '')
+    (% class="defacto-sheet-cover-image" %)(((
+      [[image:$doc.fullName@$coverImage]]
+    )))
+  #end
+  $doc.display('content')
+#end
 {{/velocity}}</content>
   <object>
     <name>XWiki.DeFacto.News.NewsSheet</name>
@@ -240,7 +255,8 @@
       max-width: inherit;
     }
   }
-}</code>
+}
+</code>
     </property>
     <property>
       <contentType>LESS</contentType>
