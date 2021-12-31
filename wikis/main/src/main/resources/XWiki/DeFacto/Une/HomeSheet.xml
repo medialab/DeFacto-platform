@@ -100,13 +100,13 @@
 
     #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
       {{html clean="false"}}
-        &lt;a class="defacto-action-edit" href="$xwiki.getURL('XWiki.DeFacto.Une.ConsultationIntro', 'edit')" role="button"&gt;
+        &lt;a class="defacto-action-edit" href="$xwiki.getURL('XWiki.DeFacto.Une.Teaser', 'edit')" role="button"&gt;
           &lt;span class="defacto-action-edit-icon"&gt;$services.icon.renderHTML('pencil')&lt;/span&gt;
         &lt;/a&gt;
       {{/html}}
     #end
 
-    {{include reference="XWiki.DeFacto.Une.ConsultationIntro"/}}
+    {{display reference="XWiki.DeFacto.Une.Teaser"/}}
 
   )))
 
@@ -468,7 +468,7 @@ require(['jquery', 'bootstrap'], function($) {
       sortOrder: 'desc',
       highlight: false,
       facet: true,
-      rows: 8,
+      rows: 6,
       r: '1',
       f_type: 'DOCUMENT',
       text: '*',
