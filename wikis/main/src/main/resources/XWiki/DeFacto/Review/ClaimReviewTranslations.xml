@@ -24,6 +24,7 @@ XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAuthorType_individual=Individu
 XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAuthorName=Nom de l'auteur
 XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAuthorUrl=Site de l'auteur
 XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAppearanceUrl=URL de la déclaration
+XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAppearanceName=Libellé de la source de la déclaration
 XWiki.DeFacto.Review.ClaimReviewClass_reviewRatingValue=Évaluation numérique
 XWiki.DeFacto.Review.ClaimReviewClass_reviewRatingAlternateName=Libellé de l'évaluation</content>
   <object>
