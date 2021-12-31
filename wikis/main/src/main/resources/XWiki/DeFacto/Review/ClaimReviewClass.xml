@@ -48,7 +48,7 @@
       <disabled>0</disabled>
       <hint/>
       <name>itemReviewedAppearanceAuthorName</name>
-      <number>10</number>
+      <number>11</number>
       <picker>1</picker>
       <prettyName>itemReviewedAppearanceAuthorName</prettyName>
       <size>30</size>
@@ -64,7 +64,7 @@
       <emptyIsToday>1</emptyIsToday>
       <hint/>
       <name>itemReviewedAppearanceDatePublished</name>
-      <number>9</number>
+      <number>10</number>
       <picker>1</picker>
       <prettyName>itemReviewedAppearanceDatePublished</prettyName>
       <size>20</size>
@@ -74,28 +74,39 @@
       <classType>com.xpn.xwiki.objects.classes.DateClass</classType>
     </itemReviewedAppearanceDatePublished>
     <itemReviewedAppearanceHeadline>
-      <contenttype>---</contenttype>
       <customDisplay/>
       <disabled>0</disabled>
-      <editor>---</editor>
       <hint/>
       <name>itemReviewedAppearanceHeadline</name>
-      <number>8</number>
+      <number>9</number>
       <picker>1</picker>
       <prettyName>itemReviewedAppearanceHeadline</prettyName>
-      <rows>5</rows>
-      <size>40</size>
+      <size>30</size>
       <unmodifiable>0</unmodifiable>
       <validationMessage/>
       <validationRegExp/>
-      <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </itemReviewedAppearanceHeadline>
+    <itemReviewedAppearanceName>
+      <customDisplay/>
+      <disabled>0</disabled>
+      <hint/>
+      <name>itemReviewedAppearanceName</name>
+      <number>8</number>
+      <picker>0</picker>
+      <prettyName>itemReviewedAppearanceName</prettyName>
+      <size>30</size>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+    </itemReviewedAppearanceName>
     <itemReviewedAppearancePublisherName>
       <customDisplay/>
       <disabled>0</disabled>
       <hint/>
       <name>itemReviewedAppearancePublisherName</name>
-      <number>11</number>
+      <number>12</number>
       <picker>1</picker>
       <prettyName>itemReviewedAppearancePublisherName</prettyName>
       <size>30</size>
@@ -135,7 +146,7 @@
       <hint/>
       <name>itemReviewedAppearanceUrl</name>
       <number>7</number>
-      <picker>1</picker>
+      <picker>0</picker>
       <prettyName>itemReviewedAppearanceUrl</prettyName>
       <size>30</size>
       <unmodifiable>0</unmodifiable>
@@ -217,7 +228,7 @@
       <disabled>0</disabled>
       <hint/>
       <name>reviewRatingAlternateName</name>
-      <number>13</number>
+      <number>14</number>
       <picker>1</picker>
       <prettyName>reviewRatingAlternateName</prettyName>
       <size>30</size>
@@ -237,7 +248,7 @@
       <largeStorage>0</largeStorage>
       <multiSelect>0</multiSelect>
       <name>reviewRatingValue</name>
-      <number>12</number>
+      <number>13</number>
       <picker>0</picker>
       <prettyName>reviewRatingValue</prettyName>
       <relationalStorage>1</relationalStorage>

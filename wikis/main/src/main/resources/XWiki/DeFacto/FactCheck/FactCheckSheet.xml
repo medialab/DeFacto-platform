@@ -21,6 +21,7 @@
 #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.FactCheck.FactCheckSheet'))
 #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.LnF.TabsJSX'))
 #set ($object = $doc.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
+#set ($claimReview = $doc.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
 #set ($discard = $doc.use($object))
 #set ($editing = $xcontext.action == 'edit')
 
@@ -125,11 +126,10 @@
     $doc.display('media')
   )))
   (% role="tabpanel" class="tab-pane" id="review" %)(((
-    #set ($claimReview = $doc.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
     #set ($discard = $doc.use($claimReview))
 
     ## 'itemReviewedAppearanceDatePublished', 'itemReviewedAppearanceAuthorName', 'itemReviewedAppearancePublisherName'
-    #set ($propertyNames = ['claimReviewed', 'itemReviewedDatePublished', 'itemReviewedAuthorType', 'itemReviewedAuthorName', 'itemReviewedAuthorUrl', 'itemReviewedAppearanceUrl', 'reviewRatingValue', 'reviewRatingAlternateName'])
+    #set ($propertyNames = ['claimReviewed', 'itemReviewedDatePublished', 'itemReviewedAuthorType', 'itemReviewedAuthorName', 'itemReviewedAuthorUrl', 'itemReviewedAppearanceUrl', 'itemReviewedAppearanceName', 'reviewRatingValue', 'reviewRatingAlternateName'])
     #foreach ($propertyName in $propertyNames)
       = $doc.displayPrettyName($propertyName, false, false) =
       (% class="defacto-claimreview-$propertyName" %)(((
@@ -138,130 +138,154 @@
     #end
   )))
 #else
-      #if ("$!request.published" != '')
-        {{info}}
-        #if ($request.published == 'true')
-        Le fact-check a bien été publié.
-        #else
-        Le fact-check a bien été dépublié.
-        #end
-        {{/info}}
-      #end
-      (% class="defacto-fact-check-title" %)(((
-        = $doc.displayTitle =
+  #if ("$!request.published" != '')
+    {{info}}
+    #if ($request.published == 'true')
+      Le fact-check a bien été publié.
+    #else
+      Le fact-check a bien été dépublié.
+    #end
+    {{/info}}
+  #end
+  (% class="defacto-fact-check-title" %)(((
+    = $doc.displayTitle =
+  )))
+
+  (% class="defacto-fact-check-date" %)(((
+    #set ($pdate = $object.getValue('pdate'))
+    #if ("$!pdate" != '')
+      #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy à HH:mm').withLocale('fr'))
+      (% class="defacto-fact-check-publication-date" %)(((
+        Publié le $dateFormatter.print($pdate)
       )))
-
-      #set ($authors = $object.getValue('authors'))
-      #if ("$!authors" != '')
-        ; Auteur(s)
-        : $authors
-      #end
-
-      #set ($media = $object.getValue('media'))
-      #if ("$!media" != '')
-        (((
-          #set ($mediaPage = $xwiki.getDocument($media))
-          #set ($mediaObject = $mediaPage.getObject('XWiki.DeFacto.Media.MediaClass'))
-          #set ($copyright = $mediaObject.getValue('copyright'))
+    #end
+    #set ($udate = $object.getValue('updateDate'))
+    #if ("$!udate" != '')
+      (% class="defacto-fact-check-update-date" %)(((
+        – Mis à jour le $dateFormatter.print($pdate)
+      )))
+    #end
+  )))
+  #set ($claimReviewed = $claimReview.getValue('claimReviewed'))
+  #if ("$!claimReviewed" != '')
+  (% class="defacto-claim-review row" %)(((
+    (% class="col-sm-4" %)(((
+      == Déclaration ==
+      $claimReviewed
+    )))
+    (% class="col-sm-4" %)(((
+      == Niveau de factualité ==
+      #set ($reviewRatingAlternateName = $claimReview.getValue('reviewRatingAlternateName'))
+      #set ($reviewRatingValue = $claimReview.getValue('reviewRatingValue'))
+      #if ("$!reviewRatingAlternateName" != '')
+        #set ($reviewRatingValue = $mathtool.toInteger($reviewRatingValue))
+        #set ($labelClass = 'label-warning')
+        #if ($reviewRatingValue &lt; 3)
+          #set ($labelClass = 'label-danger')
+        #end
+        (% class="defacto-claim-review-rating-name" %)(((
+          (% class="label $labelClass" %)$reviewRatingAlternateName(%%)
         )))
       #end
-
-      #set ($pdate = $object.getValue('pdate'))
-      #if ("$!pdate" != '')
-        #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy à HH:mm').withLocale('fr'))
-        (% class="defacto-fact-check-publication-date" %)(((
-          Publié le $dateFormatter.print($pdate)
+    )))
+    (% class="col-sm-4" %)(((
+      == Source ==
+      #set ($itemReviewedAppearanceName = $claimReview.getValue('itemReviewedAppearanceName'))
+      #set ($itemReviewedAppearanceUrl = $claimReview.getValue('itemReviewedAppearanceUrl'))
+      #if ("$!itemReviewedAppearanceName" != '')
+        (% class="defacto-claim-review-appearance-name" %)(((
+          #if ("$!itemReviewedAppearanceUrl" != '')
+            [[$itemReviewedAppearanceName&gt;&gt;$itemReviewedAppearanceUrl]]
+          #else
+            $itemReviewedAppearanceName
+          #end
         )))
       #end
-      #set ($udate = $object.getValue('updateDate'))
-      #if ("$!udate" != '')
-        (% class="defacto-fact-check-update-date" %)(((
-          – Mis à jour le $dateFormatter.print($pdate)
-        )))
-      #end
-
-      #set ($headerImage = $object.getValue('headerImage'))
-      #if ("$!headerImage" != '')
-        (% class="defacto-fact-check-header-image" %)(((
-          [[image:$headerImage]]
-          #set ($headerImageCaption = $object.getValue('headerImageCaption'))
-          #set ($headerImageCredits = $object.getValue('headerImageCredits'))
-          (% class="defacto-fact-check-header-media-legend" %)(((
-            #if ("$!headerImageCaption" != '')
-              (% class="defacto-fact-check-header-media-caption" %)(((
-                $headerImageCaption
-              )))
-            #end
-            #if ("$!headerImageCredits" != '')
-              (% class="defacto-fact-check-header-media-credits" %)((( ($headerImageCredits) )))
-            #end
+    )))
+  )))
+  #end
+  #set ($headerImage = $object.getValue('headerImage'))
+  #if ("$!headerImage" != '')
+    (% class="defacto-fact-check-header-image" %)(((
+      [[image:$headerImage]]
+      #set ($headerImageCaption = $object.getValue('headerImageCaption'))
+      #set ($headerImageCredits = $object.getValue('headerImageCredits'))
+      (% class="defacto-fact-check-header-media-legend" %)(((
+        #if ("$!headerImageCaption" != '')
+          (% class="defacto-fact-check-header-media-caption" %)(((
+            $headerImageCaption
           )))
-        )))
-      #end
-
-      #set ($headerAudio = $object.getValue('headerAudio'))
-      #if ("$!headerAudio" != '')
-        {{html clean="false"}}
-          &lt;audio controls src="$headerAudio"&gt;
-            Le fichier audio ne peut être lu par votre navigateur car celui-ci ne peut interpréter la balise &lt;code&gt;audio&lt;/code&gt;.
-          &lt;/audio&gt;
-        {{/html}}
-      #end
-
-      #if ("$!copyright" != '')
+        #end
+        #if ("$!headerImageCredits" != '')
+          (% class="defacto-fact-check-header-media-credits" %)((( ($headerImageCredits) )))
+        #end
+      )))
+    )))
+  #end
+  #set ($headerAudio = $object.getValue('headerAudio'))
+  #if ("$!headerAudio" != '')
+    {{html clean="false"}}
+      &lt;audio controls src="$headerAudio"&gt;
+        Le fichier audio ne peut être lu par votre navigateur car celui-ci ne peut interpréter la balise &lt;code&gt;audio&lt;/code&gt;.
+      &lt;/audio&gt;
+    {{/html}}
+  #end
+  #set ($media = $object.getValue('media'))
+  #if ("$!media" != '')
+    #set ($mediaPage = $xwiki.getDocument($media))
+    #set ($mediaObject = $mediaPage.getObject('XWiki.DeFacto.Media.MediaClass'))
+    #set ($copyright = $mediaObject.getValue('copyright'))
+    #if ("$!copyright" != '')
       (% class="defacto-fact-check-copyright" %)(((
         $copyright
       )))
+    #end
+  #end
+  #set ($authors = $object.getValue('authors'))
+  #if ("$!authors" != '')
+    ; Auteur(s)
+    : $doc.display('authors', $object)
+  #end
+  (% class="defacto-fact-check-chapeau" %)(((
+    $doc.display('chapeau')
+  )))
+
+  (% class="defacto-fact-check-body" %)(((
+    $doc.display('content')
+  )))
+  #set ($tagObject = $doc.getObject('XWiki.TagClass'))
+  #if ($tagObject != $NULL)
+    #set ($tags = $tagObject.getValue('tags'))
+    #if ($tags.size() &gt; 0)
+      (% class="defacto-fact-check-tags" %)(((
+      #foreach ($tag in $tags)
+        * [[$tag&gt;&gt;Main.Search||queryString="f_type=DOCUMENT&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)&amp;text=*"]]
       #end
-
-      (% class="defacto-fact-check-chapeau" %)(((
-        $doc.display('chapeau')
       )))
-
-      (% class="defacto-fact-check-body" %)(((
-        $doc.display('content')
-      )))
-
-      #set ($tagObject = $doc.getObject('XWiki.TagClass'))
-      #if ($tagObject != $NULL)
-        #set ($tags = $tagObject.getValue('tags'))
-        #if ($tags.size() &gt; 0)
-          (% class="defacto-fact-check-tags" %)(((
-          #foreach ($tag in $tags)
-            * [[$tag&gt;&gt;Main.Search||queryString="f_type=DOCUMENT&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)&amp;text=*"]]
-          #end
-          )))
-        #end
+    #end
+  #end
+  #set ($link = $object.getValue('link'))
+  (% class="box defacto-box defacto-fact-check-source" %)(((
+    #if ($mediaObject != $NULL &amp;&amp; $hello == $NULL)
+    ## We use HTML because links can contain brackets and other wiki syntax characters
+      #set ($mediaSite = $mediaObject.getValue('site'))
+      #set ($mediaLogo = $mediaObject.getValue('logo'))
+      #if ("$!mediaLogo" != '')
+        (% class="defacto-media-logo" %)(((
+          [[image:$media@$mediaLogo]]
+        )))
       #end
+      {{html clean="false"}}
+      #if ("$!link" != '')
+        Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt; :
+        &lt;em&gt;&lt;a href="$escapetool.xml($link)"&gt;$doc.title&lt;/a&gt;&lt;/em&gt;.
+      #else
+        Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
+      #end
+      {{/html}}
+    #end
+  )))
 
-      #*
-      (% class="defacto-fact-check-content" %)(((
-        {{html clean="false"}}
-        $object.getValue('contentHtml')
-        {{/html}}
-      )))
-*#
-      #set ($link = $object.getValue('link'))
-      (% class="box defacto-box defacto-fact-check-source" %)(((
-        #if ($mediaObject != $NULL &amp;&amp; $hello == $NULL)
-        ## We use HTML because links can contain brackets and other wiki syntax characters
-          #set ($mediaSite = $mediaObject.getValue('site'))
-          #set ($mediaLogo = $mediaObject.getValue('logo'))
-          #if ("$!mediaLogo" != '')
-            (% class="defacto-media-logo" %)(((
-              [[image:$media@$mediaLogo]]
-            )))
-          #end
-          {{html clean="false"}}
-          #if ("$!link" != '')
-            Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt; :
-            &lt;em&gt;&lt;a href="$escapetool.xml($link)"&gt;$doc.title&lt;/a&gt;&lt;/em&gt;.
-          #else
-            Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
-          #end
-          {{/html}}
-        #end
-      )))
 #end
 )))
 
@@ -517,18 +541,54 @@
   audio {
     width: 100%;
   }
-  .defacto-fact-check-title h1 {
-    font-size: 1.6em;
-    margin-bottom: 1em;
-    font-weight: 400;
+  .defacto-fact-check-title {
+    h1 {
+      font-size: 1.6em;
+      margin-bottom: 0;
+      font-weight: 400;
+    }
+    margin-bottom: 1.5em;
   }
-  .defacto-fact-check-update-date {
-    margin-left: 0.3em;
+
+  .defacto-claim-review {
+    border: 1px solid #ccc;
+    padding-bottom: 1em;
+    padding: 0.5em;
+    margin-top: 1em;
+    margin-bottom: 2em;
+    h2 {
+      margin-top: 5px;
+    }
+    .defacto-claim-review-rating-name {
+      margin-top: 1em;
+      .label {
+        text-transform: uppercase;
+        font-size: inherit;
+        &amp;.label-warning {
+          background: @yellow;
+        }
+      }
+    }
+  }
+
+  .defacto-fact-check-date {
+    text-align: right;
+    font-style: italic;
+    color: #666;
+
+    .defacto-fact-check-update-date {
+      margin-left: 0.3em;
+    }
+
+    .defacto-fact-check-publication-date, .defacto-fact-check-update-date {
+      display: inline-block;
+    }
   }
 
   .defacto-fact-check-copyright {
     text-align: center;
     font-size: 0.9em;
+    margin-bottom: 1em;
     p {
       margin-bottom: 0;
     }
@@ -551,9 +611,6 @@
         font-weight: 500;
       }
     }
-  }
-  .defacto-fact-check-publication-date, .defacto-fact-check-update-date {
-    display: inline-block;
   }
 
   .defacto-fact-check-header-image {
@@ -638,11 +695,18 @@ div.grid-with-margin {
     }
   }
   .defacto-fact-check-source {
+    margin-top: 1em;
     .defacto-media-logo {
       float: left;
       margin-right: 1em;
       max-width: 180px;
     }
+  }
+
+  #xdocFooter {
+    max-width: 50%;
+    margin: auto;
+    padding: 0;
   }
 }
 
