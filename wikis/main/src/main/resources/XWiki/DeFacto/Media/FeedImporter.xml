@@ -130,10 +130,11 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
         object.set('media', media)
 
         // Turn all script tags, iframes, etc. into div so that they are preserved in wiki syntax
-        def transformedContent = content.replaceAll('&lt;script', '&lt;div data-tag="script"')
-        transformedContent = transformedContent.replaceAll('&lt;/script&gt;', '&lt;/div&gt;')
+        // Do not keep scripts (Twitter API script is loaded only if consent is given)
+        //def transformedContent = content.replaceAll('&lt;script', '&lt;div data-tag="script"')
+        //transformedContent = transformedContent.replaceAll('&lt;/script&gt;', '&lt;/div&gt;')
 
-        transformedContent = transformedContent.replaceAll('&lt;iframe', '&lt;div data-tag="iframe"')
+        def transformedContent = content.replaceAll('&lt;iframe', '&lt;div data-tag="iframe"')
         transformedContent = transformedContent.replaceAll('&lt;/iframe&gt;', '&lt;/div&gt;')
 
         def xdom = services.rendering.parse('&lt;div&gt;' + transformedContent + '&lt;/div&gt;', 'xhtml/1.0')
@@ -141,13 +142,21 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
         for (Block block : blocks) {
           def dataTagValue = block.getParameter('data-tag')
           if (dataTagValue != null) {
-            def blockHtml = services.rendering.render(block, 'xhtml/1.0');
-            blockHtml = blockHtml.replaceAll("&lt;div data-tag=\"$dataTagValue\"", "&lt;$dataTagValue")
-            blockHtml = blockHtml.replaceAll('&lt;/div&gt;', "&lt;/$dataTagValue&gt;")
-            def blockParameters = new HashMap();
-            blockParameters.put('clean', 'false');
-            def macroBlock = new MacroBlock('html', blockParameters, blockHtml, false);
-            block.getParent().replaceChild(macroBlock, block);
+            def src = block.getParameter('src');
+            if (src != null &amp;&amp; src.indexOf('youtube') &gt; 0) {
+              def blockParameters = new HashMap();
+              blockParameters.put('url', src);
+              def videoBlock = new MacroBlock('video', blockParameters, true);
+              block.getParent().replaceChild(videoBlock, block);
+            } else {
+              def blockHtml = services.rendering.render(block, 'xhtml/1.0');
+              blockHtml = blockHtml.replaceAll("&lt;div data-tag=\"$dataTagValue\"", "&lt;$dataTagValue")
+              blockHtml = blockHtml.replaceAll('&lt;/div&gt;', "&lt;/$dataTagValue&gt;")
+              def blockParameters = new HashMap();
+              blockParameters.put('clean', 'false');
+              def macroBlock = new MacroBlock('html', blockParameters, blockHtml, false);
+              block.getParent().replaceChild(macroBlock, block);
+            }
           }
         }
 

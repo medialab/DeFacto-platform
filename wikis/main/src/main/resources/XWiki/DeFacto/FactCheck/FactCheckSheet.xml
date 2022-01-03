@@ -20,6 +20,8 @@
 #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.FactCheck.FactCheckSheet'))
 #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.FactCheck.FactCheckSheet'))
 #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.LnF.TabsJSX'))
+#set ($discard = $xwiki.jsx.use('CookieConsent.Script'))
+#set ($discard = $xwiki.ssx.use('CookieConsent.WebHome'))
 #set ($object = $doc.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
 #set ($claimReview = $doc.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
 #set ($discard = $doc.use($object))
@@ -647,7 +649,7 @@
 
 /** g2web is used for tweets and YouTube videos embeds */
 .g2web {
-  width: 60%;
+  width: 100%;
   margin: auto;
   padding-top: 0px;
   padding-bottom: 36px;
@@ -692,6 +694,11 @@ div.grid-with-margin {
         object-fit: fill;
         max-width: 80%;
       }
+    }
+
+    /** AFP Factuel embeds */
+    .g2web {
+      width: 80%;
     }
   }
   .defacto-fact-check-source {

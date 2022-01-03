@@ -419,31 +419,35 @@
       </type>
     </class>
     <property>
-      <active/>
+      <active>1</active>
     </property>
     <property>
-      <activeCookieTypes/>
+      <activeCookieTypes>
+        <value>preferences</value>
+        <value>statistics</value>
+      </activeCookieTypes>
     </property>
     <property>
-      <animation/>
+      <animation>slide</animation>
     </property>
     <property>
-      <backgroundColor/>
+      <backgroundColor>#FFFFFF</backgroundColor>
     </property>
     <property>
-      <buttonText/>
+      <buttonText>J'accepte tous les cookies</buttonText>
     </property>
     <property>
-      <configButtonText/>
+      <configButtonText>Configurer</configButtonText>
     </property>
     <property>
-      <disclaimer1/>
+      <disclaimer1>Certains articles de ce site incluent des contenus provenant de sites externes tels que YouTube et Twitter. En cliquant sur "J'accepte tous les cookies", vous acceptez l'utilisation de cookies par ces sites tiers. Consultez la [[politique de confidentialitédu site&gt;&gt;Politique-de-confidentialite.WebHome]] pour en savoir plus et modifier vos choix.</disclaimer1>
     </property>
     <property>
-      <disclaimer2/>
+      <disclaimer2>Certains articles de ce site incluent des contenus provenant de sites externes tels que YouTube et Twitter. En enregistrant votre choix de cookies et en cliquant sur **OK**, vous acceptez l'utilisation de cookies provenant de ces sites sur votre appareil. Consultez la [[politique de confidentialité du site&gt;&gt;Politique-de-confidentialite.WebHome]] pour en savoir plus et modifier vos choix.
+</disclaimer2>
     </property>
     <property>
-      <foregroundColor/>
+      <foregroundColor>#333333</foregroundColor>
     </property>
     <property>
       <lang>fr</lang>
@@ -464,16 +468,16 @@
       <necessaryLabel/>
     </property>
     <property>
-      <opacity/>
+      <opacity>1.0</opacity>
     </property>
     <property>
-      <position/>
+      <position>bottom</position>
     </property>
     <property>
       <preferencesInfoBox/>
     </property>
     <property>
-      <preferencesLabel/>
+      <preferencesLabel>Twitter</preferencesLabel>
     </property>
     <property>
       <preferencesScripts/>
@@ -482,13 +486,13 @@
       <statisticsInfoBox/>
     </property>
     <property>
-      <statisticsLabel/>
+      <statisticsLabel>YouTube</statisticsLabel>
     </property>
     <property>
       <statisticsScripts/>
     </property>
     <property>
-      <type/>
+      <type>bar</type>
     </property>
   </object>
   <object>
