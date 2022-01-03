@@ -1,0 +1,1003 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="CookieConsent.WebHome" locale="">
+  <web>CookieConsent</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Cookie Consent Setup</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content/>
+  <object>
+    <name>CookieConsent.WebHome</name>
+    <number>0</number>
+    <className>CookieConsent.ConfigurationClass</className>
+    <guid>48f2d6bb-abc9-41fa-b971-16a6ed11e4e0</guid>
+    <class>
+      <name>CookieConsent.ConfigurationClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <active>
+        <customDisplay/>
+        <defaultValue>1</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>active</name>
+        <number>1</number>
+        <prettyName>active</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </active>
+      <activeCookieTypes>
+        <cache>0</cache>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <displayType>checkbox</displayType>
+        <multiSelect>1</multiSelect>
+        <name>activeCookieTypes</name>
+        <number>23</number>
+        <picker>0</picker>
+        <prettyName>Active cookie types</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <sort>none</sort>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <values>necessary|preferences|statistics|marketing</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </activeCookieTypes>
+      <animation>
+        <cache>0</cache>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>animation</name>
+        <number>4</number>
+        <picker>0</picker>
+        <prettyName>animation</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>1</size>
+        <sort>none</sort>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <values>none|slide|fade</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </animation>
+      <backgroundColor>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <name>backgroundColor</name>
+        <number>5</number>
+        <picker>0</picker>
+        <prettyName>backgroundColor</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </backgroundColor>
+      <buttonText>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>buttonText</name>
+        <number>8</number>
+        <picker>0</picker>
+        <prettyName>buttonText</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </buttonText>
+      <configButtonText>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>configButtonText</name>
+        <number>9</number>
+        <picker>0</picker>
+        <prettyName>configButtonText</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </configButtonText>
+      <disclaimer1>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>disclaimer1</name>
+        <number>10</number>
+        <picker>0</picker>
+        <prettyName>disclaimer1</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </disclaimer1>
+      <disclaimer2>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>disclaimer2</name>
+        <number>11</number>
+        <picker>0</picker>
+        <prettyName>disclaimer2</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </disclaimer2>
+      <foregroundColor>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <name>foregroundColor</name>
+        <number>6</number>
+        <picker>0</picker>
+        <prettyName>foregroundColor</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </foregroundColor>
+      <lang>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <name>lang</name>
+        <number>24</number>
+        <picker>1</picker>
+        <prettyName>Locale</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </lang>
+      <marketingInfoBox>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>marketingInfoBox</name>
+        <number>15</number>
+        <picker>0</picker>
+        <prettyName>marketingInfoBox</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </marketingInfoBox>
+      <marketingLabel>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <name>marketingLabel</name>
+        <number>22</number>
+        <picker>0</picker>
+        <prettyName>marketingLabel</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </marketingLabel>
+      <marketingScripts>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>marketingScripts</name>
+        <number>18</number>
+        <picker>0</picker>
+        <prettyName>marketingScripts</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </marketingScripts>
+      <necessaryInfoBox>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>necessaryInfoBox</name>
+        <number>12</number>
+        <picker>0</picker>
+        <prettyName>necessaryInfoBox</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </necessaryInfoBox>
+      <necessaryLabel>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <name>necessaryLabel</name>
+        <number>19</number>
+        <picker>0</picker>
+        <prettyName>necessaryLabel</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </necessaryLabel>
+      <opacity>
+        <cache>0</cache>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>opacity</name>
+        <number>7</number>
+        <picker>0</picker>
+        <prettyName>opacity</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>1</size>
+        <sort>none</sort>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <values>1.0|0.9|0.8|0.7|0.6|0.5|0.4|0.3|0.2|0.1|0.0</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </opacity>
+      <position>
+        <cache>0</cache>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>position</name>
+        <number>3</number>
+        <picker>0</picker>
+        <prettyName>position</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>1</size>
+        <sort>none</sort>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <values>top|bottom</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </position>
+      <preferencesInfoBox>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>preferencesInfoBox</name>
+        <number>13</number>
+        <picker>0</picker>
+        <prettyName>preferencesInfoBox</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </preferencesInfoBox>
+      <preferencesLabel>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <name>preferencesLabel</name>
+        <number>20</number>
+        <picker>0</picker>
+        <prettyName>preferencesLabel</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </preferencesLabel>
+      <preferencesScripts>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>preferencesScripts</name>
+        <number>16</number>
+        <picker>0</picker>
+        <prettyName>preferencesScripts</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </preferencesScripts>
+      <statisticsInfoBox>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>statisticsInfoBox</name>
+        <number>14</number>
+        <picker>0</picker>
+        <prettyName>statisticsInfoBox</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </statisticsInfoBox>
+      <statisticsLabel>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <name>statisticsLabel</name>
+        <number>21</number>
+        <picker>0</picker>
+        <prettyName>statisticsLabel</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </statisticsLabel>
+      <statisticsScripts>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>statisticsScripts</name>
+        <number>17</number>
+        <picker>0</picker>
+        <prettyName>statisticsScripts</prettyName>
+        <rows>5</rows>
+        <size>120</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </statisticsScripts>
+      <type>
+        <cache>0</cache>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>type</name>
+        <number>2</number>
+        <picker>0</picker>
+        <prettyName>type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>1</size>
+        <sort>none</sort>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <values>bar|box</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </type>
+    </class>
+    <property>
+      <active/>
+    </property>
+    <property>
+      <activeCookieTypes/>
+    </property>
+    <property>
+      <animation/>
+    </property>
+    <property>
+      <backgroundColor/>
+    </property>
+    <property>
+      <buttonText/>
+    </property>
+    <property>
+      <configButtonText/>
+    </property>
+    <property>
+      <disclaimer1/>
+    </property>
+    <property>
+      <disclaimer2/>
+    </property>
+    <property>
+      <foregroundColor/>
+    </property>
+    <property>
+      <lang>fr</lang>
+    </property>
+    <property>
+      <marketingInfoBox/>
+    </property>
+    <property>
+      <marketingLabel/>
+    </property>
+    <property>
+      <marketingScripts/>
+    </property>
+    <property>
+      <necessaryInfoBox/>
+    </property>
+    <property>
+      <necessaryLabel/>
+    </property>
+    <property>
+      <opacity/>
+    </property>
+    <property>
+      <position/>
+    </property>
+    <property>
+      <preferencesInfoBox/>
+    </property>
+    <property>
+      <preferencesLabel/>
+    </property>
+    <property>
+      <preferencesScripts/>
+    </property>
+    <property>
+      <statisticsInfoBox/>
+    </property>
+    <property>
+      <statisticsLabel/>
+    </property>
+    <property>
+      <statisticsScripts/>
+    </property>
+    <property>
+      <type/>
+    </property>
+  </object>
+  <object>
+    <name>CookieConsent.WebHome</name>
+    <number>0</number>
+    <className>XWiki.ClassSheetBinding</className>
+    <guid>29abaa68-52d3-451f-8882-256c9ac37b9e</guid>
+    <class>
+      <name>XWiki.ClassSheetBinding</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <sheet>
+        <cache>0</cache>
+        <classname/>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <hint/>
+        <idField/>
+        <multiSelect>0</multiSelect>
+        <name>sheet</name>
+        <number>1</number>
+        <picker>1</picker>
+        <prettyName>Sheet</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators/>
+        <size>30</size>
+        <sort>none</sort>
+        <sql/>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <valueField/>
+        <classType>com.xpn.xwiki.objects.classes.PageClass</classType>
+      </sheet>
+    </class>
+    <property>
+      <sheet>ConfigurationSheet</sheet>
+    </property>
+  </object>
+  <object>
+    <name>CookieConsent.WebHome</name>
+    <number>0</number>
+    <className>XWiki.ConfigurableClass</className>
+    <guid>ccdfcbfb-b329-4346-b42c-d44713da0886</guid>
+    <class>
+      <name>XWiki.ConfigurableClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <categoryIcon>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>categoryIcon</name>
+        <number>11</number>
+        <picker>0</picker>
+        <prettyName>categoryIcon</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </categoryIcon>
+      <codeToExecute>
+        <contenttype>VelocityWiki</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>---</editor>
+        <hint/>
+        <name>codeToExecute</name>
+        <number>7</number>
+        <picker>0</picker>
+        <prettyName>codeToExecute</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </codeToExecute>
+      <configurationClass>
+        <cache>0</cache>
+        <classname/>
+        <customDisplay/>
+        <defaultValue/>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <freeText/>
+        <hint/>
+        <idField/>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>configurationClass</name>
+        <number>3</number>
+        <picker>1</picker>
+        <prettyName>configurationClass</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators/>
+        <size>30</size>
+        <sort>none</sort>
+        <sql/>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <valueField/>
+        <classType>com.xpn.xwiki.objects.classes.PageClass</classType>
+      </configurationClass>
+      <configureGlobally>
+        <customDisplay/>
+        <defaultValue/>
+        <disabled>0</disabled>
+        <displayFormType>checkbox</displayFormType>
+        <displayType/>
+        <hint/>
+        <name>configureGlobally</name>
+        <number>4</number>
+        <prettyName>configureGlobally</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </configureGlobally>
+      <displayBeforeCategory>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>displayBeforeCategory</name>
+        <number>10</number>
+        <picker>0</picker>
+        <prettyName>displayBeforeCategory</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </displayBeforeCategory>
+      <displayInCategory>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>displayInCategory</name>
+        <number>9</number>
+        <picker>0</picker>
+        <prettyName>displayInCategory</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </displayInCategory>
+      <displayInSection>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>displayInSection</name>
+        <number>1</number>
+        <picker>0</picker>
+        <prettyName>displayInSection</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </displayInSection>
+      <heading>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>heading</name>
+        <number>2</number>
+        <picker>0</picker>
+        <prettyName>heading</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </heading>
+      <iconAttachment>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>iconAttachment</name>
+        <number>8</number>
+        <picker>0</picker>
+        <prettyName>iconAttachment</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </iconAttachment>
+      <linkPrefix>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>linkPrefix</name>
+        <number>5</number>
+        <picker>0</picker>
+        <prettyName>linkPrefix</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </linkPrefix>
+      <propertiesToShow>
+        <cache>0</cache>
+        <customDisplay/>
+        <defaultValue/>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <freeText/>
+        <hint/>
+        <largeStorage>0</largeStorage>
+        <multiSelect>1</multiSelect>
+        <name>propertiesToShow</name>
+        <number>6</number>
+        <picker>0</picker>
+        <prettyName>propertiesToShow</prettyName>
+        <relationalStorage>1</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>20</size>
+        <sort>none</sort>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <values/>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </propertiesToShow>
+      <sectionOrder>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>sectionOrder</name>
+        <number>12</number>
+        <numberType>integer</numberType>
+        <prettyName>sectionOrder</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.NumberClass</classType>
+      </sectionOrder>
+    </class>
+    <property>
+      <categoryIcon/>
+    </property>
+    <property>
+      <codeToExecute>{{include reference="CookieConsent.ConfigurationSheet" /}}</codeToExecute>
+    </property>
+    <property>
+      <configurationClass/>
+    </property>
+    <property>
+      <configureGlobally>1</configureGlobally>
+    </property>
+    <property>
+      <displayBeforeCategory/>
+    </property>
+    <property>
+      <displayInCategory/>
+    </property>
+    <property>
+      <displayInSection>GDPR Cookie Consent Setup</displayInSection>
+    </property>
+    <property>
+      <heading>$services.localization.render('cookieConsent.administration.heading')</heading>
+    </property>
+    <property>
+      <iconAttachment/>
+    </property>
+    <property>
+      <linkPrefix/>
+    </property>
+    <property>
+      <propertiesToShow/>
+    </property>
+    <property>
+      <sectionOrder/>
+    </property>
+  </object>
+  <object>
+    <name>CookieConsent.WebHome</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>8c69c692-dc97-4e0b-bfcf-b02baacf2bf8</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>#template('colorThemeInit.vm')
+#set ($settings = $xwiki.getDocument('CookieConsent.WebHome').getObject('CookieConsent.ConfigurationClass', 'lang', "$xcontext.locale"))
+#if (!$settings)
+  #set ($settings = $xwiki.getDocument('CookieConsent.WebHome').getObject('CookieConsent.ConfigurationClass'))
+#end
+#cookieConsent {
+  position: fixed;
+  #if($settings.getProperty('type').value == 'bar')
+    $settings.getProperty('position').value: 0;
+    left: 0;
+    right: 0;
+  #else
+    $settings.getProperty('position').value: 10px;
+    left: 50%;
+    transform:translatex(-50%);
+    max-width: 400px;
+  #end
+  background: $settings.getProperty('backgroundColor').value;
+  color: $settings.getProperty('foregroundColor').value;
+  text-align: center;
+  line-height: 1.5;
+  overflow: hidden; 
+  opacity: $settings.getProperty('opacity').value;
+  z-index: 9999;
+  padding: 10px;
+  -webkit-box-shadow: 0 0 5px black;
+  -moz-box-shadow:    0 0 5px black;
+  box-shadow:         0 0 5px black;
+}
+
+#cookieConsentHide, #cookieConsentConfig, #cookieConsentOK {
+  appearance: button;
+  border: 2px solid @btn-primary-bg;
+  transition: all 0.3s;
+  &amp;:hover {
+    transition: all 0.3s;
+  }
+}
+
+#cookieConsentHide, #cookieConsentOK {
+  background-color: @btn-primary-bg;
+  color: @btn-primary-color;
+  &amp;:hover {
+    background-color: @btn-primary-color;
+    color: @btn-primary-bg;
+  }
+}
+
+#cookieConsentConfig {
+  background-color: @btn-primary-color;
+  color: @btn-primary-bg;
+  &amp;:hover {
+    background-color: @btn-primary-bg;
+    color: @btn-primary-color;
+  }
+}
+#cookieConsent .button {
+  #if($settings.getProperty('type').value == 'box')
+    margin: 10px 5px 0 5px; 
+  #else
+    margin: 0 5px;
+  #end
+  min-width: 90px;
+  padding: 6px;
+}
+#CookieSelectPane {
+    display: inline-block;
+    border: 1px solid #cccccc;
+    padding: 6px 3px 5px 9px;
+    text-align: left;
+    vertical-align: top;
+}
+.CookieSelectButtonWrapper {
+  #if($settings.getProperty('type').value == 'bar')
+    display: inline-block;
+  #end
+    position: relative;
+    margin-right: 14px;
+    margin-left: 0;
+    line-height: 16px;
+}
+#CookieSelectPane label {
+  font-weight: normal;
+  display: block;
+  padding-left: 15px;
+  text-indent: -15px;
+}
+#CookieSelectPane input {
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  margin:0 5px;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
+  *overflow: hidden;
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name>Style</name>
+    </property>
+    <property>
+      <parse>1</parse>
+    </property>
+    <property>
+      <use>always</use>
+    </property>
+  </object>
+</xwikidoc>

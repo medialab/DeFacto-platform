@@ -1,0 +1,741 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="CookieConsent.Script" locale="">
+  <web>CookieConsent</web>
+  <name>Script</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>CookieConsent.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content/>
+  <object>
+    <name>CookieConsent.Script</name>
+    <number>0</number>
+    <className>XWiki.JavaScriptExtension</className>
+    <guid>4ab73357-5fdd-468a-8b38-8b4d7190c0d1</guid>
+    <class>
+      <name>XWiki.JavaScriptExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>var CookieConsent = Class.create({
+  initialize : function(settings) {
+    this.settings = settings;
+    //this.clearCookie('cookieConsent'); // for debugging
+    if(!this.getCookie('cookieConsent')){
+      this.showDisclaimer();
+    }
+    var resetCookiesButton = $('ResetCookies');
+    if (resetCookiesButton != null) {
+      resetCookiesButton.observe('click', function() {
+        this.showDisclaimer();
+      }.bind(this));
+    }
+  },
+
+  getCookie : function(key)
+  {
+    var keyEquals = key + "=";
+    var value     = false;
+
+    document.cookie.split(';').invoke('strip').each(function(s){
+      if (s.startsWith(keyEquals)) {
+        value = unescape(s.substring(keyEquals.length, s.length));
+      }
+    });
+
+    return value;
+  },
+
+  setCookie : function(key, value, days) {
+    var setValue      = key + '=' + escape(new String(value));
+    var setExpiration = "";
+
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days*24*60*60*1000));
+      var setExpiration = "; expires=" + date.toGMTString();
+    }
+
+    var cookieString = setValue + setExpiration + ";path=/";
+    document.cookie  = cookieString;
+  },
+
+  clearCookie : function(key) {
+    this.setCookie(key,'',-1);
+  },
+
+  animation : function(event, element) {
+    switch(this.settings.animation)
+    {
+      case 'none': 
+        event == 'show' ? $(element).show() : $(element).hide(); break;
+      case 'slide': 
+        event == 'show' ? Effect.BlindDown(element, { duration : 1 }) : Effect.BlindUp(element, { duration : 1 }); break;
+      case 'fade':
+        event == 'show' ? Effect.Appear(element, { duration : 1 }) : Effect.Fade(element, { duration : 1 }); break;
+    }
+  },
+
+  showDisclaimer : function() {
+    clearLessCache();
+    if (this.settings.activeCookieTypes === '') {
+      return;
+    }
+    var activeCookieTypes = this.settings.activeCookieTypes.split(',');
+
+    var htmlContent1 = this.settings.disclaimer1
+                     + '&lt;button class="button" role="button" name="cookieConsentHide" id="cookieConsentHide"&gt;'
+                     + this.settings.buttonText
+                     + '&lt;/button&gt;'
+                     + '&lt;button class="button" role="button" name="cookieConsentConfig" id="cookieConsentConfig"&gt;'
+                     + this.settings.configButtonText
+                     + '&lt;/button&gt;';
+
+    var htmlContent2 = this.settings.disclaimer2 + '&lt;div id="CookieSelectPane"&gt;';
+
+    for (i = 0; i &lt; activeCookieTypes.length; i++) {
+      var element = activeCookieTypes[i];
+      var label = this.settings[element + 'Label'];
+      var infoBox = this.settings[element + 'InfoBox'];
+      var disabled = '';
+      if (element === 'necessary') {
+        label = this.settings.mandatoryLabel;
+        disabled = 'disabled="disabled" checked="checked"';
+      }
+      htmlContent2 = htmlContent2
+                   + '&lt;div class="CookieSelectButtonWrapper" title="' + infoBox + '"&gt;'
+                   + '&lt;label for="CookieButton' + label + '"&gt;'
+                   + '&lt;input id="CookieButton' + label + '" class="CookieButton" tabindex="1" ' + disabled +' type="checkbox"&gt;'
+                   + label + '&lt;/label&gt;'
+                   + '&lt;/div&gt;';
+    }
+
+    htmlContent2 = htmlContent2 + '&lt;/div&gt;&lt;button class="button" role="button" name="cookieConsentOK" id="cookieConsentOK"&gt;OK&lt;/button&gt;';
+
+    var html = '&lt;div id="cookieConsent" style="display: none;"&gt;'
+             + '&lt;div class="col-md-2"&gt;&lt;/div&gt;'
+             + '&lt;div id="cookieConsentContent" class="col-md-8"&gt;'
+             + htmlContent1
+             + '&lt;/div&gt;'
+             + '&lt;div class="col-md-2"&gt;&lt;/div&gt;'
+             + '&lt;/div&gt;'
+             + '&lt;/div&gt;';
+
+    $('xwikimaincontainerinner').insert( {before : html } );
+    $("cookieConsentHide").observe('click', this.hideDisclaimer.bind(this, activeCookieTypes));
+    $("cookieConsentConfig").addEventListener("click", function(){
+      $("cookieConsentContent").innerHTML = htmlContent2;
+      $("cookieConsentOK").observe('click', function() {
+        for (i = 0; i &lt; activeCookieTypes.length; i++) {
+          var element = activeCookieTypes[i];
+          var label = this.settings[element + 'Label'];
+          if (element === 'necessary') {
+            label = this.settings.mandatoryLabel;
+          }
+          if(!$('CookieButton' + label).checked) {
+            var index = activeCookieTypes.indexOf(element);
+            if (index &gt; -1) {
+              activeCookieTypes.splice(index, 1);
+            }
+          }
+        }
+        this.hideDisclaimer(activeCookieTypes);
+      }.bind(this));
+    }.bind(this));
+
+    this.animation('show', 'cookieConsent');
+  },
+
+  hideDisclaimer : function(param) {
+    this.setCookie('cookieConsent', 'hide', 365);
+    this.setCookie('gdprSettings', param, 365);
+    this.animation('hide', 'cookieConsent');
+  }
+});</code>
+    </property>
+    <property>
+      <name>Core</name>
+    </property>
+    <property>
+      <parse/>
+    </property>
+    <property>
+      <use>always</use>
+    </property>
+  </object>
+  <object>
+    <name>CookieConsent.Script</name>
+    <number>1</number>
+    <className>XWiki.JavaScriptExtension</className>
+    <guid>47f1a74b-f196-4e2d-a8ac-b6ecb786fa3d</guid>
+    <class>
+      <name>XWiki.JavaScriptExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>#set ($settings = $xwiki.getDocument('CookieConsent.WebHome').getObject('CookieConsent.ConfigurationClass', 'lang', "$xcontext.locale"))
+#if (!$settings)
+  #set ($settings = $xwiki.getDocument('CookieConsent.WebHome').getObject('CookieConsent.ConfigurationClass'))
+#end
+#if($settings.getProperty('active').value == 1)
+  #set($labels = ['necessaryLabel','preferencesLabel','statisticsLabel','marketingLabel'])
+    #if("$!{settings.getProperty($labels[0]).value}" != '')
+      #set($displayLabel0 = $!{settings.getProperty($labels[0]).value})
+    #else
+      #set($displayLabel0 = $services.localization.render('cookieConsent.configure.title.mandatory'))
+    #end
+    #if("$!{settings.getProperty($labels[1]).value}" != '')
+      #set($displayLabel1 = $!{settings.getProperty($labels[1]).value})
+    #else
+      #set($displayLabel1 = $services.localization.render('cookieConsent.configure.title.preferences'))
+    #end
+    #if("$!{settings.getProperty($labels[2]).value}" != '')
+      #set($displayLabel2 = $!{settings.getProperty($labels[2]).value})
+    #else
+      #set($displayLabel2 = $services.localization.render('cookieConsent.configure.title.statistics'))
+    #end
+    #if("$!{settings.getProperty($labels[3]).value}" != '')
+      #set($displayLabel3 = $!{settings.getProperty($labels[3]).value})
+    #else
+      #set($displayLabel3 = $services.localization.render('cookieConsent.configure.title.marketing'))
+    #end
+
+document.observe("dom:loaded", function() {
+  var settings =
+  {
+    'type'       : "$settings.getProperty('type').value",
+    'position'   : "$settings.getProperty('position').value",
+    'animation'  : "$settings.getProperty('animation').value",
+    'buttonType' : "$settings.getProperty('buttonType').value",
+    'buttonText' : "$escapetool.javascript($!settings.getProperty('buttonText').value)",
+    'configButtonText' : "$escapetool.javascript($!settings.getProperty('configButtonText').value)",
+    'disclaimer1' : "$escapetool.javascript($!settings.disclaimer1)",
+    'disclaimer2' : "$escapetool.javascript($!settings.disclaimer2)",
+    'necessaryInfoBox' : "$escapetool.javascript($settings.getProperty('necessaryInfoBox').value.trim())",
+    'preferencesInfoBox' : "$escapetool.javascript($settings.getProperty('preferencesInfoBox').value.trim())",
+    'statisticsInfoBox' : "$escapetool.javascript($settings.getProperty('statisticsInfoBox').value.trim())",
+    'marketingInfoBox' : "$escapetool.javascript($settings.getProperty('marketingInfoBox').value.trim())",
+    'mandatoryLabel' : "$escapetool.javascript($displayLabel0)",
+    'preferencesLabel' : "$escapetool.javascript($displayLabel1)",
+    'statisticsLabel' : "$escapetool.javascript($displayLabel2)",
+    'marketingLabel' : "$escapetool.javascript($displayLabel3)",
+    'activeCookieTypes' : "$stringtool.join($settings.getValue('activeCookieTypes'), ',')"
+  };
+  var cookieConsent = new CookieConsent(settings);
+});
+  function clearLessCache() {
+    var cache = "$services.lesscss.clearCache()";
+  }
+#end</code>
+    </property>
+    <property>
+      <name>Initializer</name>
+    </property>
+    <property>
+      <parse>1</parse>
+    </property>
+    <property>
+      <use>always</use>
+    </property>
+  </object>
+  <object>
+    <name>CookieConsent.Script</name>
+    <number>0</number>
+    <className>XWiki.WikiMacroClass</className>
+    <guid>d3128f5a-a72b-4929-9aaf-c3cfbba7b11e</guid>
+    <class>
+      <name>XWiki.WikiMacroClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <async_cached>
+        <defaultValue>0</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>async_cached</name>
+        <number>13</number>
+        <prettyName>Cached</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </async_cached>
+      <async_context>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>1</multiSelect>
+        <name>async_context</name>
+        <number>14</number>
+        <prettyName>Context elements</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>, </separator>
+        <separators>|, </separators>
+        <size>5</size>
+        <unmodifiable>0</unmodifiable>
+        <values>action=Action|doc.reference=Document|icon.theme=Thème des icônes|locale=Langue|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=URL de base pour la requête|request.parameters=Paramètres de la requête|request.url=URL de la requête|request.wiki=Wiki de la requête|user=Utilisateur|wiki=Wiki</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </async_context>
+      <async_enabled>
+        <defaultValue>0</defaultValue>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType/>
+        <name>async_enabled</name>
+        <number>12</number>
+        <prettyName>Asynchronous rendering</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </async_enabled>
+      <code>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>code</name>
+        <number>10</number>
+        <prettyName>Macro code</prettyName>
+        <rows>20</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentDescription>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>contentDescription</name>
+        <number>9</number>
+        <prettyName>Content description (Not applicable for "No content" type)</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </contentDescription>
+      <contentJavaType>
+        <cache>0</cache>
+        <defaultValue>Unknown</defaultValue>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <freeText>allowed</freeText>
+        <largeStorage>1</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentJavaType</name>
+        <number>8</number>
+        <picker>1</picker>
+        <prettyName>Macro content type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>|</separator>
+        <separators>|</separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>Unknown|Wiki</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentJavaType>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>7</number>
+        <prettyName>Macro content availability</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>|</separator>
+        <separators>|</separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>Optional|Mandatory|No content</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <defaultCategory>
+        <disabled>0</disabled>
+        <name>defaultCategory</name>
+        <number>4</number>
+        <prettyName>Default category</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </defaultCategory>
+      <description>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>description</name>
+        <number>3</number>
+        <prettyName>Macro description</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </description>
+      <id>
+        <disabled>0</disabled>
+        <name>id</name>
+        <number>1</number>
+        <prettyName>Macro id</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </id>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>2</number>
+        <prettyName>Macro name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <priority>
+        <disabled>0</disabled>
+        <name>priority</name>
+        <number>11</number>
+        <numberType>integer</numberType>
+        <prettyName>Priority</prettyName>
+        <size>10</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.NumberClass</classType>
+      </priority>
+      <supportsInlineMode>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>supportsInlineMode</name>
+        <number>5</number>
+        <prettyName>Supports inline mode</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </supportsInlineMode>
+      <visibility>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>visibility</name>
+        <number>6</number>
+        <prettyName>Macro visibility</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator>|</separator>
+        <separators>|</separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>Current User|Current Wiki|Global</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </visibility>
+    </class>
+    <property>
+      <async_cached/>
+    </property>
+    <property>
+      <async_context/>
+    </property>
+    <property>
+      <async_enabled/>
+    </property>
+    <property>
+      <code>{{velocity}}
+#set($gdprSettings = $util.decodeURI($xwiki.getUserPreferenceFromCookie("gdprSettings")))
+#set($param = $xcontext.macro.params.gdprHas)
+
+#if("$!{gdprSettings}" != '')
+  #if("$!{param}" != '')
+    #set($gdprArray = $gdprSettings.split(','))
+    #if($param == 'preferences')
+     $gdprArray.contains('preferences')
+    #elseif($param == 'statistics')
+     $gdprArray.contains('statistics')
+    #elseif($param == 'marketing')
+     $gdprArray.contains('marketing')
+    #else
+      {{info}}The parameter should be **preferences**, **statistics** or **marketing**.{{/info}}
+    #end
+  #else
+    $gdprSettings
+  #end
+#else
+  {{info}}The current user has not yet accepted the cookie policy{{/info}}
+#end
+{{/velocity}}</code>
+    </property>
+    <property>
+      <contentDescription/>
+    </property>
+    <property>
+      <contentJavaType/>
+    </property>
+    <property>
+      <contentType>No content</contentType>
+    </property>
+    <property>
+      <defaultCategory/>
+    </property>
+    <property>
+      <description>Get what kind of cookies the current user has consented to. (preferences, statistics or marketing)</description>
+    </property>
+    <property>
+      <id>gdprSettings</id>
+    </property>
+    <property>
+      <name>Gdpr settings</name>
+    </property>
+    <property>
+      <priority/>
+    </property>
+    <property>
+      <supportsInlineMode>1</supportsInlineMode>
+    </property>
+    <property>
+      <visibility>Current Wiki</visibility>
+    </property>
+  </object>
+  <object>
+    <name>CookieConsent.Script</name>
+    <number>0</number>
+    <className>XWiki.WikiMacroParameterClass</className>
+    <guid>b197ad83-5b0e-4d43-b8ca-a50b2df029c5</guid>
+    <class>
+      <name>XWiki.WikiMacroParameterClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <defaultValue>
+        <disabled>0</disabled>
+        <name>defaultValue</name>
+        <number>4</number>
+        <prettyName>Parameter default value</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </defaultValue>
+      <description>
+        <disabled>0</disabled>
+        <name>description</name>
+        <number>2</number>
+        <prettyName>Parameter description</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </description>
+      <mandatory>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>mandatory</name>
+        <number>3</number>
+        <prettyName>Parameter mandatory</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </mandatory>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Parameter name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <type>
+        <disabled>0</disabled>
+        <name>type</name>
+        <number>5</number>
+        <prettyName>Parameter type</prettyName>
+        <size>60</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </type>
+    </class>
+    <property>
+      <defaultValue/>
+    </property>
+    <property>
+      <description>The parameter should be **preferences**, **statistics** or **marketing**.</description>
+    </property>
+    <property>
+      <mandatory>0</mandatory>
+    </property>
+    <property>
+      <name>gdprHas</name>
+    </property>
+    <property>
+      <type/>
+    </property>
+  </object>
+</xwikidoc>
