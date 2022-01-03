@@ -77,6 +77,40 @@ entries.each{ entry -&gt;
   authors.add(person);
   entry.setAuthors(authors);
 
+  def claimReviewObj = page.getObject('XWiki.DeFacto.Review.ClaimReviewClass');
+  if (claimReviewObj != null) {
+    def claimReviewed = claimReviewObj.getValue('claimReviewed')
+    if (claimReviewed != '') {
+      def claimReviewElement = new org.jdom2.Element("json", org.jdom2.Namespace.getNamespace("claimReview", "https://schema.org/ClaimReview"))
+      def json = groovy.json.JsonOutput.toJson([
+        '@context': 'https://schema.org',
+        '@type': 'ClaimReview',
+        'url': page.getExternalURL(),
+        'datePublished': page.getDate(),
+        'author': ['type': 'Organization', 'name': "$articleAuthors"],
+        'claimReviewed': claimReviewed,
+        'itemReviewed': [
+          '@type': 'Claim',
+          'author': ['@type': claimReviewObj.getValue('itemReviewedAuthorType'), 'name': claimReviewObj.getValue('itemReviewedAuthorName')],
+          'datePublished': claimReviewObj.getValue('itemReviewedDatePublished'),
+          'appearance': [
+            'url': claimReviewObj.getValue('itemReviewedAppearanceUrl'),
+            'headline': claimReviewObj.getValue('itemReviewedAppearanceHeadline')
+          ]
+        ],
+        'reviewRating': [
+          '@type': 'Rating',
+          'ratingValue': claimReviewObj.getValue('reviewRatingValue'),
+          'bestRating': '5',
+          'worstRating': '1',
+          'alternateName': claimReviewObj.getValue('reviewRatingAlternateName')
+        ]
+      ]);
+      claimReviewElement.addContent(groovy.json.JsonOutput.prettyPrint(json));
+      entry.getForeignMarkup().add(claimReviewElement);
+    }
+  }
+
   // Set categories
   def categories = new ArrayList&lt;&gt;();
   def themes = object.getValue('themes')
