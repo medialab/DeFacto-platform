@@ -33,16 +33,18 @@
             <exclude>**/Administration/WebPreferences.xml</exclude>
             <!-- Exclude configuration pages -->
             <exclude>**/XWiki/DeFacto/Une/UneConfig.xml</exclude>
+            <exclude>**/XWiki/DeFacto/Une/QuiSommesNous.xml</exclude>
             <!-- Exclude groups -->
             <exclude>**/XWiki/ConsortiumGroup.xml</exclude>
             <!-- Exclude content pages without excluding content pages sheets -->
-            <exclude>.*/A-propos/.*\.xml</exclude>
-            <exclude>${basedir}/src/main/resources/Actus/.*\.xml</exclude>
-            <exclude>${basedir}/src/main/resources/Comprendre/.*\.xml</exclude>
-            <exclude>${basedir}/src/main/resources/Explorer/.*\.xml</exclude>
-            <exclude>.*/Medias/.*\.xml</exclude>
-            <exclude>.*/Mentions-legales/.*\.xml</exclude>
-            <exclude>${basedir}/src/main/resources/Themes/.*\.xml</exclude>
+            <exclude>/A-propos/**</exclude>
+            <exclude>/Actus/**</exclude>
+            <exclude>/Comprendre/**</exclude>
+            <exclude>/Explorer/**</exclude>
+            <exclude>/Medias/**</exclude>
+            <exclude>/Mentions-legales/**</exclude>
+            <exclude>/Politique-de-confidentialite/**</exclude>
+            <exclude>/Themes/**</exclude>
           </excludes>
         </configuration>
       </plugin>

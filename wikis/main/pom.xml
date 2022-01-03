@@ -71,7 +71,9 @@
             <contentPage>${basedir}/src/main/resources/Explorer/.*\.xml</contentPage>
             <contentPage>.*/Medias/.*\.xml</contentPage>
             <contentPage>.*/Mentions-legales/.*\.xml</contentPage>
+            <contentPage>.*/Politique-de-confidentialite/.*\.xml</contentPage>
             <contentPage>${basedir}/src/main/resources/Themes/.*\.xml</contentPage>
+            <contentPage>${basedir}/src/main/resources/XWiki/DeFacto/Une/QuiSommesNous.xml</contentPage>
           </contentPages>
         </configuration>
       </plugin>
