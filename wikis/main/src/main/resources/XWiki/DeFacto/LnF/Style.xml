@@ -171,9 +171,6 @@ body[class*="space-XWiki\.DeFacto"] {
 }
 
 #menuview {
-  /** Align menu vertically with content columns. */
-  padding-right: 15px;
-  padding-left: 15px;
   .container-fluid {
     display: flex;
     .navbar-header {
@@ -357,6 +354,9 @@ body[class*="space-XWiki\.DeFacto"] {
 
 @media (min-width: @screen-md-min) {
   #menuview {
+    /** Align menu vertically with content columns. */
+    padding-right: 15px;
+    padding-left: 15px;
     .container-fluid {
       .navbar-header #companylogo .navbar-brand img {
         height: 47px;

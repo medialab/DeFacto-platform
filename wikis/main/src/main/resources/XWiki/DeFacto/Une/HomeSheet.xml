@@ -23,7 +23,7 @@
   #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Une.HomeSheet'))
   #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.Une.HomeSheet'))
 
-(% class="container-fluid defacto-home" %)(((
+(% class="defacto-home" %)(((
   (% class="defacto-home-block defacto-home-about" %)(((
      = Qui sommes-nous ? =
      (% class="box defacto-box" style="height: 500px" %)(((
@@ -650,7 +650,7 @@ require(['jquery', 'bootstrap'], function($) {
     </property>
     <property>
       <code>#xwikicontent {
-  overflow: inherit; /** Without this rule, the dynamic fact-check search theme can cause a vertical scrollbar to appear. */
+  overflow-y: inherit; /** Without this rule, the dynamic fact-check search theme can cause a vertical scrollbar to appear. */
 }
 
 #hierarchy {
@@ -858,18 +858,19 @@ require(['jquery', 'bootstrap'], function($) {
 
 @media (min-width: @screen-md-min) {
   .defacto-home {
-    grid-column-gap: 30px;
     grid-template-columns: ~"[col1-start] 35%  [col2-start] 65%  [col2-end]";
     grid-template-rows: ~"[row1-start] fit-content(100%) [row2-start] fit-content(100%) [row3-start] 10fr [row3-end]";
 
     .defacto-home-factcheck-pick {
       grid-column: ~"col2-start / col2-end";
       grid-row: row1-start;
+      margin-left: 30px;
     }
 
     .defacto-home-fact-checks {
       grid-column: ~"col2-start / col2-end";
       grid-row: row3-start;
+      margin-left: 30px;
     }
 
     .defacto-home-about {
@@ -885,6 +886,7 @@ require(['jquery', 'bootstrap'], function($) {
     .defacto-teaser-box-two {
       grid-column: col2-start;
       grid-row: row2-start;
+      margin-left: 30px;
     }
 
     .defacto-home-explorer {
