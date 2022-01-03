@@ -100,6 +100,21 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </dateLabel>
+    <displayCoverImageInContent>
+      <customDisplay/>
+      <defaultValue/>
+      <disabled>0</disabled>
+      <displayFormType>radio</displayFormType>
+      <displayType/>
+      <hint/>
+      <name>displayCoverImageInContent</name>
+      <number>9</number>
+      <prettyName>displayCoverImageInContent</prettyName>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+    </displayCoverImageInContent>
     <schedule>
       <customDisplay/>
       <disabled>0</disabled>

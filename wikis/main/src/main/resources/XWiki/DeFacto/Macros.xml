@@ -127,7 +127,7 @@
       (% class="defacto-box-image" %)(((
         #set ($coverImage = $object.getValue('coverImage'))
         #if ("$!coverImage" != '')
-          image:$reference@$coverImage
+          [[[[image:$reference@$coverImage]]&gt;&gt;$page.fullName]]
         #end
       )))
       (% class="defacto-box-body" %)(((

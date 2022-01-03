@@ -25,6 +25,7 @@ XWiki.DeFacto.News.NewsClass_date=Date
 XWiki.DeFacto.News.NewsClass_dateLabel=Libellé de date
 XWiki.DeFacto.News.NewsClass_schedule=Horaire
 XWiki.DeFacto.News.NewsClass_coverImage=Image de présentation
+XWiki.DeFacto.News.NewsClass_displayCoverImageInContent=Inclure l'image de présentation dans le contenu
 
 # Sheet keys
 news.sheet.description=This page controls how News pages are displayed in both view and edit modes.

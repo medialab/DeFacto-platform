@@ -125,6 +125,15 @@
     #else
       &lt;dd&gt;$doc.display('coverImage')&lt;/dd&gt;
     #end
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('displayCoverImageInContent').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_displayCoverImageInContent"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('displayCoverImageInContent', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('displayCoverImageInContent')&lt;/dd&gt;
   &lt;/dl&gt;
 &lt;/div&gt;
 {{/html}}
@@ -133,7 +142,7 @@
   #displayNewsScheduleInfo($object, $dateFormatter)
   ----
   #set ($coverImage = $object.getValue('coverImage'))
-  #if ("$!coverImage" != '')
+  #if ("$!coverImage" != '' &amp;&amp; $object.getValue('displayCoverImageInContent') == '1')
     (% class="defacto-sheet-cover-image" %)(((
       [[image:$doc.fullName@$coverImage]]
     )))
