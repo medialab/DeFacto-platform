@@ -97,17 +97,16 @@
      Abonnez-vous à notre newsletter mensuelle pour rester informé(e) des dernières publications et des événéments !
   )))
   (% class="defacto-teaser-box defacto-teaser-box-two" %)(((
-
     #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
+
       {{html clean="false"}}
         &lt;a class="defacto-action-edit" href="$xwiki.getURL('XWiki.DeFacto.Une.Teaser', 'edit')" role="button"&gt;
           &lt;span class="defacto-action-edit-icon"&gt;$services.icon.renderHTML('pencil')&lt;/span&gt;
         &lt;/a&gt;
       {{/html}}
+
     #end
-
     {{display reference="XWiki.DeFacto.Une.Teaser"/}}
-
   )))
 
   (% class="defacto-home-block defacto-home-fact-checks" %)(((
@@ -464,7 +463,7 @@ require(['jquery', 'bootstrap'], function($) {
     $('.search-ui').empty();
     var solrServiceURL = new XWiki.Document('Search', 'Main').getURL('get');
     var parameters =  {
-      sort: 'date',
+      sort: 'property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date',
       sortOrder: 'desc',
       highlight: false,
       facet: true,
