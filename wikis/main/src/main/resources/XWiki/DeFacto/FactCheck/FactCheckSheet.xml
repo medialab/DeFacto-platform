@@ -169,6 +169,9 @@
     #end
   )))
   #set ($claimReviewed = $claimReview.getValue('claimReviewed'))
+  #if ($claimReviewed != $NULL)
+    #set ($claimReviewed = $claimReviewed.trim())
+  #end
   #if ("$!claimReviewed" != '')
   (% class="defacto-claim-review row" %)(((
     (% class="col-sm-4" %)(((
