@@ -358,9 +358,12 @@ body[class*="space-XWiki\.DeFacto"] {
     padding-right: 15px;
     padding-left: 15px;
     .container-fluid {
-      .navbar-header #companylogo .navbar-brand img {
-        height: 47px;
-        margin-top: 0.5em;
+      .navbar-header #companylogo {
+        padding: 1em 0;
+        .navbar-brand img {
+          height: 47px;
+          margin-top: 0.5em;
+        }
       }
       #xwikimainmenu {
         flex-grow: 1;
