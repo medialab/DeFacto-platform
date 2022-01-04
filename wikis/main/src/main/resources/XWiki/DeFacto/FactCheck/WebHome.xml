@@ -34,7 +34,7 @@
     'tagCloud': true,
     'rowCount': 100,
     'maxPages': 10,
-    'selectedColumn': 'pdate',
+    'selectedColumn': 'doc.date',
     'defaultOrder': 'desc'
 })
 #set ($columns = ['doc.title', 'authors', 'themes', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
