@@ -143,9 +143,9 @@
   #if ("$!request.published" != '')
     {{info}}
     #if ($request.published == 'true')
-      Le fact-check a bien été publié.
+      Le fact check a bien été publié.
     #else
-      Le fact-check a bien été dépublié.
+      Le fact check a bien été dépublié.
     #end
     {{/info}}
   #end
@@ -282,10 +282,10 @@
       #end
       {{html clean="false"}}
       #if ("$!link" != '')
-        Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt; :
+        Ce fact check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt; :
         &lt;em&gt;&lt;a href="$escapetool.xml($link)"&gt;$doc.title&lt;/a&gt;&lt;/em&gt;.
       #else
-        Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
+        Ce fact check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
       #end
       {{/html}}
     #end

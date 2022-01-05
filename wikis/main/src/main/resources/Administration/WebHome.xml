@@ -26,7 +26,7 @@
       &lt;ul class="nav nav-tabs" role="tablist"&gt;
         &lt;li role="presentation" class="active"&gt;&lt;a href="#une" aria-controls="une" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
         &lt;li role="presentation"&gt;&lt;a href="#medias" aria-controls="medias" role="tab" data-toggle="tab"&gt;Médias&lt;/a&gt;&lt;/li&gt;
-        &lt;li role="presentation"&gt;&lt;a href="#factchecks" aria-controls="medias" role="tab" data-toggle="tab"&gt;Fact-checks&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation"&gt;&lt;a href="#factchecks" aria-controls="medias" role="tab" data-toggle="tab"&gt;Fact checks&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     {{/html}}
 
@@ -35,13 +35,13 @@
         #set ($uneConfigPage = $xwiki.getDocument('XWiki.DeFacto.Une.UneConfig'))
         #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
 
-        == Fact-check du jour ==
+        == Fact check du jour ==
         #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
         {{html}}
         #set ($discard = $xwiki.jsfx.use('uicomponents/suggest/suggestPropertyValues.js', {'forceSkinAction': true, 'language': $xcontext.locale}))
         #set ($suggestParams = {
           'class': 'suggest-propertyValues',
-          'placeholder': 'Fact-check du jour',
+          'placeholder': 'Fact check du jour',
           'data-className': 'XWiki.DeFacto.Une.UneConfigClass',
           'data-propertyName': 'factCheckPick',
           'name': 'factCheckPick',

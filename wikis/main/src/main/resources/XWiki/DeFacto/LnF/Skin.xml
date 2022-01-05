@@ -145,7 +145,7 @@
     &lt;div class="container-fluid"&gt;
       &lt;div class="row"&gt;
         &lt;div class="col-xs-12 col-sm-3 text-left"&gt;
-          &lt;h2&gt;De Facto&lt;/h2&gt;
+          &lt;h2&gt;DE FACTO&lt;/h2&gt;
           &lt;ul&gt;
             &lt;li&gt;&lt;a href="$xwiki.getURL('A-propos.WebHome')"&gt;À propos&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href="$xwiki.getURL('Mentions-legales.WebHome')"&gt;Mentions légales&lt;/a&gt;&lt;/li&gt;
@@ -169,7 +169,7 @@
             &lt;li&gt;Newsletter&lt;/li&gt;
             &lt;li&gt;RSS : 
               &lt;a href="$xwiki.getURL('XWiki.DeFacto.Rss', 'get', 'outputSyntax=plain')"&gt;Site&lt;/a&gt; - 
-              &lt;a href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Rss', 'get', 'outputSyntax=plain')"&gt;Fact-checks&lt;/a&gt;&lt;/li&gt;
+              &lt;a href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Rss', 'get', 'outputSyntax=plain')"&gt;Fact checks&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/div&gt;
         &lt;div class="col-xs-12 col-sm-3 text-left defacto-footer-ec"&gt;

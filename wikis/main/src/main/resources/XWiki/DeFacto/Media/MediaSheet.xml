@@ -28,15 +28,15 @@
     #set ($count = $mathtool.toInteger($request.count))
     #if ($count == 0)
       {{info}}
-      Aucun nouveau fact-check n'est disponible dans le flux.
+      Aucun nouveau fact check n'est disponible dans le flux.
       {{/info}}
     #elseif ($count == 1)
       {{info}}
-      Un nouveau fact-check a été importé.
+      Un nouveau fact check a été importé.
       {{/info}}
     #elseif ($count &gt; 1)
       {{info}}
-      $count nouveaux fact-checks ont été importés.
+      $count nouveaux fact checks ont été importés.
       {{/info}}
     #end
   #end
@@ -56,7 +56,7 @@
     #if ($services.security.authorization.hasAccess('edit', $doc.fullName))
     (% class="col-sm-4" %)(((
       = Import RSS =
-      (% class="btn btn-primary" %)[[Importer les derniers fact-checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.Media.FeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
+      (% class="btn btn-primary" %)[[Importer les derniers fact checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.Media.FeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
     )))
     (% class="col-sm-4" %)(((
       = Nouvel article =
@@ -101,7 +101,7 @@
     'extraParams': "&amp;location=$escapetool.url($location)&amp;media=$escapetool.url($services.model.serialize($doc.documentReference, 'compactwiki'))"
   })
   #set ($columns = ['doc.title', 'authors', 'themes', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
-  == Fact-checks ==#livetable('factchecks' $columns $columnsProperties $options)
+  == Fact checks ==#livetable('factchecks' $columns $columnsProperties $options)
 #else
   (% class="xform " %)(((
     #set ($object = $doc.getObject('XWiki.DeFacto.Media.MediaClass'))

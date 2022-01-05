@@ -85,7 +85,7 @@
   #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
   #if ("$!factCheckPick" != '')
   (% class="defacto-home-block defacto-home-factcheck-pick" %)(((
-    = Fact-check du jour =
+    = Fact check du jour =
     {{pageBox reference="$factCheckPick" pick="true"/}}
   )))
   #end
@@ -111,7 +111,7 @@
 
   (% class="defacto-home-block defacto-home-fact-checks" %)(((
 
-    = Fact-checks =
+    = Fact checks =
 
     #set ($uneConfigTags = $uneConfig.getValue('tags'))
 
