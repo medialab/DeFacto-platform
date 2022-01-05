@@ -43,6 +43,16 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
     </claimReviewed>
+    <claimReviewedComment>
+      <disabled>0</disabled>
+      <name>claimReviewedComment</name>
+      <number>15</number>
+      <prettyName>claimReviewedComment</prettyName>
+      <rows>5</rows>
+      <size>40</size>
+      <unmodifiable>0</unmodifiable>
+      <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+    </claimReviewedComment>
     <itemReviewedAppearanceAuthorName>
       <customDisplay/>
       <disabled>0</disabled>

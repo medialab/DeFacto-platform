@@ -131,7 +131,7 @@
     #set ($discard = $doc.use($claimReview))
 
     ## 'itemReviewedAppearanceDatePublished', 'itemReviewedAppearanceAuthorName', 'itemReviewedAppearancePublisherName'
-    #set ($propertyNames = ['claimReviewed', 'itemReviewedDatePublished', 'itemReviewedAuthorType', 'itemReviewedAuthorName', 'itemReviewedAuthorUrl', 'itemReviewedAppearanceUrl', 'itemReviewedAppearanceName', 'reviewRatingValue', 'reviewRatingAlternateName'])
+    #set ($propertyNames = ['claimReviewed', 'itemReviewedDatePublished', 'itemReviewedAuthorType', 'itemReviewedAuthorName', 'itemReviewedAuthorUrl', 'itemReviewedAppearanceUrl', 'itemReviewedAppearanceName', 'reviewRatingValue', 'reviewRatingAlternateName', 'claimReviewedComment'])
     #foreach ($propertyName in $propertyNames)
       = $doc.displayPrettyName($propertyName, false, false) =
       (% class="defacto-claimreview-$propertyName" %)(((
@@ -152,7 +152,27 @@
   (% class="defacto-fact-check-title" %)(((
     = $doc.displayTitle =
   )))
-
+  #set ($media = $object.getValue('media'))
+  #if ($media.indexOf('Surligneurs') &gt;= 0)
+      #set ($itemReviewedAppearanceName = $claimReview.getValue('itemReviewedAppearanceName'))
+      #set ($itemReviewedAppearanceUrl = $claimReview.getValue('itemReviewedAppearanceUrl'))
+      #set ($reviewRatingAlternateName = $claimReview.getValue('reviewRatingAlternateName'))
+      #set ($reviewRatingValue = $claimReview.getValue('reviewRatingValue'))
+      #set ($claimReviewedComment = $claimReview.getValue('claimReviewedComment'))
+      #if ("$!itemReviewedAppearanceName" != '')
+        (% class="defacto-claim-review-appearance" %)(((
+          [[$itemReviewedAppearanceName&gt;&gt;$itemReviewedAppearanceUrl]]
+        )))
+        (% class="defacto-claim-review-rating-name" %)(((
+          (% class="label label-warning" %)$reviewRatingAlternateName(%%)
+        )))
+        #if ("$!claimReviewedComment" != '')
+          (% class="defacto-claim-review-comment" %)(((
+            $claimReviewedComment
+          )))
+        #end
+      #end
+  #end
   (% class="defacto-fact-check-date" %)(((
     #set ($pdate = $object.getValue('pdate'))
     #if ("$!pdate" != '')
@@ -168,6 +188,7 @@
       )))
     #end
   )))
+  #*
   #set ($claimReviewed = $claimReview.getValue('claimReviewed'))
   #if ($claimReviewed != $NULL)
     #set ($claimReviewed = $claimReviewed.trim())
@@ -209,6 +230,7 @@
     )))
   )))
   #end
+  *#
   #set ($headerImage = $object.getValue('headerImage'))
   #if ("$!headerImage" != '')
     (% class="defacto-fact-check-header-image" %)(((
@@ -555,39 +577,34 @@
     margin-bottom: 1.5em;
   }
 
-  .defacto-claim-review {
-    border: 1px solid #ccc;
-    padding-bottom: 1em;
-    padding: 0.5em;
-    margin-top: 1em;
-    margin-bottom: 2em;
-    h2 {
-      margin-top: 5px;
-    }
-    .defacto-claim-review-rating-name {
-      margin-top: 1em;
-      .label {
-        text-transform: uppercase;
-        font-size: inherit;
-        &amp;.label-warning {
-          background: @yellow;
-        }
+  .defacto-claim-review-rating-name {
+    .label {
+      text-transform: uppercase;
+      font-size: inherit;
+      &amp;.label-warning {
+        background: @yellow;
       }
     }
+  }
+
+  .defacto-claim-review-comment p {
+    background: @yellow;
+    line-height: 30px;
+    display: inline;
   }
 
   .defacto-fact-check-date {
     text-align: right;
     font-style: italic;
     color: #666;
+  }
 
-    .defacto-fact-check-update-date {
-      margin-left: 0.3em;
-    }
+  .defacto-fact-check-update-date {
+    margin-left: 0.3em;
+  }
 
-    .defacto-fact-check-publication-date, .defacto-fact-check-update-date {
-      display: inline-block;
-    }
+  .defacto-fact-check-publication-date, .defacto-fact-check-update-date {
+    display: inline-block;
   }
 
   .defacto-fact-check-copyright {
@@ -605,10 +622,12 @@
     color: #5f727f;
     line-height: 1.2em;
   }
+
   h3 {
     font-weight: bold;
     font-size: 1.4em;
   }
+
   .defacto-fact-check-body {
     p {
       margin-bottom: 2em;
@@ -628,6 +647,7 @@
       margin-left: 0.5em;
     }
   }
+
   .defacto-fact-check-tags {
     text-align: center;
     border-top: 1px solid #eee;

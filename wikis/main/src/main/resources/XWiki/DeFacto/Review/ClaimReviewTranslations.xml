@@ -17,6 +17,7 @@
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
   <content>XWiki.DeFacto.Review.ClaimReviewClass_claimReviewed=Déclaration
+XWiki.DeFacto.Review.ClaimReviewClass_claimReviewedComment=Commentaire
 XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedDatePublished=Date de publication
 XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAuthorType=Type d'auteur
 XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAuthorType_organization=Organisme
