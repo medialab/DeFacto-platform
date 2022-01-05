@@ -358,7 +358,7 @@
     (% class="defacto-box-image" %)(((
       #set ($coverImage = $object.getValue('coverImage'))
       #if ("$!coverImage" != '')
-        image:$reference@$coverImage
+        [[image:$reference@$coverImage]]
       #end
     )))
     (% class="defacto-box-body" %)(((
