@@ -19,9 +19,11 @@
   <content>{{velocity}}
 #if ($doc.documentReference.name != 'AboutSheet')
   #if ($xcontext.action == 'view')
+    #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.LnF.AboutSheet'))
+    #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.LnF.TabsJSX'))
     {{html clean="false"}}
       &lt;ul class="defacto-a-propos nav nav-tabs" role="tablist"&gt;
-        &lt;li role="presentation" class="active"&gt;&lt;a href="#manifeste" aria-controls="manifeste" role="tab" data-toggle="tab"&gt;Manifeste&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation" class="active"&gt;&lt;a href="#presentation" aria-controls="presentation" role="tab" data-toggle="tab"&gt;Présentation&lt;/a&gt;&lt;/li&gt;
         &lt;li role="presentation"&gt;&lt;a href="#qui-sommes-nous" aria-controls="qui-sommes-nous" role="tab" data-toggle="tab"&gt;Qui sommes-nous ?&lt;/a&gt;&lt;/li&gt;
         &lt;li role="presentation"&gt;&lt;a href="#reseau" aria-controls="reseau" role="tab" data-toggle="tab"&gt;Le réseau européen&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
@@ -32,4 +34,162 @@
   {{include page="AppWithinMinutes/Content"/}}
 #end
 {{/velocity}}</content>
+  <object>
+    <name>XWiki.DeFacto.LnF.AboutSheet</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>b49a7be3-c9a0-472e-bfaa-04b267f582aa</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>#qui-sommes-nous .row:not(:first-child) img {
+  padding: 1em 4em;
+}
+
+.defacto-partner-logo .wikiexternallink {
+  background: none;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid @darkgrey;
+  li {
+    &amp;.active {
+      &gt; a, &gt; a:hover, &gt; a:focus {
+        background: white;
+        border: 1px solid @darkgrey;
+        border-bottom-color: transparent;
+        color: inherit;
+      }
+    }
+    &gt; a {
+      border: 1px solid @lightgrey;
+      background-color: @lightgrey;
+      color: white;
+    }
+    &gt; a:hover, &gt; a:focus {
+      background: white;
+      border: 1px solid @lightgrey;
+      border-bottom-color: transparent;
+      color: inherit;
+    }
+  }
+}
+
+
+@media (min-width: @screen-md-min) {
+  #qui-sommes-nous .row:not(:first-child) img {
+    padding: 2em;
+  }
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
 </xwikidoc>

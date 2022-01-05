@@ -218,7 +218,7 @@
       </visibilityRestrictions>
     </class>
     <property>
-      <action>edit</action>
+      <action>saveandedit</action>
     </property>
     <property>
       <creationRestrictions/>
