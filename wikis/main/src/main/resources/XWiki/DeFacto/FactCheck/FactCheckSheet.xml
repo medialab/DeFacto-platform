@@ -577,6 +577,10 @@
     margin-bottom: 1.5em;
   }
 
+  .defacto-claim-review-appearance {
+    margin-top: -1em;
+  }
+
   .defacto-claim-review-rating-name {
     .label {
       text-transform: uppercase;
