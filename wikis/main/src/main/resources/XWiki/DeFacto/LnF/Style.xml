@@ -296,6 +296,16 @@ body[class*="space-XWiki\.DeFacto"] {
   font-size: 18px;
 }
 
+.defacto-tags {
+  text-align: center;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 1em;
+  ul {
+    list-style: none;
+  }
+}
+
 #footerglobal {
   background: @defacto-primary;
   color: #fff;

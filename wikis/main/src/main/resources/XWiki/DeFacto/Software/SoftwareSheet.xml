@@ -161,8 +161,40 @@
       &lt;/dt&gt;
       &lt;dd&gt;$doc.display('demo')&lt;/dd&gt;
     #end
+    #if ($editing)
+      #set ($tagObject = $doc.getObject('XWiki.TagClass'))
+      #set ($tags = $tagObject.getValue('tags'))
+      #set ($discard = $xwiki.jsfx.use('uicomponents/suggest/suggestPropertyValues.js',
+        {'forceSkinAction': true, 'language': $xcontext.locale}))
+      ## The suggestions work best with the options below than with the TagClass
+      #set ($suggestParams = {
+        'class': 'suggest-propertyValues',
+        'placeholder': '',
+        'data-className': 'XWiki.DeFacto.Une.UneConfigClass',
+        'data-propertyName': 'tags',
+        'multiple': 'multiple',
+        'name': 'tags',
+        'value': $tags
+      })
+      &lt;dt&gt;Tags&lt;/dt&gt;
+      &lt;dd&gt;#suggestInput($suggestParams)&lt;/dd&gt;
+    #end
   &lt;/dl&gt;
 &lt;/div&gt;
 {{/html}}
+
+#if (!$editing)
+  #set ($tagObject = $doc.getObject('XWiki.TagClass'))
+  #if ($tagObject != $NULL)
+    #set ($tags = $tagObject.getValue('tags'))
+    #if ($tags.size() &gt; 0)
+      (% class="defacto-tags" %)(((
+      #foreach ($tag in $tags)
+        * [[$tag&gt;&gt;Main.Search||queryString="f_type=DOCUMENT&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)&amp;text=*"]]
+      #end
+      )))
+    #end
+  #end
+#end
 {{/velocity}}</content>
 </xwikidoc>

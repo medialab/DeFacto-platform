@@ -284,7 +284,7 @@
   #if ($tagObject != $NULL)
     #set ($tags = $tagObject.getValue('tags'))
     #if ($tags.size() &gt; 0)
-      (% class="defacto-fact-check-tags" %)(((
+      (% class="defacto-tags" %)(((
       #foreach ($tag in $tags)
         * [[$tag&gt;&gt;Main.Search||queryString="f_type=DOCUMENT&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)&amp;text=*"]]
       #end
@@ -649,16 +649,6 @@
     }
     .defacto-fact-check-header-media-credits {
       margin-left: 0.5em;
-    }
-  }
-
-  .defacto-fact-check-tags {
-    text-align: center;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    padding: 1em;
-    ul {
-      list-style: none;
     }
   }
 }
