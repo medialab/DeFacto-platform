@@ -43,7 +43,6 @@
             <exclude>/Explorer/**</exclude>
             <exclude>/Medias/**</exclude>
             <exclude>/Mentions-legales/**</exclude>
-            <exclude>/Politique-de-confidentialite/**</exclude>
             <exclude>/Themes/**</exclude>
             <exclude>**/XWiki/DeFacto/Une/QuiSommesNous.xml</exclude>
             <exclude>**/XWiki/DeFacto/Une/Teaser.xml</exclude>
