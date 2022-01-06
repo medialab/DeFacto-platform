@@ -74,6 +74,7 @@
             <contentPage>.*/Politique-de-confidentialite/.*\.xml</contentPage>
             <contentPage>${basedir}/src/main/resources/Themes/.*\.xml</contentPage>
             <contentPage>${basedir}/src/main/resources/XWiki/DeFacto/Une/QuiSommesNous.xml</contentPage>
+            <contentPage>${basedir}/src/main/resources/XWiki/DeFacto/Une/Teaser.xml</contentPage>
           </contentPages>
         </configuration>
       </plugin>

@@ -27,13 +27,13 @@
         <configuration>
           <includeDependencies>true</includeDependencies>
           <excludes>
+            <exclude>**/Main/WebHome</exclude>
             <!-- Exclude XWikiPreferences and Administration.WebPreferences in case rights were updated in production
              -->
             <exclude>**/XWiki/XWikiPreferences.xml</exclude>
             <exclude>**/Administration/WebPreferences.xml</exclude>
             <!-- Exclude configuration pages -->
             <exclude>**/XWiki/DeFacto/Une/UneConfig.xml</exclude>
-            <exclude>**/XWiki/DeFacto/Une/QuiSommesNous.xml</exclude>
             <!-- Exclude groups -->
             <exclude>**/XWiki/ConsortiumGroup.xml</exclude>
             <!-- Exclude content pages without excluding content pages sheets -->
@@ -45,6 +45,8 @@
             <exclude>/Mentions-legales/**</exclude>
             <exclude>/Politique-de-confidentialite/**</exclude>
             <exclude>/Themes/**</exclude>
+            <exclude>**/XWiki/DeFacto/Une/QuiSommesNous.xml</exclude>
+            <exclude>**/XWiki/DeFacto/Une/Teaser.xml</exclude>
           </excludes>
         </configuration>
       </plugin>
