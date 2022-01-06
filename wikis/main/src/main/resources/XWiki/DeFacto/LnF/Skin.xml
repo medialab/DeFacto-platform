@@ -341,6 +341,171 @@
   </object>
   <object>
     <name>XWiki.DeFacto.LnF.Skin</name>
+    <number>4</number>
+    <className>XWiki.XWikiSkinFileOverrideClass</className>
+    <guid>7c276bf4-d930-4d16-b907-b5cdbd0379e5</guid>
+    <class>
+      <name>XWiki.XWikiSkinFileOverrideClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <content>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>content</name>
+        <number>2</number>
+        <prettyName>Content</prettyName>
+        <rows>15</rows>
+        <size>80</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </content>
+      <path>
+        <disabled>0</disabled>
+        <name>path</name>
+        <number>1</number>
+        <prettyName>Path</prettyName>
+        <size>255</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </path>
+    </class>
+    <property>
+      <content>## Customized to remove the canonical link since it is dynamically set by FactCheckCanonicalUrlUIX
+## ---------------------------------------------------------------------------
+#if($isInServletMode)
+## TODO this should be more specific
+#if("$!request.noDoctype" != "true")
+&lt;!DOCTYPE html&gt;
+#end
+#macro(addMetaAttribute $metaAttributes $name $value)
+  #set ($discard = $metaAttributes.add("data-xwiki-${name}=""$escapetool.xml($value)"""))
+#end
+## ---------------------------------------------------------------------------------------------------------------
+## Compute all the meta attributes to add to the HTML tag.
+## ---------------------------------------------------------------------------------------------------------------
+#set ($metaAttributes = [])
+#if("$!doc" != "" &amp;&amp; "$!tdoc" != "")
+  ## NOTE: you should not use these attributes in javascript directly, but via the 'xwiki-meta' module instead:
+  ## http://www.xwiki.org/xwiki/bin/view/Documentation/DevGuide/FrontendResources/JavaScriptAPI/#HGetsomeinformationaboutthecurrentdocument
+  #addMetaAttribute($metaAttributes, 'reference', $services.model.serialize($doc.documentReference, 'default'))
+  #addMetaAttribute($metaAttributes, 'document', $doc.fullName)##deprecated, use 'reference' instead
+  #addMetaAttribute($metaAttributes, 'wiki', $doc.wiki)##deprecated, use 'reference' instead
+  #addMetaAttribute($metaAttributes, 'space', $doc.space)##deprecated, use 'reference' instead
+  #addMetaAttribute($metaAttributes, 'page', $doc.documentReference.name)##deprecated, use 'reference' instead
+  #addMetaAttribute($metaAttributes, 'isnew', $tdoc.isNew())
+  ## If tdoc is a new document, its version when checking for conflict will be the original doc version.
+  ## This fix XWIKI-16299.
+  #if ($tdoc.isNew())
+    #set ($version = $doc.version)
+  #else
+    #set ($version = $tdoc.version)
+  #end
+  #addMetaAttribute($metaAttributes, 'version', $version)
+  #addMetaAttribute($metaAttributes, 'rest-url', $services.rest.url($tdoc.documentReferenceWithLocale))
+  #addMetaAttribute($metaAttributes, 'locale', $tdoc.locale)
+#end
+#addMetaAttribute($metaAttributes, 'form-token', "$!{services.csrf.token}")
+## Don't put any user-reference tag when the user is not logged in
+#if ("$!xcontext.userReference" != '')
+  #addMetaAttribute($metaAttributes, 'user-reference', $!services.model.serialize($xcontext.userReference, 'default'))
+#end
+
+&lt;html xmlns="http://www.w3.org/1999/xhtml" lang="$xcontext.locale" xml:lang="$xcontext.locale" $stringtool.join($metaAttributes, ' ')&gt;
+  &lt;head&gt;
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Ensure that the Content-Type meta directive is the first one in the header.
+    ## See http://www.w3.org/International/tutorials/tutorial-char-enc/
+    ## ---------------------------------------------------------------------------------------------------------------
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=$xwiki.encoding" /&gt;
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Compute the title.
+    ## ---------------------------------------------------------------------------------------------------------------
+    #if(!$title)
+      #set($title = $!xwiki.getSpacePreference('title'))
+      #if($title != '')
+        ## Evaluate the title since it can have velocity code.
+        #set($title = "#evaluate($title)")
+        ## Don`t forget to escape it.
+        #set($title = "$escapetool.xml($title)")
+      #else
+        #set($title = "XWiki - $escapetool.xml($!doc.space) - $escapetool.xml($!tdoc.displayTitle)")
+      #end
+    #else
+      #set($title = $escapetool.xml($title))
+    #end
+    &lt;title&gt;$title&lt;/title&gt;
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Force Compatibility mode for IE browsers to use the latest rendering mode. In order to work, the declaration 
+    ## needs to be placed in the &lt;head&gt;, before all other elements except for the &lt;title&gt; and other &lt;meta&gt; elements
+    ## See http://msdn.microsoft.com/en-us/library/jj676915(v=vs.85).aspx#SETMODE
+    ## ---------------------------------------------------------------------------------------------------------------
+    #set($userAgent = $request.getHeader('User-Agent'))
+    #if($userAgent.contains('MSIE') || $userAgent.contains('Trident'))
+      ## Add a meta-tag to disable the IE compatibility mode
+      &lt;meta http-equiv="X-UA-Compatible" content="IE=edge" /&gt;
+      ## Add the equivalent HTTP header to disable the compatibility mode (the meta is not enough on intranet sites)
+      #set($discard = $response.addHeader('X-UA-Compatible', 'IE=edge'))
+    #end
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Enable Responsiveness for phones
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Favicons
+    ## Legacy, for IE
+    &lt;link rel="shortcut icon" href="$xwiki.getSkinFile('icons/xwiki/favicon.ico')" /&gt;
+    ## Present, HTML5
+    &lt;link rel="icon" href="$xwiki.getSkinFile('icons/xwiki/favicon16.png')" type="image/png" /&gt;
+    ## The future, scalable icons
+    &lt;link rel="icon" href="$xwiki.getSkinFile('icons/xwiki/favicon.svg')" type="image/svg+xml" /&gt;
+    ## For smart phones and tablets
+    &lt;link rel="apple-touch-icon" href="$xwiki.getSkinFile('icons/xwiki/favicon144.png')" /&gt;
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Universal edit button. See http://universaleditbutton.org
+    ## ---------------------------------------------------------------------------------------------------------------
+    #if($xcontext.action=="view")
+      &lt;link rel="alternate" type="application/x-wiki" title="Edit" href="$doc.getURL("edit")" /&gt;
+    #end
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Add user-defined Meta directives.
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Note: Velocity code, so it needs to be evaluated.
+    #evaluate($!xwiki.getSpacePreference("meta"))
+    ## ---------------------------------------------------------------------------------------------------------------
+    ## Hook for inserting Link extensions. This will be replaced with the pulled link references.
+    ## ---------------------------------------------------------------------------------------------------------------
+    &lt;!-- com.xpn.xwiki.plugin.skinx.LinkExtensionPlugin --&gt;
+    &lt;link href="$services.webjars.url('drawer', 'css/drawer.min.css')" rel="stylesheet" type="text/css" /&gt;
+    #template("stylesheets.vm")
+    #template("javascript.vm")
+  &lt;/head&gt;
+  #set($bodyTagName = 'body')
+#else ## Portlet Mode
+  #template("stylesheets.vm")
+  #template("javascript.vm")
+  #set($bodyTagName = 'div')
+#end
+## TODO: fix this from css
+#set($bodyAction = $xcontext.action)
+#if($xcontext.action == "admin" || $xcontext.action == "import" || $xcontext.action == "export")
+  #set($bodyAction = "view")
+#end
+## These elements will be closed in the htmlfooter.vm file
+&lt;$bodyTagName id="body" class="skin-flamingo wiki-${xcontext.database} #if("$!doc.space" != "")space-${escapetool.xml($doc.space.replaceAll(' ', '_'))}#end ${bodyAction}body #if($showLeftPanels == "0")hideleft#end#if($showRightPanels == "0")hideright#end#if($hidecolumns &amp;&amp; ($!hidecolumns == 1))hidelefthideright#end #if($showLeftPanels != "0" &amp;&amp; $showRightPanels != "0" &amp;&amp; $!hidecolumns != 1)content#end panel-left-width-${leftPanelsWidth} panel-right-width-${rightPanelsWidth} drawer drawer-right drawer-close"&gt;
+&lt;div id="xwikimaincontainer"&gt;
+&lt;div id="xwikimaincontainerinner"&gt;
+</content>
+    </property>
+    <property>
+      <path>htmlheader.vm</path>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.DeFacto.LnF.Skin</name>
     <number>0</number>
     <className>XWiki.XWikiSkins</className>
     <guid>6758a920-d3c7-4805-af33-2b0bf475fe9a</guid>
