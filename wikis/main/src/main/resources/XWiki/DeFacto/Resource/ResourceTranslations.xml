@@ -27,6 +27,7 @@ XWiki.DeFacto.Resource.ResourceClass_categories_pedagogy=Outils pédagogiques
 XWiki.DeFacto.Resource.ResourceClass_categories_parenthood=Parentalité numérique
 XWiki.DeFacto.Resource.ResourceClass_categories_tutorials=Tutoriels
 XWiki.DeFacto.Resource.ResourceClass_url=Lien vers la publication d'origine
+XWiki.DeFacto.Resource.ResourceClass_pdate=Date de publication
 
 # Sheet keys
 resource.sheet.description=This page controls how Resource pages are displayed in both view and edit modes.
