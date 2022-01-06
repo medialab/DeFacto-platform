@@ -149,7 +149,6 @@
           &lt;ul&gt;
             &lt;li&gt;&lt;a href="$xwiki.getURL('A-propos.WebHome')"&gt;À propos&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href="$xwiki.getURL('Mentions-legales.WebHome')"&gt;Mentions légales&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;&lt;a href="$xwiki.getURL('Politique-de-confidentialite.WebHome')"&gt;Politique de confidentialité&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;&lt;a href="mailto:contact@defacto-observatoire.fr"&gt;Contact&lt;/a&gt;&lt;/li&gt;
             #if ($isGuest)
             &lt;li&gt;&lt;a href="$xwiki.getURL('XWiki.XWikiLogin', 'login')"&gt;Se connecter&lt;/a&gt;&lt;/li&gt;
