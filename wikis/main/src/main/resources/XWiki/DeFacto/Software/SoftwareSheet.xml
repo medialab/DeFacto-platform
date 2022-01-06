@@ -67,52 +67,100 @@
       &lt;/label&gt;
     &lt;/dt&gt;
     #end
+    #if (!$editing)
+      #set ($coverImage = $object.getValue('coverImage'))
+      #if ("$!coverImage" != '' &amp;&amp; $object.getValue('displayCoverImageInContent') == '1')
+        (% class="defacto-sheet-cover-image" %)(((
+          [[image:$doc.fullName@$coverImage]]
+        )))
+      #end
+    #end
     &lt;dd&gt;$doc.display('content')&lt;/dd&gt;
-    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
-        class="editableProperty"
-        data-property="$escapetool.xml($services.model.serialize($object.getProperty('home').reference))"
-        data-property-type="object"#end&gt;
-      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_home"#end&gt;
-        $escapetool.xml($doc.displayPrettyName('home', false, false))
-      &lt;/label&gt;
-    &lt;/dt&gt;
-    &lt;dd&gt;$doc.display('home')&lt;/dd&gt;
-    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
-        class="editableProperty"
-        data-property="$escapetool.xml($services.model.serialize($object.getProperty('authors').reference))"
-        data-property-type="object"#end&gt;
-      &lt;label#if ($editing) for="XWiki.DeFacto.Software.Code.SoftwareClass_0_authors"#end&gt;
-        $escapetool.xml($doc.displayPrettyName('authors', false, false))
-      &lt;/label&gt;
-    &lt;/dt&gt;
-    &lt;dd&gt;$doc.display('authors')&lt;/dd&gt;
-    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
-        class="editableProperty"
-        data-property="$escapetool.xml($services.model.serialize($object.getProperty('repository').reference))"
-        data-property-type="object"#end&gt;
-      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_repository"#end&gt;
-        $escapetool.xml($doc.displayPrettyName('repository', false, false))
-      &lt;/label&gt;
-    &lt;/dt&gt;
-    &lt;dd&gt;$doc.display('repository')&lt;/dd&gt;
-    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
-        class="editableProperty"
-        data-property="$escapetool.xml($services.model.serialize($object.getProperty('documentation').reference))"
-        data-property-type="object"#end&gt;
-      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_documentation"#end&gt;
-        $escapetool.xml($doc.displayPrettyName('documentation', false, false))
-      &lt;/label&gt;
-    &lt;/dt&gt;
-    &lt;dd&gt;$doc.display('documentation')&lt;/dd&gt;
-    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
-        class="editableProperty"
-        data-property="$escapetool.xml($services.model.serialize($object.getProperty('demo').reference))"
-        data-property-type="object"#end&gt;
-      &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_demo"#end&gt;
-        $escapetool.xml($doc.displayPrettyName('demo', false, false))
-      &lt;/label&gt;
-    &lt;/dt&gt;
-    &lt;dd&gt;$doc.display('demo')&lt;/dd&gt;
+    #if ($editing &amp;&amp; $hasEdit)
+      &lt;dt class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('coverImage').reference))"
+          data-property-type="object"&gt;
+        &lt;label for="XWiki.DeFacto.Software.Software_0_coverImage"&gt;
+          $escapetool.xml($doc.displayPrettyName('coverImage', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+      #set ($attachmentPickerParams = {
+        'id': 'XWiki.DeFacto.Software.SoftwareClass_0_coverImage',
+        'name': 'XWiki.DeFacto.Software.SoftwareClass_0_coverImage',
+        'data-search-scope': "document:$services.model.serialize($doc.documentReference)",
+        'data-upload-allowed': $services.security.authorization.hasAccess('edit'),
+        'value': $object.getValue('coverImage')
+      })
+      #attachmentPicker($attachmentPickerParams)
+      &lt;dt class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('displayCoverImageInContent').reference))"
+          data-property-type="object"&gt;
+        &lt;label for="XWiki.DeFacto.Software.SoftwareClass_0_displayCoverImageInContent"&gt;
+          $escapetool.xml($doc.displayPrettyName('displayCoverImageInContent', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+      &lt;dd&gt;$doc.display('displayCoverImageInContent')&lt;/dd&gt;
+    #end
+    #set ($value = $object.getValue('home'))
+    #if ($editing || "$!value" != '')
+      &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+          class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('home').reference))"
+          data-property-type="object"#end&gt;
+        &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_home"#end&gt;
+          $escapetool.xml($doc.displayPrettyName('home', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+      &lt;dd&gt;$doc.display('home')&lt;/dd&gt;
+    #end
+    #set ($value = $object.getValue('authors'))
+    #if ($editing || "$!value" != '')
+      &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+          class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('authors').reference))"
+          data-property-type="object"#end&gt;
+        &lt;label#if ($editing) for="XWiki.DeFacto.Software.Code.SoftwareClass_0_authors"#end&gt;
+          $escapetool.xml($doc.displayPrettyName('authors', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+      &lt;dd&gt;$doc.display('authors')&lt;/dd&gt;
+    #end
+    #set ($value = $object.getValue('repository'))
+    #if ($editing || "$!value" != '')
+      &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+          class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('repository').reference))"
+          data-property-type="object"#end&gt;
+        &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_repository"#end&gt;
+          $escapetool.xml($doc.displayPrettyName('repository', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+      &lt;dd&gt;$doc.display('repository')&lt;/dd&gt;
+    #end
+    #set ($value = $object.getValue('documentation'))
+    #if ($editing || "$!value" != '')
+      &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+          class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('documentation').reference))"
+          data-property-type="object"#end&gt;
+        &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_documentation"#end&gt;
+          $escapetool.xml($doc.displayPrettyName('documentation', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+      &lt;dd&gt;$doc.display('documentation')&lt;/dd&gt;
+    #end
+    #set ($value = $object.getValue('demo'))
+    #if ($editing || "$!value" != '')
+      &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+          class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('demo').reference))"
+          data-property-type="object"#end&gt;
+        &lt;label#if ($editing) for="XWiki.DeFacto.Software.SoftwareClass_0_demo"#end&gt;
+          $escapetool.xml($doc.displayPrettyName('demo', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+      &lt;dd&gt;$doc.display('demo')&lt;/dd&gt;
+    #end
   &lt;/dl&gt;
 &lt;/div&gt;
 {{/html}}

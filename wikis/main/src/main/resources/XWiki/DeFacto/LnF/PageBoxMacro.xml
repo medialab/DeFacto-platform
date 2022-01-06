@@ -390,8 +390,12 @@
       #set ($abstract = $page.display('abstract', $obj))
     #elseif ($page.getObject('XWiki.DeFacto.Publication.PublicationClass') != $NULL)
       #set ($obj = $page.getObject('XWiki.DeFacto.Publication.PublicationClass'))
-      #set ($coverImage = '')
-      #set ($abstract = $page.display('content', $obj))
+      #set ($coverImage = $obj.getValue('coverImage'))
+      #set ($abstract = $stringtool.abbreviate($page.content, 600))
+    #elseif ($page.getObject('XWiki.DeFacto.Software.SoftwareClass') != $NULL)
+      #set ($obj = $page.getObject('XWiki.DeFacto.Software.SoftwareClass'))
+      #set ($coverImage = $obj.getValue('coverImage'))
+      #set ($abstract = $page.display('abstract', $obj))
     #else
       #set ($coverImage = '')
       #set ($abstract = $stringtool.abbreviate($page.content, 600))
@@ -403,7 +407,7 @@
     {{box cssClass="defacto-box defacto-page-box$extraCss"}}
       #if ("$!coverImage" != '')
         (% class="defacto-box-image" %)(((
-          image:$reference@$coverImage
+          [[image:$reference@$coverImage]]
         )))
       #end
       (% class="defacto-box-body" %)(((

@@ -58,6 +58,29 @@
       &lt;/label&gt;
     &lt;/dt&gt;
     &lt;dd&gt;$doc.display('pdate')&lt;/dd&gt;
+    &lt;dt class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('coverImage').reference))"
+          data-property-type="object"&gt;
+        &lt;label for="XWiki.DeFacto.Publication.PublicationClass_0_coverImage"&gt;
+          $escapetool.xml($doc.displayPrettyName('coverImage', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+      #set ($attachmentPickerParams = {
+        'id': 'XWiki.DeFacto.Publication.PublicationClass_0_coverImage',
+        'name': 'XWiki.DeFacto.Publication.PublicationClass_0_coverImage',
+        'data-search-scope': "document:$services.model.serialize($doc.documentReference)",
+        'data-upload-allowed': $services.security.authorization.hasAccess('edit'),
+        'value': $object.getValue('coverImage')
+      })
+      #attachmentPicker($attachmentPickerParams)
+      &lt;dt class="editableProperty"
+          data-property="$escapetool.xml($services.model.serialize($object.getProperty('displayCoverImageInContent').reference))"
+          data-property-type="object"&gt;
+        &lt;label for="XWiki.DeFacto.Publication.PublicationClass_0_displayCoverImageInContent"&gt;
+          $escapetool.xml($doc.displayPrettyName('displayCoverImageInContent', false, false))
+        &lt;/label&gt;
+      &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('displayCoverImageInContent')&lt;/dd&gt;
     &lt;dt #if (!$editing &amp;&amp; $hasEdit)
         class="editableProperty"
         data-property="$escapetool.xml($services.model.serialize($object.getProperty('authors').reference))"
@@ -143,6 +166,14 @@
 &lt;/div&gt;
 {{/html}}
 #else
+
+#set ($coverImage = $object.getValue('coverImage'))
+#if ("$!coverImage" != '' &amp;&amp; $object.getValue('displayCoverImageInContent') == '1')
+  (% class="defacto-sheet-cover-image" %)(((
+    [[image:$doc.fullName@$coverImage]]
+  )))
+#end
+
 $doc.display('content', $object)
 
 == $doc.displayPrettyName('pubLink', false, false) ==

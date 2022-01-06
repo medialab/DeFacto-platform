@@ -24,6 +24,8 @@ XWiki.DeFacto.Software.SoftwareClass_home=Page d'accueil
 XWiki.DeFacto.Software.SoftwareClass_repository=Code source
 XWiki.DeFacto.Software.SoftwareClass_documentation=Documentation
 XWiki.DeFacto.Software.SoftwareClass_authors=Auteurs
+XWiki.DeFacto.Software.SoftwareClass_coverImage=Image de présentation
+XWiki.DeFacto.Software.SoftwareClass_displayCoverImageInContent=Afficher l'image de présentation dans le contenu
 
 # Sheet keys
 software.sheet.description=This page controls how Software pages are displayed in both view and edit modes.

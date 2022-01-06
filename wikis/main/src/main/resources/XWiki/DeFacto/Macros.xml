@@ -44,7 +44,7 @@
 #end
 
 #macro (getResources $category $return)
-  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop order by doc.date desc")
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop, DateProperty as pdate where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop and pdate.id.id = obj.id and pdate.id.name = 'pdate' order by pdate.value desc")
   #set ($macro.query = $services.query.hql($macro.hql))
   #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Resource.ResourceClass'))
   #set ($discard = $macro.query.bindValue('propName', 'categories'))
@@ -156,19 +156,8 @@
         (% class="clearfix" %)((()))
       #end
       (% class="col-xs-12 col-md-6" %)(((
-        #set ($reference = $entry[0])
-        #set ($page = $xwiki.getDocument($reference))
-        #set ($object = $page.getObject('XWiki.DeFacto.Software.SoftwareClass'))
-        #set ($abstract = $object.getValue('abstract'))
-        {{box cssClass="defacto-box defacto-box-publication"}}
-        (% class="defacto-box-body" %)(((
-          {{html wiki="false" clean="false"}}
-            &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
-          {{/html}}
+        {{resourceBox reference="$entry[0]"/}}
 
-          $abstract
-        )))
-        {{/box}}
       )))
     #end
   )))
@@ -176,20 +165,7 @@
 
 #macro (displayPublicationList $list)
   #foreach ($entry in $list)
-    #set ($reference = $entry[0])
-    #set ($page = $xwiki.getDocument($reference))
-    #set ($object = $page.getObject('XWiki.DeFacto.Publication.PublicationClass'))
-    #set ($abstract = $page.content)
-    #set ($intro = $stringtool.abbreviate($abstract, 400))
-    {{box cssClass="defacto-box defacto-box-publication"}}
-      (% class="defacto-box-body" %)(((
-        {{html wiki="false" clean="false"}}
-          &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
-        {{/html}}
-
-        $intro
-      )))
-    {{/box}}
+    {{resourceBox reference="$entry[0]"/}}
 
   #end
 #end

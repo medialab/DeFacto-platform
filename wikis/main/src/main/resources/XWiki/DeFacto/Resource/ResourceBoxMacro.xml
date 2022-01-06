@@ -354,6 +354,12 @@
   #set ($page = $xwiki.getDocument($reference))
   #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Resource.ResourceBoxMacro'))
   #set ($object = $page.getObject('XWiki.DeFacto.Resource.ResourceClass'))
+  #if ($object == $NULL)
+    #set ($object = $page.getObject('XWiki.DeFacto.Publication.PublicationClass'))
+  #end
+  #if ($object == $NULL)
+    #set ($object = $page.getObject('XWiki.DeFacto.Software.SoftwareClass'))
+  #end
   {{box cssClass="defacto-box defacto-box-resource"}}
     (% class="defacto-box-image" %)(((
       #set ($coverImage = $object.getValue('coverImage'))
@@ -366,7 +372,13 @@
         &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
       {{/html}}
 
-      $page.display('abstract', $object)
+      #if ($page.getObject('XWiki.DeFacto.Publication.PublicationClass') == $NULL)
+        $page.display('abstract', $object)
+      #else
+        #set ($abstract = $page.content)
+        #set ($abstract = $stringtool.abbreviate($abstract, 400))
+        $abstract
+      #end
     )))
   {{/box}}
 {{/velocity}}</code>
