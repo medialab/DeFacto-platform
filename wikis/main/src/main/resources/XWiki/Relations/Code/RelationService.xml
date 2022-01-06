@@ -167,7 +167,7 @@
   #foreach ($tag in $macro.tags)
     #searchTagInSpaces($tag, ['Explorer', 'Comprendre'], $searchResponse)
     #foreach ($searchResult in $searchResponse.results)
-      #if ($counter &lt; 10)
+      #if ($counter &lt; 10 &amp;&amp; $services.model.resolveDocument($searchResult.fullname) != $services.model.resolveDocument($subject) &amp;&amp; $seeAlsoItems.indexOf($searchResult.fullname) &lt; 0)
         #maybeAddSeeAlsoBlockTitle($counter)
         #set ($counter = $mathtool.add($counter, 1))
         {{pageBox reference="$searchResult.fullname"/}}
