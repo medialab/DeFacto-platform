@@ -139,8 +139,13 @@
       <cache>long</cache>
     </property>
     <property>
-      <code>#qui-sommes-nous .row:not(:first-child) img {
-  padding: 1em 4em;
+      <code>#qui-sommes-nous .row {
+  &amp;:first-of-type img {
+    padding: 0;
+  }
+  &amp;:not(:first-of-type) img {
+    padding: 1em 4em;
+  }
 }
 
 .defacto-partner-logo .wikiexternallink {
@@ -174,7 +179,7 @@
 
 
 @media (min-width: @screen-md-min) {
-  #qui-sommes-nous .row:not(:first-child) img {
+  #qui-sommes-nous .row:not(:first-of-type) img {
     padding: 2em;
   }
 }</code>
