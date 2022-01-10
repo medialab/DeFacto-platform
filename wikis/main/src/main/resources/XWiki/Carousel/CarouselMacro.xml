@@ -190,7 +190,7 @@
 
 @media (min-width: @screen-md-min) {
   .xwiki-carousel {
-    height: 350px;
+    /** height: 350px; */
     .xwiki-carousel-slide-body {
       flex-direction: row;
       .xwiki-carousel-slide-image {

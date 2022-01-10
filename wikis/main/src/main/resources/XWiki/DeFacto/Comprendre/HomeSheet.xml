@@ -40,19 +40,15 @@
 
 {{html clean="false"}}
   &lt;ul class="defacto-comprendre-main nav nav-tabs" role="tablist"&gt;
-    &lt;li role="presentation" class="active"&gt;&lt;a href="#actualites" aria-controls="actualites" role="tab"&gt;Actualités&lt;/a&gt;&lt;/li&gt;
-    &lt;li role="presentation"&gt;&lt;a href="#analyses" aria-controls="analyses" role="tab"&gt;Analyses&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation" class="active"&gt;&lt;a href="#analyses" aria-controls="analyses" role="tab"&gt;Analyses&lt;/a&gt;&lt;/li&gt;
     &lt;li role="presentation"&gt;&lt;a href="#etudes" aria-controls="etudes" role="tab"&gt;Études&lt;/a&gt;&lt;/li&gt;
     &lt;li role="presentation"&gt;&lt;a href="#outils" aria-controls="outils" role="tab"&gt;Outils&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#actualites" aria-controls="actualites" role="tab"&gt;Actualités&lt;/a&gt;&lt;/li&gt;
   &lt;/ul&gt;
 {{/html}}
 
 (% class="tab-content" %)(((
-  (% role="tabpanel" class="tab-pane active" id="actualites" %)(((
-    #getNews('Comprendre', $news)
-    #displayNewsList($news)
-  )))
-  (% role="tabpanel" class="tab-pane" id="analyses" %)(((
+  (% role="tabpanel" class="tab-pane active" id="analyses" %)(((
     #getPublications('1', $publications)
     #displayPublicationList($publications)
   )))
@@ -63,6 +59,10 @@
   (% role="tabpanel" class="tab-pane" id="outils" %)(((
     #getSoftware('Comprendre', $software)
     #displaySoftwareList($software)
+  )))
+  (% role="tabpanel" class="tab-pane active" id="actualites" %)(((
+    #getNews('Comprendre', $news)
+    #displayNewsList($news)
   )))
 )))
 {{/velocity}}

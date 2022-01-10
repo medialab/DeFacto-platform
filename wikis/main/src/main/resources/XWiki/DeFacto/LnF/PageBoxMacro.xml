@@ -379,15 +379,15 @@
     #if ($page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass') != $NULL)
       #set ($obj = $page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
       #set ($coverImage = $obj.getValue('headerImage'))
-      #set ($abstract = $page.display('chapeau', $obj))
+      #set ($abstract = $obj.getValue('chapeau'))
     #elseif ($page.getObject('XWiki.DeFacto.Resource.ResourceClass') != $NULL)
       #set ($obj = $page.getObject('XWiki.DeFacto.Resource.ResourceClass'))
       #set ($coverImage = $obj.getValue('coverImage'))
-      #set ($abstract = $page.display('abstract', $obj))
+      #set ($abstract = $obj.getValue('abstract'))
     #elseif ($page.getObject('XWiki.DeFacto.News.NewsClass') != $NULL)
       #set ($obj = $page.getObject('XWiki.DeFacto.News.NewsClass'))
       #set ($coverImage = $obj.getValue('coverImage'))
-      #set ($abstract = $page.display('abstract', $obj))
+      #set ($abstract = $obj.getValue('abstract'))
     #elseif ($page.getObject('XWiki.DeFacto.Publication.PublicationClass') != $NULL)
       #set ($obj = $page.getObject('XWiki.DeFacto.Publication.PublicationClass'))
       #set ($coverImage = $obj.getValue('coverImage'))
@@ -395,7 +395,7 @@
     #elseif ($page.getObject('XWiki.DeFacto.Software.SoftwareClass') != $NULL)
       #set ($obj = $page.getObject('XWiki.DeFacto.Software.SoftwareClass'))
       #set ($coverImage = $obj.getValue('coverImage'))
-      #set ($abstract = $page.display('abstract', $obj))
+      #set ($abstract = $obj.getValue('abstract'))
     #else
       #set ($coverImage = '')
       #set ($abstract = $stringtool.abbreviate($page.content, 600))
@@ -407,7 +407,7 @@
     {{box cssClass="defacto-box defacto-page-box$extraCss"}}
       #if ("$!coverImage" != '')
         (% class="defacto-box-image" %)(((
-          [[image:$reference@$coverImage]]
+          [[[[image:$reference@$coverImage]]&gt;&gt;$page.fullName]]
         )))
       #end
       (% class="defacto-box-body" %)(((
@@ -419,7 +419,7 @@
           &lt;/h2&gt;
         {{/html}}
         (% class="defacto-box-abstract" %)(((
-          $abstract
+          $abstract [[[+]&gt;&gt;$page.fullName]]
         )))
         #if ($page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass') != $NULL)
           #set ($media = $obj.getValue('media'))

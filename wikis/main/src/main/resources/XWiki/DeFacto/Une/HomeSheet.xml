@@ -25,8 +25,8 @@
 
 (% class="defacto-home" %)(((
   (% class="defacto-home-block defacto-home-about" %)(((
-     = Qui sommes-nous ? =
-     (% class="box defacto-box" style="height: 500px" %)(((
+     = Qu'est-ce que DE FACTO ? =
+     (% class="box defacto-box" %)(((
        #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
          {{html clean="false"}}
            &lt;a class="defacto-action-edit" href="$xwiki.getURL('XWiki.DeFacto.Une.QuiSommesNous', 'edit')" role="button"&gt;
@@ -57,7 +57,7 @@
   )))
 
   (% class="defacto-home-block defacto-home-explorer" %)(((
-    = Actus =
+    = Agenda =
 
     {{carousel reference="Actus.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
     (% class="defacto-section-link" %)(((
@@ -69,7 +69,7 @@
     {{carousel reference="Explorer.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
 
     (% class="defacto-section-link" %)(((
-      [[+ Tous les outils&gt;&gt;Explorer.WebHome]]
+      [[+ Tous les tutos et outils&gt;&gt;Explorer.WebHome]]
     )))
 
     = Analyses =
@@ -672,10 +672,15 @@ require(['jquery', 'bootstrap'], function($) {
   }
   .defacto-home-factcheck-pick {
     grid-row-start: 2;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 19px;
+
     .defacto-box {
       flex-direction: column;
       background: #f0f0f0;
       margin-bottom: 0;
+      flex-grow: 1;
       h2 {
         font-size: 26px;
       }
@@ -696,10 +701,13 @@ require(['jquery', 'bootstrap'], function($) {
 
   .defacto-home-about {
     grid-row-start: 1;
+    display: flex;
+    flex-direction: column;
     .defacto-box {
       background: #7ba3b5;
       color: white;
       font-weight: 400;
+      flex-grow: 1;
     }
     .xwiki-defacto-logos {
       display: grid;
@@ -771,7 +779,7 @@ require(['jquery', 'bootstrap'], function($) {
     }
   }*/
   .xwiki-carousel {
-    height: 500px;
+    /** height: 500px; */
   }
   .defacto-home-block &gt; h1 {
     text-transform: uppercase;

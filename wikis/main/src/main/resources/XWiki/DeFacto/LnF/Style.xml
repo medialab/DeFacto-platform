@@ -20,6 +20,118 @@
   <object>
     <name>XWiki.DeFacto.LnF.Style</name>
     <number>0</number>
+    <className>XWiki.JavaScriptExtension</className>
+    <guid>28b92249-5bec-4d7d-b7b0-17a6fa1e27c1</guid>
+    <class>
+      <name>XWiki.JavaScriptExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>require(['jquery'], function($) {
+  $(window).scroll(function() {
+      if ($(this).scrollTop() == 0) {
+          $('#menuview .navbar').css({
+           'box-shadow': 'none'
+          });
+      }
+      else {
+          $('#menuview .navbar').css({
+            'box-shadow': '0 2px 3px rgba(0,0,0,0.175)'
+          });
+      }
+  });
+});</code>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.DeFacto.LnF.Style</name>
+    <number>0</number>
     <className>XWiki.StyleSheetExtension</className>
     <guid>8f17a0a6-bbc5-40b0-8a74-01f4b47b5510</guid>
     <class>
@@ -297,12 +409,22 @@ body[class*="space-XWiki\.DeFacto"] {
 }
 
 .defacto-tags {
-  text-align: center;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-  padding: 1em;
+  padding: 1em 0 0 0;
   ul {
     list-style: none;
+    padding-left: 0;
+    li {
+      display: inline-block;
+      margin-right: 1em;
+      background: @lightgrey;
+      padding: 0.5em 1em;
+      border-radius: @border-radius-base;
+      text-transform: uppercase;
+      font-size: 16px;
+      a {
+        color: white;
+      }
+    }
   }
 }
 
@@ -367,6 +489,14 @@ body[class*="space-XWiki\.DeFacto"] {
     /** Align menu vertically with content columns. */
     padding-right: 15px;
     padding-left: 15px;
+    .navbar {
+      position: fixed;
+      z-index: 10;
+      width: 100%;
+      margin-left: -15px;
+      padding-left: 15px;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.175);
+    }
     .container-fluid {
       .navbar-header #companylogo {
         padding: 1em 0;
@@ -433,6 +563,10 @@ body[class*="space-XWiki\.DeFacto"] {
     img {
       max-height: 400px;
     }
+  }
+
+  .main {
+    margin-top: 110px;
   }
 
   #footerglobal {

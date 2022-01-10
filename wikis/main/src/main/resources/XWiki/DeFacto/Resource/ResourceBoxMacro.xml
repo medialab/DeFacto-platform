@@ -364,7 +364,7 @@
     (% class="defacto-box-image" %)(((
       #set ($coverImage = $object.getValue('coverImage'))
       #if ("$!coverImage" != '')
-        [[image:$reference@$coverImage]]
+        [[[[image:$reference@$coverImage]]&gt;&gt;$reference]]
       #end
     )))
     (% class="defacto-box-body" %)(((
@@ -373,11 +373,12 @@
       {{/html}}
 
       #if ($page.getObject('XWiki.DeFacto.Publication.PublicationClass') == $NULL)
-        $page.display('abstract', $object)
+        #set ($abstract = $object.getValue('abstract'))
+        $abstract [[[+]&gt;&gt;$reference]]
       #else
         #set ($abstract = $page.content)
         #set ($abstract = $stringtool.abbreviate($abstract, 400))
-        $abstract
+        $abstract [[[+]&gt;&gt;$reference]]
       #end
     )))
   {{/box}}

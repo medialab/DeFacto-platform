@@ -55,7 +55,7 @@
 #end
 
 #macro (getPublications $category $return)
-  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop order by doc.date desc")
+  #set ($macro.hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, StringProperty as prop where obj.name = doc.fullName and obj.className = :class and prop.id.id = obj.id and prop.id.name = :propName and prop.value = :prop order by doc.creationDate desc")
   #set ($macro.query = $services.query.hql($macro.hql))
   #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Publication.PublicationClass'))
   #set ($discard = $macro.query.bindValue('propName', 'category'))
@@ -139,7 +139,7 @@
         #set ($abstract = $object.getValue('abstract'))
         #if ("$!abstract" != '')
           (% class="defacto-news-abstract" %)(((
-            $abstract
+            $abstract [[[+]&gt;&gt;$page.fullName]]
           )))
         #end
       )))

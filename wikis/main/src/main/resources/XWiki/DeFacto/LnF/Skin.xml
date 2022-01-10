@@ -155,13 +155,15 @@
             #end
           &lt;/ul&gt;
         &lt;/div&gt;
-        &lt;div class="col-xs-12 col-sm-3 text-left"&gt;
+        &lt;div class="col-xs-12 col-sm-4 text-left"&gt;
           &lt;h2&gt;Le réseau EDMO&lt;/h2&gt;
           &lt;ul&gt;
-            &lt;li&gt;&lt;a href="https://edmo.eu/" target="_blank"&gt;EDMO.eu&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://edmo.eu/" target="_blank"&gt;EDMO – European Digital Media Observatory&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://www.idmo.it/" target="_blank"&gt;IDMO – Italian Digital Media Observatory&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="https://datalab.au.dk/nordis" target="_blank"&gt;NORDIS – Nordic Observatory for Digital Media and Information Disorder&lt;/a&gt;&lt;/li&gt;
           &lt;/ul&gt;
         &lt;/div&gt;
-        &lt;div class="col-xs-12 col-sm-3 text-left"&gt;
+        &lt;div class="col-xs-12 col-sm-2 text-left"&gt;
           &lt;h2&gt;Suivez-nous&lt;/h2&gt;
           &lt;ul&gt;
             &lt;li&gt;&lt;a href="https://twitter.com/defacto_UE" target="_blank"&gt;Twitter&lt;/a&gt;&lt;/li&gt;
