@@ -25,7 +25,7 @@
 #end
 #set ($solrConfig = {
   'filterQuery': $filterQuery,
-  'facetFields': ['type', 'class', 'property.XWiki.DeFacto.FactCheck.FactCheckClass.sections_string', 'property.XWiki.TagClass.tags_string'],
+  'facetFields': ['type', 'class', 'property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string', 'property.XWiki.TagClass.tags_string', 'property.XWiki.DeFacto.FactCheck.FactCheckClass.media_string'],
   'facetQuery': {
     'type': 'DOCUMENT',
     'locale': ["$xcontext.locale", '']
@@ -34,7 +34,8 @@
   'facetDisplayers': {
     'type': 'Main.SolrTypeFacet',
     'class': 'Main.SolrClassFacet',
-    'property.XWiki.DeFacto.FactCheck.FactCheckClass.sections_string': 'XWiki.DeFacto.Search.PageListFacet'
+    'property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string': 'XWiki.DeFacto.Search.PageListFacet',
+    'property.XWiki.DeFacto.FactCheck.FactCheckClass.media_string': 'XWiki.DeFacto.Search.PageListFacet'
   },
   'facetPaginationStep': 8,
   'highlightEnabled' : false
