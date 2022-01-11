@@ -57,6 +57,7 @@ class RssUtils {
       def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
       entryDescription.setValue(renderedContent);
       entry.setDescription(entryDescription);
+      entry.setPublishedDate(page.getCreationDate());
       entries.add(entry);
     }
     feed.setEntries(entries);

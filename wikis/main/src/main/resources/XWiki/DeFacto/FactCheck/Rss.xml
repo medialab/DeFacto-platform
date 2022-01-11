@@ -21,7 +21,7 @@
 {{groovy}}
 import com.rometools.rome.feed.synd.*;
 
-def hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = :class and doc.hidden = false order by doc.date desc";
+def hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, DateProperty as pdate where obj.name = doc.fullName and obj.className = :class and pdate.id.id = obj.id and pdate.name = 'pdate' and doc.hidden = false order by pdate.value desc";
 def query = services.query.hql(hql);
 query.setLimit(20)
 query.bindValue('class', 'XWiki.DeFacto.FactCheck.FactCheckClass')
