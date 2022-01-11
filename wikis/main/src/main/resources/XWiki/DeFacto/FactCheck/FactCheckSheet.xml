@@ -143,9 +143,9 @@
   #if ("$!request.published" != '')
     {{info}}
     #if ($request.published == 'true')
-      Le fact check a bien été publié.
+      Le fact-check a bien été publié.
     #else
-      Le fact check a bien été dépublié.
+      Le fact-check a bien été dépublié.
     #end
     {{/info}}
   #end
@@ -651,6 +651,10 @@
       margin-left: 0.5em;
     }
   }
+}
+
+.twitter-tweet {
+  margin: auto;
 }
 
 /************************ AFP Factuel **********************/

@@ -124,12 +124,20 @@
     <property>
       <code>.defacto-box.defacto-box-resource {
   display: flex;
-  .defacto-box-image {
-    img {
-      width: 180px;
-      margin-right: 1em;
-      max-width: inherit;
+  flex-direction: column;
+}
+
+@media (min-width: @screen-md-min) {
+  .defacto-box.defacto-box-resource {
+    flex-direction: row;
+    .defacto-box-image {
+      img {
+        width: 180px;
+        margin-right: 1em;
+        max-width: inherit;
+      }
     }
+
   }
 }</code>
     </property>

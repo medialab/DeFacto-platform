@@ -60,7 +60,7 @@
     #getSoftware('Comprendre', $software)
     #displaySoftwareList($software)
   )))
-  (% role="tabpanel" class="tab-pane active" id="actualites" %)(((
+  (% role="tabpanel" class="tab-pane" id="actualites" %)(((
     #getNews('Comprendre', $news)
     #displayNewsList($news)
   )))

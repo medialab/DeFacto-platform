@@ -167,7 +167,7 @@
           &lt;h2&gt;Suivez-nous&lt;/h2&gt;
           &lt;ul&gt;
             &lt;li&gt;&lt;a href="https://twitter.com/defacto_UE" target="_blank"&gt;Twitter&lt;/a&gt;&lt;/li&gt;
-            &lt;li&gt;Newsletter&lt;/li&gt;
+            &lt;li&gt;&lt;a href="$xwiki.getURL('Newsletter.WebHome')"&gt;Newsletter&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;RSS : 
               &lt;a href="$xwiki.getURL('XWiki.DeFacto.Rss', 'get', 'outputSyntax=plain')"&gt;Site&lt;/a&gt; - 
               &lt;a href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Rss', 'get', 'outputSyntax=plain')"&gt;Fact checks&lt;/a&gt;&lt;/li&gt;

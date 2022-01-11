@@ -257,15 +257,26 @@
     <property>
       <code>.defacto-box.defacto-box-news {
   display: flex;
-  .defacto-box-image {
-    img {
-      width: 180px;
-      margin-right: 1em;
-      max-width: inherit;
-    }
-  }
 }
-</code>
+
+.defacto-box.defacto-box-news {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: @screen-md-min) {
+  .defacto-box.defacto-box-news {
+    flex-direction: row;
+    .defacto-box-image {
+      img {
+        width: 180px;
+        margin-right: 1em;
+        max-width: inherit;
+      }
+    }
+
+  }
+}</code>
     </property>
     <property>
       <contentType>LESS</contentType>

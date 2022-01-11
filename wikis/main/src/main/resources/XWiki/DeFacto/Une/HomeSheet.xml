@@ -25,7 +25,7 @@
 
 (% class="defacto-home" %)(((
   (% class="defacto-home-block defacto-home-about" %)(((
-     = Qu'est-ce que DE FACTO ? =
+     = Qu'est-ce que DE FACTO{{html clean="false"}}&amp;nbsp;{{/html}}? =
      (% class="box defacto-box" %)(((
        #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
          {{html clean="false"}}
@@ -85,7 +85,7 @@
   #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
   #if ("$!factCheckPick" != '')
   (% class="defacto-home-block defacto-home-factcheck-pick" %)(((
-    = Fact check du jour =
+    = Fact-check du jour =
     {{pageBox reference="$factCheckPick" pick="true"/}}
   )))
   #end
@@ -94,7 +94,7 @@
     (% class="defacto-box-icon" %)(((
       $services.icon.render('envelope')
     )))
-     Abonnez-vous à notre newsletter mensuelle pour rester informé(e) des dernières publications et des événéments !
+     [[Abonnez-vous&gt;&gt;Newsletter.WebHome]] à notre newsletter pour rester informé(e) des dernières publications et des événéments ! [[[+]&gt;&gt;Newsletter.WebHome]]
   )))
   (% class="defacto-teaser-box defacto-teaser-box-two" %)(((
     #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
@@ -111,7 +111,7 @@
 
   (% class="defacto-home-block defacto-home-fact-checks" %)(((
 
-    = Fact checks =
+    = Fact-checks =
 
     #set ($uneConfigTags = $uneConfig.getValue('tags'))
 
