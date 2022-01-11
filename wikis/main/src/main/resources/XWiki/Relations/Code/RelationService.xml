@@ -164,6 +164,7 @@
     #end
   #end
   #set ($macro.tags = $xwiki.tag.getTagsFromDocument($subject))
+  #set ($discard = $macro.tags.remove('France'))
   #foreach ($tag in $macro.tags)
     #searchTagInSpaces($tag, ['Explorer', 'Comprendre'], $searchResponse)
     #foreach ($searchResult in $searchResponse.results)

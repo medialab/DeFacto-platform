@@ -403,7 +403,19 @@
   }
 }
 
-@media screen and (min-width: 768px) {
+.defacto-see-also-items {
+  display: grid;
+  grid-column-gap: 1em;
+  grid-template-columns: auto;
+  .defacto-box.defacto-page-box {
+    .defacto-box-image img {
+      max-height: 300px;
+    }
+  }
+}
+
+
+@media screen and (min-width: @screen-sm-min) {
   .xwiki-relations-uix-container {
     .xwiki-relations-container {
       form.xwiki-relations-add-form {
@@ -416,27 +428,15 @@
       }
     }
   }
-}
-
-.defacto-see-also-items {
-  display: grid;
-  grid-column-gap: 1em;
-  grid-template-columns: auto;
-  .defacto-box.defacto-page-box {
-    flex-direction: row;
-    .defacto-box-image img {
-      max-height: 300px;
-    }
-  }
-}
-
-
-@media (min-width: @screen-md-min) {
   .defacto-see-also-items {
-    .defacto-box {
+    .defacto-box.defacto-page-box {
+      flex-direction: row;
     }
   }
-}</code>
+
+}
+
+</code>
     </property>
     <property>
       <contentType>LESS</contentType>
