@@ -235,7 +235,7 @@
   #set ($headerImage = $object.getValue('headerImage'))
   #if ("$!headerImage" != '')
     (% class="defacto-fact-check-header-image" %)(((
-      [[image:$headerImage]]
+      [[image:$headerImage||queryString="width=1000"]]
       #set ($headerImageCaption = $object.getValue('headerImageCaption'))
       #set ($headerImageCredits = $object.getValue('headerImageCredits'))
       (% class="defacto-fact-check-header-media-legend" %)(((

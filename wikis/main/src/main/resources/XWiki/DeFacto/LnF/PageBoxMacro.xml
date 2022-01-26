@@ -408,7 +408,7 @@
     {{box cssClass="defacto-box defacto-page-box$extraCss"}}
       #if ("$!coverImage" != '')
         (% class="defacto-box-image" %)(((
-          [[[[image:$reference@$coverImage]]&gt;&gt;$page.fullName]]
+          [[[[image:$reference@$coverImage||queryString="width=1000"]]&gt;&gt;$page.fullName]]
         )))
       #end
       (% class="defacto-box-body" %)(((
