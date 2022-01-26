@@ -443,7 +443,7 @@
     #end
     #set ($discard = $sameKeyObjects.add($object))
   #end
-  #foreach ($key in $sorttool.sort($objectsMap.keySet()))
+  #foreach ($key in $collectiontool.sort($objectsMap.keySet()))
     #set ($sameKeyObjects = $objectsMap.get($key))
     #foreach ($sameKeyObject in $sameKeyObjects)
       #set ($discard = $outputObjects.add($sameKeyObject))
