@@ -23,6 +23,7 @@ XWiki.DeFacto.Media.MediaClass_logo=Logo
 XWiki.DeFacto.Media.MediaClass_site=Site
 XWiki.DeFacto.Media.MediaClass_feed=Flux RSS
 XWiki.DeFacto.Media.MediaClass_copyright=Informations de copyright
+XWiki.DeFacto.Media.MediaClass_notice=Mention à afficher en pied d'article
 
 # Sheet keys
 defacto.media.sheet.description=This page controls how Media pages are displayed in both view and edit modes.

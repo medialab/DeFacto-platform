@@ -84,6 +84,23 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </logo>
+    <notice>
+      <contenttype>---</contenttype>
+      <customDisplay/>
+      <disabled>0</disabled>
+      <editor>---</editor>
+      <hint/>
+      <name>notice</name>
+      <number>7</number>
+      <picker>1</picker>
+      <prettyName>notice</prettyName>
+      <rows>5</rows>
+      <size>40</size>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+    </notice>
     <site>
       <customDisplay/>
       <disabled>0</disabled>

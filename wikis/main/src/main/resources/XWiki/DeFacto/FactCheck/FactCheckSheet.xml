@@ -63,6 +63,7 @@
       'name': 'XWiki.DeFacto.FactCheck.FactCheckClass_0_headerImage',
       'data-search-scope': "document:$services.model.serialize($doc.documentReference)",
       'data-upload-allowed': $services.security.authorization.hasAccess('edit'),
+      'data-accept': '.jpg,.jpeg,.png,.gif',
       'value': $object.getValue('headerImage')
     })
     #attachmentPicker($attachmentPickerParams)
@@ -294,7 +295,6 @@
   #set ($link = $object.getValue('link'))
   (% class="box defacto-box defacto-fact-check-source" %)(((
     #if ($mediaObject != $NULL &amp;&amp; $hello == $NULL)
-    ## We use HTML because links can contain brackets and other wiki syntax characters
       #set ($mediaSite = $mediaObject.getValue('site'))
       #set ($mediaLogo = $mediaObject.getValue('logo'))
       #if ("$!mediaLogo" != '')
@@ -304,10 +304,17 @@
       #end
       {{html clean="false"}}
       #if ("$!link" != '')
-        Ce fact check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt; :
+        Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt; :
         &lt;em&gt;&lt;a href="$escapetool.xml($link)"&gt;$doc.title&lt;/a&gt;&lt;/em&gt;.
       #else
-        Ce fact check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
+        #set ($notice = $mediaObject.getValue('notice'))
+        #if ("$!notice" != '')
+          &lt;div class="defacto-media-notice"&gt;
+          $notice
+          &lt;/div&gt;
+        #else
+          Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
+        #end
       #end
       {{/html}}
     #end
@@ -625,6 +632,7 @@
     font-size: 1.4em;
     color: #5f727f;
     line-height: 1.2em;
+    margin-bottom: 1em;
   }
 
   h3 {
@@ -651,10 +659,15 @@
       margin-left: 0.5em;
     }
   }
-}
 
-.twitter-tweet {
-  margin: auto;
+  .defacto-fact-check-source {
+    .defacto-media-logo {
+      text-align: center;
+      img {
+        max-height: 160px;
+      }
+    }
+  }
 }
 
 /************************ AFP Factuel **********************/
@@ -666,6 +679,10 @@
     margin: 30px 30px 20px;
     display: block;
   }
+}
+
+.twitter-tweet {
+  margin: auto;
 }
 
 /** g2web is used for tweets and YouTube videos embeds */
@@ -714,6 +731,10 @@ div.grid-with-margin {
       img {
         object-fit: fill;
         max-width: 80%;
+      }
+      .defacto-fact-check-header-media-legend {
+        margin: auto;
+        max-width: 70%;
       }
     }
 

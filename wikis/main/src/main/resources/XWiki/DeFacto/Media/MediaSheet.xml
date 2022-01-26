@@ -49,14 +49,18 @@
         )))
         (% class="defacto-media-metadata" %)(((
         * [[Site&gt;&gt;$site]]
+        #if ("$!feed" != '')
         * [[Fil RSS&gt;&gt;$feed]]
+        #end
         )))
       )))
     )))
     #if ($services.security.authorization.hasAccess('edit', $doc.fullName))
     (% class="col-sm-4" %)(((
-      = Import RSS =
-      (% class="btn btn-primary" %)[[Importer les derniers fact checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.Media.FeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
+      #if ("$!feed" != '')
+        = Import RSS =
+        (% class="btn btn-primary" %)[[Importer les derniers fact checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.Media.FeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
+      #end
     )))
     (% class="col-sm-4" %)(((
       = Nouvel article =
@@ -101,6 +105,10 @@
     'extraParams': "&amp;location=$escapetool.url($location)&amp;media=$escapetool.url($services.model.serialize($doc.documentReference, 'compactwiki'))"
   })
   #set ($columns = ['doc.title', 'authors', 'themes', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
+  #if ($isGuest)
+    #set ($discard = $options.remove('queryFilters'))
+    #set ($discard = $columns.remove('published'))
+  #end
   == Fact checks ==#livetable('factchecks' $columns $columnsProperties $options)
 #else
   (% class="xform " %)(((
@@ -133,6 +141,10 @@
 
     = $doc.displayPrettyName('copyright', $object) =
     $doc.display('copyright', $object)
+
+    = $doc.displayPrettyName('notice', $object) =
+    $doc.display('notice', $object)
+
   )))
 #end
 {{/velocity}}</content>
