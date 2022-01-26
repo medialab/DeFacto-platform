@@ -376,6 +376,10 @@
   #if ($xwiki.exists($reference))
     #set ($page = $xwiki.getDocument($reference))
     #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.LnF.PageBoxMacro'))
+    ## Initialize the coverImage and abstract variables to empty so as to not reuse
+    ## their values from a previous call to the macro
+    #set ($coverImage = '')
+    #set ($asbtract = '')
     #if ($page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass') != $NULL)
       #set ($obj = $page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
       #set ($coverImage = $obj.getValue('headerImage'))
@@ -396,9 +400,6 @@
       #set ($obj = $page.getObject('XWiki.DeFacto.Software.SoftwareClass'))
       #set ($coverImage = $obj.getValue('coverImage'))
       #set ($abstract = $obj.getValue('abstract'))
-    #else
-      #set ($coverImage = '')
-      #set ($abstract = $stringtool.abbreviate($page.content, 600))
     #end
     #set ($extraCss = '')
     #if ("$!wikimacro.parameters.pick" == 'true')
@@ -419,7 +420,9 @@
           &lt;/h2&gt;
         {{/html}}
         (% class="defacto-box-abstract" %)(((
-          $abstract [[[+]&gt;&gt;$page.fullName]]
+          #if ("$!abstract" != '')
+            $abstract [[[+]&gt;&gt;$page.fullName]]
+          #end
         )))
         #if ($page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass') != $NULL)
           #set ($media = $obj.getValue('media'))

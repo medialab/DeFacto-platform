@@ -566,7 +566,7 @@ body[class*="space-XWiki\.DeFacto"] {
     }
   }
 
-  #contentcolumn &gt; .main, #edit, #editcolumn {
+  #contentcolumn &gt; .main, #editcolumn {
     margin-top: 110px;
   }
 

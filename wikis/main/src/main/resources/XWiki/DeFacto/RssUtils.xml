@@ -29,9 +29,9 @@ class RssUtils {
   SyndFeed createFeed(pageList, services, xwiki) {
     def SyndFeed feed = new SyndFeedImpl();
     feed.setFeedType("rss_2.0");
-    feed.setTitle('De Facto');
+    feed.setTitle('DE FACTO');
     feed.setLink('https://defacto-observatoire.fr/');
-    feed.setDescription("De Facto – Des clés pour mieux s'informer");
+    feed.setDescription("DE FACTO – Des clés pour mieux s'informer");
     feed.setUri('https://defacto-observatoire.fr/')
     def List&lt;SyndEntry&gt; entries = new ArrayList&lt;&gt;();
     pageList.each{ result -&gt;
