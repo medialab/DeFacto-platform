@@ -177,7 +177,7 @@
   (% class="defacto-fact-check-date" %)(((
     #set ($pdate = $object.getValue('pdate'))
     #if ("$!pdate" != '')
-      #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy à HH:mm').withLocale('fr'))
+      #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE d MMMMM yyyy à HH:mm').withLocale('fr'))
       (% class="defacto-fact-check-publication-date" %)(((
         Publié le $dateFormatter.print($pdate)
       )))

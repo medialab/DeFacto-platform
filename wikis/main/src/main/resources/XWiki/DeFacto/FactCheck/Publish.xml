@@ -33,6 +33,7 @@
   #if ($factCheck != $NULL)
     #set ($discard = $page.setHidden($flag))
     #set ($discard = $factCheck.set('published', $integerFlag))
+    #set ($discard = $factCheck.set('pdate', $datetool.date))
     #set ($discard = $page.save())
     #set ($nflag = !$flag)
     $response.sendRedirect($xwiki.getURL($source, 'view', "published=$nflag"))
