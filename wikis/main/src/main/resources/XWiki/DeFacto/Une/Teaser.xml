@@ -4,7 +4,7 @@
   <web>XWiki.DeFacto.Une</web>
   <name>Teaser</name>
   <language/>
-  <defaultLanguage>fr</defaultLanguage>
+  <defaultLanguage/>
   <translation>0</translation>
   <creator>xwiki:XWiki.Admin</creator>
   <parent>WebHome</parent>
