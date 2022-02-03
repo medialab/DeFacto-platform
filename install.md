@@ -25,7 +25,7 @@ Uninstall the following extensions:
 
 ## Apache
 
-* robots.txt: make sure to remove the line disallowing indexing the /download/ URLs: ```Disallow: /xwiki/bin/download/```
+* robots.txt: remove this line if present so that attachments get indexed and Twitter fetches the images correctly: ```Disallow: /xwiki/bin/download/```
 
 # 2. Installation of the custom code
 
