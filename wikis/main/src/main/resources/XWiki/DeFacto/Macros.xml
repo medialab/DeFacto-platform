@@ -122,6 +122,7 @@
     #set ($reference = $entry[0])
     #set ($page = $xwiki.getDocument($reference))
     #set ($object = $page.getObject('XWiki.DeFacto.News.NewsClass'))
+    #set ($type = $object.getValue('type'))
 
     {{box cssClass="defacto-box defacto-box-news"}}
       (% class="defacto-box-image" %)(((
@@ -132,14 +133,22 @@
       )))
       (% class="defacto-box-body" %)(((
         {{html wiki="false" clean="false"}}
-          &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+          #if ("$!type" == 'press')
+            #set ($link = $object.getValue('link'))
+            #if ($services.security.authorization.hasAccess('edit', $page.fullName))
+              &lt;a class="defacto-edit-button" href="$xwiki.getURL($page.fullName, 'edit')"&gt;$services.icon.renderHTML('pencil')&lt;/a&gt;
+            #end
+            &lt;h2&gt;&lt;a href="$link" target="_blank"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+          #else
+            &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+          #end
         {{/html}}
 
         #displayNewsScheduleInfo($object, $dateFormatter)
         #set ($abstract = $object.getValue('abstract'))
         #if ("$!abstract" != '')
           (% class="defacto-news-abstract" %)(((
-            $abstract [[[+]&gt;&gt;$page.fullName]]
+            $abstract #if ("$!type" != 'press')[[[+]&gt;&gt;$page.fullName]]#end
           )))
         #end
       )))

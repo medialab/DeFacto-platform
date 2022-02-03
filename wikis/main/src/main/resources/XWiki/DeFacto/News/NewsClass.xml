@@ -115,6 +115,20 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
     </displayCoverImageInContent>
+    <link>
+      <customDisplay/>
+      <disabled>0</disabled>
+      <hint/>
+      <name>link</name>
+      <number>10</number>
+      <picker>1</picker>
+      <prettyName>link</prettyName>
+      <size>30</size>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+    </link>
     <schedule>
       <customDisplay/>
       <disabled>0</disabled>

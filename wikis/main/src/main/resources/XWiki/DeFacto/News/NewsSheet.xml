@@ -134,6 +134,15 @@
       &lt;/label&gt;
     &lt;/dt&gt;
     &lt;dd&gt;$doc.display('displayCoverImageInContent')&lt;/dd&gt;
+    &lt;dt #if (!$editing &amp;&amp; $hasEdit)
+        class="editableProperty"
+        data-property="$escapetool.xml($services.model.serialize($object.getProperty('link').reference))"
+        data-property-type="object"#end&gt;
+      &lt;label#if ($editing) for="XWiki.DeFacto.News.NewsClass_0_link"#end&gt;
+        $escapetool.xml($doc.displayPrettyName('link', false, false))
+      &lt;/label&gt;
+    &lt;/dt&gt;
+    &lt;dd&gt;$doc.display('link')&lt;/dd&gt;
   &lt;/dl&gt;
 &lt;/div&gt;
 {{/html}}
@@ -147,10 +156,9 @@
       [[image:$doc.fullName@$coverImage]]
     )))
   #end
-  #set ($type = $object.getValue('type'))
-  #if ("$!type" == 'press')
+  #set ($content = $doc.content)
+  #if ("$!content" == '')
     $doc.display('abstract')
-
   #end
   $doc.display('content')
 #end
@@ -273,6 +281,20 @@
       max-height: 250px;
     }
   }
+}
+
+.defacto-edit-button {
+  float: right;
+  padding: 0.3em;
+  background-color: #fafafa;
+  text-align: center;
+  width: 2em;
+  padding: 4px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: black;
+  font-size: 0.8em;
+  margin-left: 0.2em;
 }
 
 @media (min-width: @screen-md-min) {
