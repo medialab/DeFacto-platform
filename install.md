@@ -23,6 +23,10 @@ Uninstall the following extensions:
 * XWiki Standard Tour: org.xwiki.platform:xwiki-platform-distribution-flavor-tour
 * XWiki Default Templates: org.xwiki.contrib.templates:application-templates-ui
 
+## Apache
+
+* robots.txt: make sure to remove the line disallowing indexing the /download/ URLs: ```Disallow: /xwiki/bin/download/```
+
 # 2. Installation of the custom code
 
 ## File system modules 
