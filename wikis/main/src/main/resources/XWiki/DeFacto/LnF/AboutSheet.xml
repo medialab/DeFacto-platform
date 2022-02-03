@@ -26,6 +26,7 @@
         &lt;li role="presentation" class="active"&gt;&lt;a href="#presentation" aria-controls="presentation" role="tab" data-toggle="tab"&gt;Présentation&lt;/a&gt;&lt;/li&gt;
         &lt;li role="presentation"&gt;&lt;a href="#qui-sommes-nous" aria-controls="qui-sommes-nous" role="tab" data-toggle="tab"&gt;Qui sommes-nous ?&lt;/a&gt;&lt;/li&gt;
         &lt;li role="presentation"&gt;&lt;a href="#reseau" aria-controls="reseau" role="tab" data-toggle="tab"&gt;Le réseau européen&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation"&gt;&lt;a href="#presse" aria-controls="presse" role="tab" data-toggle="tab"&gt;Revue de presse&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     {{/html}}
   #end

@@ -11,7 +11,7 @@
   <author>xwiki:XWiki.Admin</author>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <version>1.1</version>
-  <title/>
+  <title>NewsTemplate</title>
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
@@ -105,6 +105,21 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </dateLabel>
+      <displayCoverImageInContent>
+        <customDisplay/>
+        <defaultValue/>
+        <disabled>0</disabled>
+        <displayFormType>radio</displayFormType>
+        <displayType/>
+        <hint/>
+        <name>displayCoverImageInContent</name>
+        <number>9</number>
+        <prettyName>displayCoverImageInContent</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </displayCoverImageInContent>
       <schedule>
         <customDisplay/>
         <disabled>0</disabled>
@@ -133,18 +148,29 @@
         <classType>com.xpn.xwiki.objects.classes.ComputedFieldClass</classType>
       </title>
       <type>
+        <cache>0</cache>
         <customDisplay/>
+        <defaultValue/>
         <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
         <hint/>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
         <name>type</name>
         <number>2</number>
-        <picker>1</picker>
+        <picker>0</picker>
         <prettyName>type</prettyName>
-        <size>30</size>
+        <relationalStorage>1</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <sort/>
         <unmodifiable>0</unmodifiable>
         <validationMessage/>
         <validationRegExp/>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+        <values>actu=Actu|press=Article de presse</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </type>
     </class>
     <property>
@@ -157,10 +183,16 @@
       <coverImage/>
     </property>
     <property>
-      <date>2021-11-15 11:37:29.950</date>
+      <date>2022-02-03 15:52:06.351</date>
     </property>
     <property>
       <dateLabel/>
+    </property>
+    <property>
+      <displayCoverImageInContent/>
+    </property>
+    <property>
+      <link/>
     </property>
     <property>
       <schedule/>
@@ -169,7 +201,7 @@
       <title/>
     </property>
     <property>
-      <type/>
+      <type>actu</type>
     </property>
   </object>
 </xwikidoc>

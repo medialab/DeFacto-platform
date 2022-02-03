@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.News.PressReview" locale="">
+  <web>XWiki.DeFacto.News</web>
+  <name>PressReview</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>PressReview</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>{{include reference="XWiki.DeFacto.Macros"/}}
+
+{{velocity}}
+= Revue de presse =
+#getNews('A-propos', $news)
+#displayNewsList($news)
+{{/velocity}}
+
+</content>
+</xwikidoc>

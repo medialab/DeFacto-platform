@@ -143,18 +143,29 @@
       <classType>com.xpn.xwiki.objects.classes.ComputedFieldClass</classType>
     </title>
     <type>
+      <cache>0</cache>
       <customDisplay/>
+      <defaultValue/>
       <disabled>0</disabled>
+      <displayType>select</displayType>
+      <freeText>forbidden</freeText>
       <hint/>
+      <largeStorage>0</largeStorage>
+      <multiSelect>0</multiSelect>
       <name>type</name>
       <number>2</number>
-      <picker>1</picker>
+      <picker>0</picker>
       <prettyName>type</prettyName>
-      <size>30</size>
+      <relationalStorage>1</relationalStorage>
+      <separator> </separator>
+      <separators>|, </separators>
+      <size>1</size>
+      <sort/>
       <unmodifiable>0</unmodifiable>
       <validationMessage/>
       <validationRegExp/>
-      <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      <values>actu=Actu|press=Article de presse</values>
+      <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
     </type>
   </class>
   <object>

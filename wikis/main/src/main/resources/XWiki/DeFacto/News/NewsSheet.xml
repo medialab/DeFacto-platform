@@ -147,6 +147,11 @@
       [[image:$doc.fullName@$coverImage]]
     )))
   #end
+  #set ($type = $object.getValue('type'))
+  #if ("$!type" == 'press')
+    $doc.display('abstract')
+
+  #end
   $doc.display('content')
 #end
 {{/velocity}}</content>
