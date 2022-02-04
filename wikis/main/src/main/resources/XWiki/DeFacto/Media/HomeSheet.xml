@@ -16,12 +16,11 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
-  <content>{{velocity}}
-#set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Media.HomeSheet'))
-  #set ($hql = "select doc.title, doc.fullName from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = :class and doc.fullName not like '%Template%' order by doc.title")
-  #set ($query = $services.query.hql($hql))
-  #set ($discard = $query.bindValue('class', 'XWiki.DeFacto.Media.MediaClass'))
-  #set ($entries = $query.execute())
+  <content>{{include reference="XWiki.DeFacto.Macros"/}}
+
+{{velocity}}
+  #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Media.HomeSheet'))
+  #getMedias($entries)
   (% class="row" %)(((
     #foreach ($entry in $entries)
       #set ($r = $foreach.index % 3)

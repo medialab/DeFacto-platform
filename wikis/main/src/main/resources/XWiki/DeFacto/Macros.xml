@@ -17,6 +17,16 @@
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
   <content>{{velocity output="false"}}
+
+#macro (getMedias $return)
+  #set ($macro.hql = "select doc.title, doc.fullName from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = :class and doc.fullName not like '%Template%' order by doc.title")
+  #set ($macro.query = $services.query.hql($macro.hql))
+  #set ($discard = $macro.query.bindValue('class', 'XWiki.DeFacto.Media.MediaClass'))
+  #set ($macro.entries = $macro.query.execute())
+  #set ($return = $NULL)
+  #setVariable("$return" $macro.entries)
+#end
+
 #macro (searchFactChecks $tag $excludes $return)
   #set ($macro.clause = ["property.XWiki.TagClass.tags_string:""$tag""", 'property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean:1'])
   #set ($macro.query = $services.query.createQuery('type:DOCUMENT', 'solr'))

@@ -120,29 +120,33 @@
         &lt;li role="presentation" class="active"&gt;&lt;a class="defacto-filter" data-filter-value="*" data-filter-type="une" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("une:all")" aria-controls="search" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
         #if ("$!uneConfigTags" != '')
           #foreach ($tag in $uneConfigTags)
-            #set ($tagId = $services.modelvalidation.transformName($tag).toLowerCase())
-            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-filter-value="$tag" data-filter-type="tag" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("tag:$tag")" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
+            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-filter-value="$escapetool.xml($tag)" data-filter-type="tag" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("tag:$tag")" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
           #end
         #end
         #getThemes($themes)
         #foreach ($theme in $themes)
-          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-filter-value="$theme[0]" data-filter-type="theme" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("theme:$theme[0]")" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
+          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-filter-value="$escapetool.xml($theme[0])" data-filter-type="theme" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("theme:$theme[0]")" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
         #end
-        #* Mobile display
-        &lt;li&gt;
-          &lt;div class="btn-group defacto-themes"&gt;
-            &lt;button type="button" class="btn dropdown-toggle defacto-themes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;
-              Thèmes&lt;span class="caret"&gt;&lt;/span&gt;
+        &lt;li role="presentation" class="defacto-filter-media"&gt;
+          &lt;div class="btn-group"&gt;
+            &lt;button type="button" class="btn dropdown-toggle defacto-media-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;
+              Fact-checkeurs&lt;span class="caret"&gt;&lt;/span&gt;
             &lt;/button&gt;
             &lt;ul class="dropdown-menu"&gt;
-              #getThemes($themes)
-              #foreach ($theme in $themes)
-                &lt;li&gt;&lt;a class="defacto-theme-filter" data-theme="$theme[0]" data-exclude="$escapetool.xml($factCheckPick)" href="#search" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
+              #getMedias($mediaList)
+              #set ($discard = $mediaList.add(0, ['Tous', 'all']))
+              #foreach ($mediaEntry in $mediaList)
+                #set ($mediaTitle = $mediaEntry[0])
+                #set ($mediaName = $mediaEntry[1])
+                &lt;li&gt;
+                  &lt;a class="defacto-filter" data-filter-value="$escapetool.xml($mediaName)" data-filter-type="media" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("media:$mediaName")" aria-controls="search"&gt;
+                  $mediaTitle
+                  &lt;/a&gt;
+                &lt;/li&gt;
               #end
             &lt;/ul&gt;
           &lt;/div&gt;
         &lt;/li&gt;
-        *#
       &lt;/ul&gt;
     {{/html}}
 
@@ -264,107 +268,10 @@
  * - Empty search UI when searching and show a spinner
  */
 require(['jquery', 'bootstrap'], function($) {
-  var enhanceSearchResultHighlights = function() {
-    var highlights = $(this).removeClass('hidden').parent().prev('.search-result-highlights').addClass('preview');
-
-    // Workaround for IE8 which doesn't support :first-of-type CSS selector.
-    highlights.find('.search-result-highlight').first().addClass('first').parent('dd').addClass('first')
-      .prev('dt').addClass('first');
-
-    $(this).one('click', function(event) {
-      event.preventDefault();
-      $(event.target).remove();
-      highlights.removeClass('preview');
-    });
-  };
-
-  var collapseAllFacets = function(event) {
-    event.preventDefault();
-    $(event.target).closest('.search-facets').find('.search-facet').removeClass('expanded');
-    $(event.target).hide().parent().children('.search-facets-action-expandAll').show();
-  };
-
-  var expandAllFacets = function(event) {
-    event.preventDefault();
-    $(event.target).closest('.search-facets').find('.search-facet').addClass('expanded');
-    $(event.target).hide().parent().children('.search-facets-action-collapseAll').show();
-  };
-
-  var updateExpandCollapseAllFacetsState = function(facetsContainer) {
-    var facetCount = facetsContainer.find('.search-facet').size();
-    var expandedFacetCount = facetsContainer.find('.search-facet.expanded').size();
-    if (expandedFacetCount &gt; facetCount / 2) {
-      facetsContainer.find('.search-facets-action-collapseAll').show()
-        .parent().children('.search-facets-action-expandAll').hide();
-    } else {
-      facetsContainer.find('.search-facets-action-expandAll').show()
-        .parent().children('.search-facets-action-collapseAll').hide();
-    }
-  };
-
-  var addFacetValueCheckbox = function() {
-    var checkBox = $(document.createElement('input')).attr('type', 'checkbox');
-    checkBox.prop('checked', $(this).hasClass('selected'));
-    // Add the 'checked' attribute so that it can be easily located with CSS.
-    checkBox.prop('checked') &amp;&amp; checkBox.attr('checked', 'checked');
-    checkBox.click($.proxy(this, 'click'));
-    // Remove the 'selected' class because the selected state is marked using the check box.
-    $(this).removeClass('selected').before(checkBox);
-  };
-
-  var enhanceSearchFacets = function() {
-    var facetsContainer = $(this);
-
-    // Add the ability to collapse the facets pane on extra small screens (phones).
-    facetsContainer.find('.search-facets-header').click(function() {
-      facetsContainer.toggleClass('collapsed-xs');
-    });
-
-    // Global Expand/Collapse toggle.
-    facetsContainer.find('.search-facets-action-collapseAll').removeClass('hidden').click(collapseAllFacets);
-    facetsContainer.find('.search-facets-action-expandAll').removeClass('hidden').click(expandAllFacets);
-    updateExpandCollapseAllFacetsState(facetsContainer);
-
-    // Expand/Collapse toggle for each facet.
-    facetsContainer.find('.search-facet-header').click(function(event) {
-      $(event.target).parent('.search-facet').toggleClass('expanded');
-      updateExpandCollapseAllFacetsState(facetsContainer);
-    });
-
-    // Add a check box before each facet value. We do this from JavaScript because the behaviour of a check box inside
-    // a link is not consistent across different browsers (some follow the link when the check box is clicked, others
-    // don't) and having the check box outside the facet value link requires JavaScript to synchronize them.
-    facetsContainer.find('.search-facet-body a.itemName').each(addFacetValueCheckbox);
-  };
-
-  var getQueryString = function(url) {
-    var queryIndex = url.indexOf('?');
-    return queryIndex &lt; 0 ? '' : url.substr(queryIndex + 1);
-  };
-
-  var getSearchUIState = function() {
-    var expandedFacets = [];
-    $('.search-facet.expanded').each(function() {
-      expandedFacets.push($(this).attr('data-name'));
-    });
-    return {
-      'expandedFacets': expandedFacets
-    };
-  };
-
-  var setSearchUIState = function(state) {
-    state = state || {};
-    var expandedFacets = state.expandedFacets || [];
-    $('.search-facet').not('.expanded').each(function() {
-      if (expandedFacets.indexOf($(this).attr('data-name')) &gt;= 0) {
-        $(this).addClass('expanded');
-      }
-    });
-  };
 
   var updateSearchUI = function(html) {
     $('.search-ui').replaceWith(html);
-    enhanceSearchUI();
+    //enhanceSearchUI();
     $(document).trigger('xwiki:dom:updated', {'elements': $('.search-ui').toArray()});
   };
 
@@ -377,7 +284,7 @@ require(['jquery', 'bootstrap'], function($) {
     $('.search-ui').empty();
     var getURL = XWiki.currentDocument.getURL('get', getQueryString(viewURL));
     searchRequest = $.get(getURL).done(function(html) {
-      var state = getSearchUIState();
+      //var state = getSearchUIState();
       updateSearchUI(html);
       //setSearchUIState(state);
       //window.history.replaceState &amp;&amp; window.history.replaceState(state, document.title);
@@ -386,28 +293,23 @@ require(['jquery', 'bootstrap'], function($) {
     });
   };
 
-  var reloadSearchUI = function(event) {
-    event.preventDefault();
-    var anchor = $(event.target).closest('a');
-    anchor.size() &gt; 0 &amp;&amp; $(document).trigger('xwiki:search:update', anchor.attr('href'));
-  };
-
   // Others (e.g. a custom facet) can trigger a search UI update by firing this event.
   $(document).on('xwiki:search:update', function(event, viewURL) {
     pushSearchUIState(viewURL);
   });
 
   $(window).on('popstate', function(event) {
+    event.preventDefault();
     // If there is a request in progress, abort it to prevent its callback from being called.
-    searchRequest &amp;&amp; searchRequest.abort();
+    /*searchRequest &amp;&amp; searchRequest.abort();
     $('.search-ui').attr('aria-busy', true);
     $('.search-ui').empty();
     var state = event.originalEvent.state;
     var getURL = XWiki.currentDocument.getURL('get', window.location.search.substr(1));
     searchRequest = $.get(getURL).done(function(html) {
       updateSearchUI(html);
-      setSearchUIState(state);
-    });
+      //setSearchUIState(state);
+    });*/
   });
 
   // Move the skin extension imports brought by AJAX updates to the head of the page.
@@ -432,22 +334,6 @@ require(['jquery', 'bootstrap'], function($) {
     // Make sure this code is not executed twice.
     $(data.elements).find('noscript.skin-extension-imports').remove();
   });
-
-  var enhanceSearchUI = function() {
-    $('.search-result-highlightAll').each(enhanceSearchResultHighlights);
-    $('.search-facets').each(enhanceSearchFacets);
-    $([
-      '.search-results-sort a.sort-item',
-      '.search-options a.options-item',
-      '.pagination a',
-      '.controlPagination a',
-      'a.search-facets-action-reset',
-      '.search-facet a.itemName',
-      '.search-facet-body a.more',
-      '.search-facet-body .selectedLocation a'
-    ].join(',')).click(reloadSearchUI);
-  };
-
 
   var search = function(filterValue, filterType, exclude) {
     var hash = '#' + filterType + ':' + filterValue;
@@ -497,6 +383,7 @@ require(['jquery', 'bootstrap'], function($) {
   };
 
   $('.defacto-filter').on('click', function(event) {
+    console.log('click', event);
     var $this = $(this);
     var filterValue = $this.attr('data-filter-value');
     var filterType = $this.attr('data-filter-type');
@@ -730,7 +617,8 @@ require(['jquery', 'bootstrap'], function($) {
 
     .nav-tabs {
       border-bottom: 1px solid @yellow;
-      li {
+      &gt; li {
+        margin-top: 0.2em;
         &amp;.active {
           &gt; a, &gt; a:hover, &gt; a:focus {
             background: white;
@@ -746,6 +634,21 @@ require(['jquery', 'bootstrap'], function($) {
         &gt; a:hover, &gt; a:focus {
           background: white;
           border-bottom-color: transparent;
+        }
+        &amp;.defacto-filter-media {
+          .btn-group {
+            margin: 0;
+            .defacto-media-dropdown {
+              font-size: 18px;
+              background: #7ba3b5;
+              color: white;
+              padding: 10px 15px;
+              border-radius: 4px 4px 0 0;
+              .caret {
+                margin-left: 0.5em;
+              }
+            }
+          }
         }
       }
     }
@@ -878,6 +781,9 @@ require(['jquery', 'bootstrap'], function($) {
       grid-column: ~"col2-start / col2-end";
       grid-row: row3-start;
       margin-left: 30px;
+      .nav-tabs &gt; li.defacto-filter-media {
+        float: right;
+      }
     }
 
     .defacto-home-about {
