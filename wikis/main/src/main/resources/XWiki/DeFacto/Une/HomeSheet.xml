@@ -85,7 +85,7 @@
   #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
   #if ("$!factCheckPick" != '')
   (% class="defacto-home-block defacto-home-factcheck-pick" %)(((
-    = Fact-check du jour =
+    = Choix de la rédaction =
     {{pageBox reference="$factCheckPick" pick="true"/}}
   )))
   #end
@@ -114,18 +114,21 @@
     = Fact-checks =
 
     #set ($uneConfigTags = $uneConfig.getValue('tags'))
+    #set ($baseQueryString = 'text=*&amp;r=1&amp;f_type=DOCUMENT&amp;f_class=XWiki.DeFacto.FactCheck.FactCheckClass&amp;sort=property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1&amp;rows=6&amp;facet=true')
 
     {{html clean="false"}}
       &lt;ul class="nav nav-tabs" role="tablist"&gt;
-        &lt;li role="presentation" class="active"&gt;&lt;a class="defacto-filter" data-filter-value="*" data-filter-type="une" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("une:all")" aria-controls="search" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation" class="active"&gt;&lt;a class="defacto-filter" data-exclude="$escapetool.xml($factCheckPick)" href="#une" data-url="$xwiki.getURL($doc.fullName, 'view', $baseQueryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
         #if ("$!uneConfigTags" != '')
           #foreach ($tag in $uneConfigTags)
-            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-filter-value="$escapetool.xml($tag)" data-filter-type="tag" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("tag:$tag")" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
+            #set ($queryString = "${baseQueryString}&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)")
+            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-exclude="$escapetool.xml($factCheckPick)" href="#$tag" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
           #end
         #end
         #getThemes($themes)
         #foreach ($theme in $themes)
-          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-filter-value="$escapetool.xml($theme[0])" data-filter-type="theme" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("theme:$theme[0]")" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
+          #set ($queryString = "${baseQueryString}&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string=$escapetool.url($theme[0])")
+          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-exclude="$escapetool.xml($factCheckPick)" href="#$theme[0]" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
         #end
         &lt;li role="presentation" class="defacto-filter-media"&gt;
           &lt;div class="btn-group"&gt;
@@ -138,8 +141,13 @@
               #foreach ($mediaEntry in $mediaList)
                 #set ($mediaTitle = $mediaEntry[0])
                 #set ($mediaName = $mediaEntry[1])
+                #if ($mediaName == 'all')
+                  #set ($queryString = $baseQueryString)
+                #else
+                  #set ($queryString = "${baseQueryString}&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.media_string=$escapetool.url($mediaName)")
+                #end
                 &lt;li&gt;
-                  &lt;a class="defacto-filter" data-filter-value="$escapetool.xml($mediaName)" data-filter-type="media" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("media:$mediaName")" aria-controls="search"&gt;
+                  &lt;a class="defacto-filter" data-filter-value="$escapetool.xml($mediaName)" data-filter-type="media" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("media:$mediaName")" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search"&gt;
                   $mediaTitle
                   &lt;/a&gt;
                 &lt;/li&gt;
@@ -260,18 +268,115 @@
       <cache>long</cache>
     </property>
     <property>
-      <code>/** Customized version of Main.SolrSearch JSX with following changes:
- * - Add search function to search by tag or by theme
- * - Fire search when a tab is activated
- * - Reflect active tab in URL hash
- * - Activate tab based on URL hash
- * - Empty search UI when searching and show a spinner
+      <code>/**
+ * Copied from Main.SolrSearch JSX with some customizations to:
+ * - enable search on home page directly
+ * - add selector "a.defacto-filter" to list of elements which should fire a search 
+ *   and a UI reload
  */
-require(['jquery', 'bootstrap'], function($) {
+
+require(['jquery', 'xwiki-events-bridge'], function($) {
+  var enhanceSearchResultHighlights = function() {
+    var highlights = $(this).removeClass('hidden').parent().prev('.search-result-highlights').addClass('preview');
+
+    // Workaround for IE8 which doesn't support :first-of-type CSS selector.
+    highlights.find('.search-result-highlight').first().addClass('first').parent('dd').addClass('first')
+      .prev('dt').addClass('first');
+
+    $(this).one('click', function(event) {
+      event.preventDefault();
+      $(event.target).remove();
+      highlights.removeClass('preview');
+    });
+  };
+
+  var collapseAllFacets = function(event) {
+    event.preventDefault();
+    $(event.target).closest('.search-facets').find('.search-facet').removeClass('expanded');
+    $(event.target).hide().parent().children('.search-facets-action-expandAll').show();
+  };
+
+  var expandAllFacets = function(event) {
+    event.preventDefault();
+    $(event.target).closest('.search-facets').find('.search-facet').addClass('expanded');
+    $(event.target).hide().parent().children('.search-facets-action-collapseAll').show();
+  };
+
+  var updateExpandCollapseAllFacetsState = function(facetsContainer) {
+    var facetCount = facetsContainer.find('.search-facet').size();
+    var expandedFacetCount = facetsContainer.find('.search-facet.expanded').size();
+    if (expandedFacetCount &gt; facetCount / 2) {
+      facetsContainer.find('.search-facets-action-collapseAll').show()
+        .parent().children('.search-facets-action-expandAll').hide();
+    } else {
+      facetsContainer.find('.search-facets-action-expandAll').show()
+        .parent().children('.search-facets-action-collapseAll').hide();
+    }
+  };
+
+  var addFacetValueCheckbox = function() {
+    var checkBox = $(document.createElement('input')).attr('type', 'checkbox');
+    checkBox.prop('checked', $(this).hasClass('selected'));
+    // Add the 'checked' attribute so that it can be easily located with CSS.
+    checkBox.prop('checked') &amp;&amp; checkBox.attr('checked', 'checked');
+    checkBox.click($.proxy(this, 'click'));
+    // Remove the 'selected' class because the selected state is marked using the check box.
+    $(this).removeClass('selected').before(checkBox);
+  };
+
+  var enhanceSearchFacets = function() {
+    var facetsContainer = $(this);
+
+    // Add the ability to collapse the facets pane on extra small screens (phones).
+    facetsContainer.find('.search-facets-header').click(function() {
+      facetsContainer.toggleClass('collapsed-xs');
+    });
+
+    // Global Expand/Collapse toggle.
+    facetsContainer.find('.search-facets-action-collapseAll').removeClass('hidden').click(collapseAllFacets);
+    facetsContainer.find('.search-facets-action-expandAll').removeClass('hidden').click(expandAllFacets);
+    updateExpandCollapseAllFacetsState(facetsContainer);
+
+    // Expand/Collapse toggle for each facet.
+    facetsContainer.find('.search-facet-header').click(function(event) {
+      $(event.target).parent('.search-facet').toggleClass('expanded');
+      updateExpandCollapseAllFacetsState(facetsContainer);
+    });
+
+    // Add a check box before each facet value. We do this from JavaScript because the behaviour of a check box inside
+    // a link is not consistent across different browsers (some follow the link when the check box is clicked, others
+    // don't) and having the check box outside the facet value link requires JavaScript to synchronize them.
+    facetsContainer.find('.search-facet-body a.itemName').each(addFacetValueCheckbox);
+  };
+
+  var getQueryString = function(url) {
+    var queryIndex = url.indexOf('?');
+    return queryIndex &lt; 0 ? '' : url.substr(queryIndex + 1);
+  };
+
+  var getSearchUIState = function() {
+    var expandedFacets = [];
+    $('.search-facet.expanded').each(function() {
+      expandedFacets.push($(this).attr('data-name'));
+    });
+    return {
+      'expandedFacets': expandedFacets
+    };
+  };
+
+  var setSearchUIState = function(state) {
+    state = state || {};
+    var expandedFacets = state.expandedFacets || [];
+    $('.search-facet').not('.expanded').each(function() {
+      if (expandedFacets.indexOf($(this).attr('data-name')) &gt;= 0) {
+        $(this).addClass('expanded');
+      }
+    });
+  };
 
   var updateSearchUI = function(html) {
     $('.search-ui').replaceWith(html);
-    //enhanceSearchUI();
+    enhanceSearchUI();
     $(document).trigger('xwiki:dom:updated', {'elements': $('.search-ui').toArray()});
   };
 
@@ -281,16 +386,23 @@ require(['jquery', 'bootstrap'], function($) {
     // If there is a request in progress, abort it to prevent its callback from being called.
     searchRequest &amp;&amp; searchRequest.abort();
     $('.search-ui').attr('aria-busy', true);
-    $('.search-ui').empty();
     var getURL = XWiki.currentDocument.getURL('get', getQueryString(viewURL));
     searchRequest = $.get(getURL).done(function(html) {
-      //var state = getSearchUIState();
+      var state = getSearchUIState();
       updateSearchUI(html);
-      //setSearchUIState(state);
-      //window.history.replaceState &amp;&amp; window.history.replaceState(state, document.title);
+      setSearchUIState(state);
+      window.history.replaceState &amp;&amp; window.history.replaceState(state, document.title);
       // Make sure the browser address bar reflects the new state (and thus the new state can be bookmarked).
-      //window.history.pushState &amp;&amp; window.history.pushState(state, document.title, viewURL);
+      window.history.pushState &amp;&amp; window.history.pushState(state, document.title, viewURL);
     });
+  };
+
+  var reloadSearchUI = function(event) {
+    event.preventDefault();
+    var anchor = $(event.target).closest('a');
+    var url = anchor.attr('data-url');
+    url = url || anchor.attr('href');
+    anchor.size() &gt; 0 &amp;&amp; $(document).trigger('xwiki:search:update', url);
   };
 
   // Others (e.g. a custom facet) can trigger a search UI update by firing this event.
@@ -299,17 +411,15 @@ require(['jquery', 'bootstrap'], function($) {
   });
 
   $(window).on('popstate', function(event) {
-    event.preventDefault();
     // If there is a request in progress, abort it to prevent its callback from being called.
-    /*searchRequest &amp;&amp; searchRequest.abort();
+    searchRequest &amp;&amp; searchRequest.abort();
     $('.search-ui').attr('aria-busy', true);
-    $('.search-ui').empty();
     var state = event.originalEvent.state;
     var getURL = XWiki.currentDocument.getURL('get', window.location.search.substr(1));
     searchRequest = $.get(getURL).done(function(html) {
       updateSearchUI(html);
-      //setSearchUIState(state);
-    });*/
+      setSearchUIState(state);
+    });
   });
 
   // Move the skin extension imports brought by AJAX updates to the head of the page.
@@ -335,89 +445,60 @@ require(['jquery', 'bootstrap'], function($) {
     $(data.elements).find('noscript.skin-extension-imports').remove();
   });
 
-  var search = function(filterValue, filterType, exclude) {
-    var hash = '#' + filterType + ':' + filterValue;
-
-    // Reflect search in URL hash
-    if(history.pushState) {
-      history.replaceState(null, null, hash);
-    } else {
-      location.hash = hash;
-    }
-
-    $('.search-ui').attr('aria-busy', true);
-    $('.search-ui').empty();
-    var solrServiceURL = new XWiki.Document('Search', 'Main').getURL('get');
-    var parameters =  {
-      sort: 'property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date',
-      sortOrder: 'desc',
-      highlight: false,
-      facet: true,
-      rows: 6,
-      r: '1',
-      f_type: 'DOCUMENT',
-      text: '*',
-      f_class: 'XWiki.DeFacto.FactCheck.FactCheckClass',
-      embedded: true
-    };
-
-    parameters['f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean'] =  '1';
-
-    if (exclude !== undefined) {
-      parameters['exclude'] = exclude;
-    }
-
-    if (filterType === 'theme') {
-      parameters['f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string'] =  filterValue;
-    } else if (filterType === 'tag') {
-      parameters['f_property.XWiki.TagClass.tags_string'] = filterValue;
-    }
-
-    var query = $.get(solrServiceURL, parameters);
-    query.done(function(data) {
-      updateSearchUI(data);
-    });
-    query.fail(function(error) {
-      console.log('error: ' + error);
-    });
+  var enhanceSearchUI = function() {
+    $('.search-result-highlightAll').each(enhanceSearchResultHighlights);
+    $('.search-facets').each(enhanceSearchFacets);
+    $([
+      '.search-results-sort a.sort-item',
+      '.search-options a.options-item',
+      '.pagination a',
+      '.controlPagination a',
+      'a.search-facets-action-reset',
+      '.search-facet a.itemName',
+      '.search-facet-body a.more',
+      '.search-facet-body .selectedLocation a',
+      'a.defacto-filter'
+    ].join(',')).click(reloadSearchUI);
   };
 
-  $('.defacto-filter').on('click', function(event) {
-    console.log('click', event);
-    var $this = $(this);
-    var filterValue = $this.attr('data-filter-value');
-    var filterType = $this.attr('data-filter-type');
-    var exclude = $this.attr('data-exclude');
-    $this.parent().parent().find('li').each(function(index, element) {
-      $(element).removeClass('active');
-    });
-    search(filterValue, filterType, exclude);
+  enhanceSearchUI();
+
+  // 'f_property.XWiki.DeFacto.FactCheck.FactCheckClass.media_string': Medias.Les-Surligneurs.WebHome,
+
+  $('.search-ui').attr('aria-busy', true);
+  $('.search-ui').empty();
+  var solrServiceURL = new XWiki.Document('Search', 'Main').getURL('get');
+  var parameters =  {
+    sort: 'property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date',
+    sortOrder: 'desc',
+    highlight: false,
+    facet: true,
+    rows: 6,
+    r: '1',
+    f_type: 'DOCUMENT',
+    text: '*',
+    f_class: 'XWiki.DeFacto.FactCheck.FactCheckClass',
+    embedded: true,
+    'f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean': '1'
+  };
+
+///xwiki/bin/view/Main/Search?text=*&amp;r=1&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string=Themes.Sante.WebHome
+
+  var query = $.get(solrServiceURL, parameters);
+  query.done(function(data) {
+    var state = getSearchUIState();
+    updateSearchUI(data);
+    setSearchUIState(state);
+    window.history.replaceState &amp;&amp; window.history.replaceState(state, document.title);
+    // Make sure the browser address bar reflects the new state (and thus the new state can be bookmarked).
+    var home = new XWiki.Document('WebHome', 'Main');
+    window.history.pushState &amp;&amp; window.history.pushState(state, document.title, home.getURL() + '?text=*&amp;r=1&amp;f_type=DOCUMENT&amp;f_class=XWiki.DeFacto.FactCheck.FactCheckClass&amp;sort=property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1');
+  });
+  query.fail(function(error) {
+    console.log('error: ' + error);
   });
 
-  var aTabIsActivated = false;
-  if(location.hash &amp;&amp; location.hash.length &gt; 1) {
-    var hash = decodeURIComponent(location.hash);
-    hash = hash.substring(1).split(':');
-    var type = hash[0];
-    var value = hash[1];
-    var tab = $('.nav-tabs a[data-filter-value="' + value + '"]');
-    if (tab.length &gt; 0 &amp;&amp; tab.tab !== undefined) {
-      var exclude = tab.attr('data-exclude');
-      search(value, type, exclude);
-      tab.tab('show');
-      aTabIsActivated = true;
-    }
-  }
-
-  if (!aTabIsActivated) {
-    var firstFilterElement = $('li.active .defacto-filter');
-    if (firstFilterElement.length === 1) {
-      var firstFilterValue = firstFilterElement.attr('data-filter-value');
-      var firstFilterType = firstFilterElement.attr('data-filter-type');
-      var exclude = firstFilterElement.attr('data-exclude');
-      search(firstFilterValue, firstFilterType, exclude);
-    }
-  }
+  
 });</code>
     </property>
     <property>
