@@ -862,9 +862,6 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
       grid-column: ~"col2-start / col2-end";
       grid-row: row3-start;
       margin-left: 30px;
-      .nav-tabs &gt; li.defacto-filter-media {
-        float: right;
-      }
     }
 
     .defacto-home-about {
