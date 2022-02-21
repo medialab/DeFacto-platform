@@ -755,7 +755,7 @@ The video macro can also plays a DASH video (Dynamic Adaptive Streaming over HTT
       <priority/>
     </property>
     <property>
-      <supportsInlineMode>0</supportsInlineMode>
+      <supportsInlineMode>1</supportsInlineMode>
     </property>
     <property>
       <visibility>Current Wiki</visibility>
