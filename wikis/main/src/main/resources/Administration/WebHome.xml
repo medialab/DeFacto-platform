@@ -328,7 +328,10 @@
       <code>.defacto-administration-medias {
   margin-top: 1em;
 }
-</code>
+
+#tmCreate {
+  display: none;
+}</code>
     </property>
     <property>
       <contentType>LESS</contentType>
