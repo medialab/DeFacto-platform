@@ -131,73 +131,82 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
 
         // Turn all script tags, iframes, etc. into div so that they are preserved in wiki syntax
         // Do not keep scripts (Twitter API script is loaded only if consent is given)
-        //def transformedContent = content.replaceAll('&lt;script', '&lt;div data-tag="script"')
-        //transformedContent = transformedContent.replaceAll('&lt;/script&gt;', '&lt;/div&gt;')
+        def transformedContent = content.replaceAll('&lt;script[^&gt;]*src="https://platform.twitter.com/widgets.js"[^&gt;]*&gt;&lt;/script&gt;', '')
 
-        def transformedContent = content.replaceAll('&lt;iframe', '&lt;div data-tag="iframe"')
+        // Keep other scripts for now
+        transformedContent = transformedContent.replaceAll('&lt;script', '&lt;div data-tag="script"')
+        transformedContent = transformedContent.replaceAll('&lt;/script&gt;', '&lt;/div&gt;')
+
+        transformedContent = transformedContent.replaceAll('&lt;iframe', '&lt;div data-tag="iframe"')
         transformedContent = transformedContent.replaceAll('&lt;/iframe&gt;', '&lt;/div&gt;')
 
-        def xdom = services.rendering.parse('&lt;div&gt;' + transformedContent + '&lt;/div&gt;', 'xhtml/1.0')
-        def blocks = xdom.getBlocks(new AnyBlockMatcher(), Block.Axes.DESCENDANT)
-        for (Block block : blocks) {
-          def dataTagValue = block.getParameter('data-tag')
-          if (dataTagValue != null) {
-            def src = block.getParameter('src');
-            if (src != null &amp;&amp; src.indexOf('youtube') &gt; 0) {
-              def blockParameters = new HashMap();
-              blockParameters.put('url', src);
-              def videoBlock = new MacroBlock('video', blockParameters, true);
-              block.getParent().replaceChild(videoBlock, block);
-            } else {
-              def blockHtml = services.rendering.render(block, 'xhtml/1.0');
-              blockHtml = blockHtml.replaceAll("&lt;div data-tag=\"$dataTagValue\"", "&lt;$dataTagValue")
-              blockHtml = blockHtml.replaceAll('&lt;/div&gt;', "&lt;/$dataTagValue&gt;")
-              def blockParameters = new HashMap();
-              blockParameters.put('clean', 'false');
-              def macroBlock = new MacroBlock('html', blockParameters, blockHtml, false);
-              block.getParent().replaceChild(macroBlock, block);
+        def xdom = services.rendering.parse(transformedContent, 'html/4.01')
+        if (xdom != null) {
+          def blocks = xdom.getBlocks(new AnyBlockMatcher(), Block.Axes.DESCENDANT)
+          for (Block block : blocks) {
+            def dataTagValue = block.getParameter('data-tag')
+            if (dataTagValue != null) {
+              def src = block.getParameter('src');
+              if (src != null &amp;&amp; src.indexOf('youtube') &gt; 0) {
+                def blockParameters = new HashMap();
+                blockParameters.put('url', src);
+                def videoBlock = new MacroBlock('video', blockParameters, true);
+                block.getParent().replaceChild(videoBlock, block);
+              } else {
+                // Using xhtml/1.0 there otherwise we can some comments characters added when serializing it seems: /*~/*~
+                def blockHtml = services.rendering.render(block, 'xhtml/1.0');
+                blockHtml = blockHtml.replaceAll("&lt;div([^&gt;]*)data-tag=\"$dataTagValue\"", "&lt;$dataTagValue\$1")
+                blockHtml = blockHtml.replaceAll('&lt;/div&gt;', "&lt;/$dataTagValue&gt;")
+                def blockParameters = new HashMap();
+                blockParameters.put('clean', 'false');
+                def macroBlock = new MacroBlock('html', blockParameters, blockHtml, false);
+                block.getParent().replaceChild(macroBlock, block);
+              }
             }
           }
+
+          // Extract first h2 block and turn it into the fact-check chapeau
+          def headerBlocks = xdom.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT)
+          if (headerBlocks.size() &gt; 0) {
+            def firstHeaderBlock = headerBlocks.get(0)
+            def chapeau = services.rendering.render(firstHeaderBlock, 'xwiki/2.1');
+            // Factuel: the first paragraph heading can be level 1, 2 or 3
+            // TODO: use regex
+            chapeau = chapeau.replaceAll('^= ', '')
+            chapeau = chapeau.replaceAll(' =$', '')
+            chapeau = chapeau.replaceAll('^== ', '')
+            chapeau = chapeau.replaceAll(' ==$', '')
+            chapeau = chapeau.replaceAll('^=== ', '')
+            chapeau = chapeau.replaceAll(' ===$', '')
+            firstHeaderBlock.getParent().removeBlock(firstHeaderBlock);
+            object.set('chapeau', chapeau.trim());
+          }
+
+          // Import images
+          // TODO: we should check that each image has not been imported yet (as header image, or previously in the content)
+          def imageBlocks = xdom.getBlocks(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT)
+          for (ImageBlock imageBlock : imageBlocks) {
+            String imageReference = imageBlock.getReference().getReference();
+            def bytes = services.http.getBytes(imageReference);
+            def bais = new ByteArrayInputStream(bytes);
+            def idx = imageReference.lastIndexOf('/');
+            def fileName = imageReference.substring(idx+1);
+            page.addAttachment(fileName, bais);
+            def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
+            def newImageBlock = new ImageBlock(ref, false);
+            imageBlock.getParent().replaceChild(newImageBlock, imageBlock);
+          }
+          def factCheckBody = services.rendering.render(xdom, 'xwiki/2.1');
+
+          // Replace all relative links by absolute ones
+          // We consider that relative links always appear as "&gt;&gt;path:/"
+          factCheckBody = factCheckBody.replaceAll('&gt;&gt;path:/', "&gt;&gt;url:$mediaHome")
+          page.setContent(factCheckBody);
+
+        } else {
+          // TODO: print errors in real log
+          out.println("null xdom for: $title")
         }
-
-        // Extract first h2 block and turn it into the fact-check chapeau
-        def headerBlocks = xdom.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT)
-        if (headerBlocks.size() &gt; 0) {
-          def firstHeaderBlock = headerBlocks.get(0)
-          def chapeau = services.rendering.render(firstHeaderBlock, 'xwiki/2.1');
-          // Factuel: the first paragraph heading can be level 1, 2 or 3
-          // TODO: use regex
-          chapeau = chapeau.replaceAll('^= ', '')
-          chapeau = chapeau.replaceAll(' =$', '')
-          chapeau = chapeau.replaceAll('^== ', '')
-          chapeau = chapeau.replaceAll(' ==$', '')
-          chapeau = chapeau.replaceAll('^=== ', '')
-          chapeau = chapeau.replaceAll(' ===$', '')
-          firstHeaderBlock.getParent().removeBlock(firstHeaderBlock);
-          object.set('chapeau', chapeau.trim());
-        }
-
-        // Import images
-        // TODO: we should check that each image has not been imported yet (as header image, or previously in the content)
-        def imageBlocks = xdom.getBlocks(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT)
-        for (ImageBlock imageBlock : imageBlocks) {
-          String imageReference = imageBlock.getReference().getReference();
-          def bytes = services.http.getBytes(imageReference);
-          def bais = new ByteArrayInputStream(bytes);
-          def idx = imageReference.lastIndexOf('/');
-          def fileName = imageReference.substring(idx+1);
-          page.addAttachment(fileName, bais);
-          def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
-          def newImageBlock = new ImageBlock(ref, false);
-          imageBlock.getParent().replaceChild(newImageBlock, imageBlock);
-        }
-        def factCheckBody = services.rendering.render(xdom, 'xwiki/2.1');
-
-        // Replace all relative links by absolute ones
-        // We consider that relative links always appear as "&gt;&gt;path:/"
-        factCheckBody = factCheckBody.replaceAll('&gt;&gt;path:/', "&gt;&gt;url:$mediaHome")
-        page.setContent(factCheckBody);
-
         content = content.replaceAll('&lt;h2', '\n\n&lt;h2')
         content = content.replaceAll('&lt;/h2&gt;', '\n&lt;/h2&gt;')
         content = content.replaceAll('&lt;h3', '\n\n&lt;h3')
