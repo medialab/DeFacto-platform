@@ -96,10 +96,14 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
             def fileName = enclosure;
             if (enclosure.startsWith('http')) {
               def bytes = services.http.getBytes(enclosure);
-              def bais = new ByteArrayInputStream(bytes);
-              def idx = enclosure.lastIndexOf('/');
-              fileName = enclosure.substring(idx+1);
-              page.addAttachment(fileName, bais);
+              if (bytes != null) {
+                def bais = new ByteArrayInputStream(bytes);
+                def idx = enclosure.lastIndexOf('/');
+                fileName = enclosure.substring(idx+1);
+                page.addAttachment(fileName, bais);
+              } else {
+                out.println("No file found at " + enclosure)
+              }
             }
             object.set('headerImage', fileName);
           } else if (enclosureType != null &amp;&amp; enclosureType.startsWith('audio')) {
@@ -188,13 +192,17 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           for (ImageBlock imageBlock : imageBlocks) {
             String imageReference = imageBlock.getReference().getReference();
             def bytes = services.http.getBytes(imageReference);
-            def bais = new ByteArrayInputStream(bytes);
-            def idx = imageReference.lastIndexOf('/');
-            def fileName = imageReference.substring(idx+1);
-            page.addAttachment(fileName, bais);
-            def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
-            def newImageBlock = new ImageBlock(ref, false);
-            imageBlock.getParent().replaceChild(newImageBlock, imageBlock);
+            if (bytes != null) {
+              def bais = new ByteArrayInputStream(bytes);
+              def idx = imageReference.lastIndexOf('/');
+              def fileName = imageReference.substring(idx+1);
+              page.addAttachment(fileName, bais);
+              def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
+              def newImageBlock = new ImageBlock(ref, false);
+              imageBlock.getParent().replaceChild(newImageBlock, imageBlock);
+            } else {
+              out.println("No image found at " + imageReference)
+            }
           }
           def factCheckBody = services.rendering.render(xdom, 'xwiki/2.1');
 
