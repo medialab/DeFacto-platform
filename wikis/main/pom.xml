@@ -75,6 +75,7 @@
             <contentPage>${basedir}/src/main/resources/Themes/.*\.xml</contentPage>
             <contentPage>${basedir}/src/main/resources/XWiki/DeFacto/Une/QuiSommesNous.xml</contentPage>
             <contentPage>${basedir}/src/main/resources/XWiki/DeFacto/Une/Teaser.xml</contentPage>
+            <contentPage>.*/Administration/Aide/.*\.xml</contentPage>
           </contentPages>
         </configuration>
       </plugin>
