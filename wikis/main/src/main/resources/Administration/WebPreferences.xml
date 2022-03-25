@@ -4,7 +4,7 @@
   <web>Administration</web>
   <name>WebPreferences</name>
   <language/>
-  <defaultLanguage>fr</defaultLanguage>
+  <defaultLanguage/>
   <translation>0</translation>
   <creator>xwiki:XWiki.Admin</creator>
   <parent>Administration.WebHome</parent>
