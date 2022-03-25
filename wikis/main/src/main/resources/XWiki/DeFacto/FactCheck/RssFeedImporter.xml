@@ -1,0 +1,245 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.RssFeedImporter" locale="">
+  <web>XWiki.DeFacto.FactCheck</web>
+  <name>RssFeedImporter</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>RSS Feed Importer</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{groovy}}
+import java.text.Normalizer
+import org.xwiki.rendering.internal.macro.rss.*
+import org.xwiki.rendering.macro.rss.*
+import org.xwiki.rendering.block.*;
+import org.xwiki.rendering.block.match.*;
+import org.xwiki.rendering.listener.reference.*;
+
+if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; services.csrf.isTokenValid(request.token)) {
+  def FACTCHECKS_SPACE = 'Fact-checks';
+  def romeFeedFactory = new DefaultRomeFeedFactory()
+  def parameters = new RssMacroParameters()
+  def media = request.media
+  def mediaReference = services.model.resolveDocument(media)
+  def mediaPage = xwiki.getDocument(mediaReference)
+  def mediaObj = mediaPage.getObject('XWiki.DeFacto.Media.MediaClass')
+  if (mediaObj != null &amp;&amp; mediaObj.getValue('feed') != null) {
+    def mediaHome = mediaObj.getValue('site')
+    // Make sure the site ends with a slash because the site will be used to build up absolute URLs from relative ones
+    if (!mediaHome.endsWith('/'))
+      mediaHome = "${mediaHome}/"
+    def mediaFeed = mediaObj.getValue('feed')
+    parameters.setFeed(mediaFeed)
+
+    def feed = romeFeedFactory.createFeed(parameters)
+    def newEntriesCount = 0
+
+    java.util.Collections.reverse(feed.entries)
+
+    feed.entries.eachWithIndex{ it, index -&gt;
+      if (index &lt; 100) {
+      def title = it.title.trim()
+      def author = it.author
+      def content = it.description?.value
+      def publishedDate = it.publishedDate
+      def guid = it.uri
+      def link = it.link
+      def categories = it.categories
+      def mediaTopics = new StringBuffer()
+      def locations = new StringBuffer()
+      def tags = new StringBuffer()
+      if (categories != null) {
+        categories.each{ category -&gt;
+          if (category.name != null) {
+            if (category.name.startsWith('Media topic/')) {
+              mediaTopics.append(category.name.substring(12) + '\n')
+            } else if (category.name.startsWith('Location/')) {
+              locations.append(category.name.substring(9) + '\n')
+            } else if (category.name.startsWith('Tags/')) {
+              tags.append(category.name.substring(5) + '\n')
+            }
+          }
+        }
+      }
+
+      def enclosures = it.enclosures;
+      def enclosure = null;
+      def enclosureType = null;
+      if (enclosures.size() &gt; 0 &amp;&amp; enclosures.get(0).url != null) {
+        enclosure = enclosures[0].url;
+        enclosureType = enclosures[0].type;
+      }
+
+      def pageId = services.modelvalidation.transformName(title.trim())
+      def mediaSpaceReference = mediaReference.getLastSpaceReference()
+      def defaultName = services.model.getEntityReference(org.xwiki.model.EntityType.DOCUMENT, 'default').getName()
+      def feedSpaceReference = services.model.createSpaceReference(FACTCHECKS_SPACE, mediaSpaceReference)
+      def factCheckSpaceReference = services.model.createSpaceReference(pageId, feedSpaceReference)
+      def factCheckReference = services.model.resolveDocument(defaultName, factCheckSpaceReference)
+      if (!xwiki.exists(factCheckReference)) {
+        def page = xwiki.getDocument(factCheckReference)
+        page.setTitle(title)
+
+        def object = page.newObject('XWiki.DeFacto.FactCheck.FactCheckClass')
+
+        if (enclosure != null) {
+          if (enclosureType != null &amp;&amp; enclosureType.startsWith('image')) {
+            def fileName = enclosure;
+            if (enclosure.startsWith('http')) {
+              def bytes = services.http.getBytes(enclosure);
+              if (bytes != null) {
+                def bais = new ByteArrayInputStream(bytes);
+                def idx = enclosure.lastIndexOf('/');
+                fileName = enclosure.substring(idx+1);
+                page.addAttachment(fileName, bais);
+              } else {
+                out.println("No file found at " + enclosure)
+              }
+            }
+            object.set('headerImage', fileName);
+          } else if (enclosureType != null &amp;&amp; enclosureType.startsWith('audio')) {
+            object.set('headerAudio', enclosure);
+          }
+        }
+
+        if (author != null) {
+          object.set('authors', author)
+        }
+
+        if (link != null) {
+          object.set('link', link)
+        }
+
+        if (guid != null) {
+          object.set('guid', guid)
+        }
+
+        if (publishedDate != null) {
+          // Weird storage issue when using field name "publishedDate"
+          object.set('pdate', publishedDate)
+        }
+
+        object.set('mediaTopics', mediaTopics.toString().trim())
+        object.set('locations', locations.toString().trim())
+        object.set('categories', tags.toString().trim())
+        object.set('media', media)
+
+        // Turn all script tags, iframes, etc. into div so that they are preserved in wiki syntax
+        // Do not keep scripts (Twitter API script is loaded only if consent is given)
+        def transformedContent = content.replaceAll('&lt;script[^&gt;]*src="https://platform.twitter.com/widgets.js"[^&gt;]*&gt;&lt;/script&gt;', '')
+
+        // Keep other scripts for now
+        transformedContent = transformedContent.replaceAll('&lt;script', '&lt;div data-tag="script"')
+        transformedContent = transformedContent.replaceAll('&lt;/script&gt;', '&lt;/div&gt;')
+
+        transformedContent = transformedContent.replaceAll('&lt;iframe', '&lt;div data-tag="iframe"')
+        transformedContent = transformedContent.replaceAll('&lt;/iframe&gt;', '&lt;/div&gt;')
+
+        def xdom = services.rendering.parse(transformedContent, 'html/4.01')
+        if (xdom != null) {
+          def blocks = xdom.getBlocks(new AnyBlockMatcher(), Block.Axes.DESCENDANT)
+          for (Block block : blocks) {
+            def dataTagValue = block.getParameter('data-tag')
+            if (dataTagValue != null) {
+              def src = block.getParameter('src');
+              if (src != null &amp;&amp; src.indexOf('youtube') &gt; 0) {
+                def blockParameters = new HashMap();
+                blockParameters.put('url', src);
+                def videoBlock = new MacroBlock('video', blockParameters, true);
+                block.getParent().replaceChild(videoBlock, block);
+              } else {
+                // Using xhtml/1.0 there otherwise we can some comments characters added when serializing it seems: /*~/*~
+                def blockHtml = services.rendering.render(block, 'xhtml/1.0');
+                blockHtml = blockHtml.replaceAll("&lt;div([^&gt;]*)data-tag=\"$dataTagValue\"", "&lt;$dataTagValue\$1")
+                blockHtml = blockHtml.replaceAll('&lt;/div&gt;', "&lt;/$dataTagValue&gt;")
+                def blockParameters = new HashMap();
+                blockParameters.put('clean', 'false');
+                def macroBlock = new MacroBlock('html', blockParameters, blockHtml, false);
+                block.getParent().replaceChild(macroBlock, block);
+              }
+            }
+          }
+
+          // Extract first h2 block and turn it into the fact-check chapeau
+          def headerBlocks = xdom.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT)
+          if (headerBlocks.size() &gt; 0) {
+            def firstHeaderBlock = headerBlocks.get(0)
+            def chapeau = services.rendering.render(firstHeaderBlock, 'xwiki/2.1');
+            // Factuel: the first paragraph heading can be level 1, 2 or 3
+            // TODO: use regex
+            chapeau = chapeau.replaceAll('^= ', '')
+            chapeau = chapeau.replaceAll(' =$', '')
+            chapeau = chapeau.replaceAll('^== ', '')
+            chapeau = chapeau.replaceAll(' ==$', '')
+            chapeau = chapeau.replaceAll('^=== ', '')
+            chapeau = chapeau.replaceAll(' ===$', '')
+            firstHeaderBlock.getParent().removeBlock(firstHeaderBlock);
+            object.set('chapeau', chapeau.trim());
+          }
+
+          // Import images
+          // TODO: we should check that each image has not been imported yet (as header image, or previously in the content)
+          def imageBlocks = xdom.getBlocks(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT)
+          for (ImageBlock imageBlock : imageBlocks) {
+            String imageReference = imageBlock.getReference().getReference();
+            def bytes = services.http.getBytes(imageReference);
+            if (bytes != null) {
+              def bais = new ByteArrayInputStream(bytes);
+              def idx = imageReference.lastIndexOf('/');
+              def fileName = imageReference.substring(idx+1);
+              page.addAttachment(fileName, bais);
+              def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
+              def newImageBlock = new ImageBlock(ref, false);
+              imageBlock.getParent().replaceChild(newImageBlock, imageBlock);
+            } else {
+              out.println("No image found at " + imageReference)
+            }
+          }
+          def factCheckBody = services.rendering.render(xdom, 'xwiki/2.1');
+
+          // Replace all relative links by absolute ones
+          // We consider that relative links always appear as "&gt;&gt;path:/"
+          factCheckBody = factCheckBody.replaceAll('&gt;&gt;path:/', "&gt;&gt;url:$mediaHome")
+          page.setContent(factCheckBody);
+
+        } else {
+          // TODO: print errors in real log
+          out.println("null xdom for: $title")
+        }
+        content = content.replaceAll('&lt;h2', '\n\n&lt;h2')
+        content = content.replaceAll('&lt;/h2&gt;', '\n&lt;/h2&gt;')
+        content = content.replaceAll('&lt;h3', '\n\n&lt;h3')
+        content = content.replaceAll('&lt;/h3&gt;', '\n&lt;/h3&gt;')
+        content = content.replaceAll('&lt;div', '\n\n&lt;div')
+        content = content.replaceAll('&lt;/div&gt;', '\n&lt;/div&gt;')
+        content = content.replaceAll('&lt;p', '\n\n&lt;p')
+        content = content.replaceAll('&lt;/p&gt;', '\n&lt;/p&gt;')
+        object.set('contentHtml', content.trim())
+        object.set('published', 0)
+
+        // Also add a ClaimReview object
+        def claimReview = page.newObject('XWiki.DeFacto.Review.ClaimReviewClass')
+
+        page.setHidden(true)
+        page.save()
+        newEntriesCount++
+      }
+    }
+    }
+    if (media != null) {
+      response.sendRedirect(xwiki.getURL(media, 'view', "count=$newEntriesCount"))
+    }
+  }
+}
+
+{{/groovy}}</content>
+</xwikidoc>

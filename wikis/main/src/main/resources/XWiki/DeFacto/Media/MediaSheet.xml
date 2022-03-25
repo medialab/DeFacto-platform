@@ -59,7 +59,7 @@
     (% class="col-sm-4" %)(((
       #if ("$!feed" != '')
         = Import RSS =
-        (% class="btn btn-primary" %)[[Importer les derniers fact checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.Media.FeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
+        (% class="btn btn-primary" %)[[Importer les derniers fact checks&gt;&gt;path:$xwiki.getURL('XWiki.DeFacto.FactCheck.RssFeedImporter', 'view', "action=import&amp;media=$escapetool.url($doc.fullName)&amp;token=$escapetool.url($services.csrf.getToken())")]](%%)
       #end
     )))
     (% class="col-sm-4" %)(((
