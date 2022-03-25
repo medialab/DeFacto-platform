@@ -34,6 +34,9 @@ Uninstall the following extensions:
 
 No specific configuration.
 
+* Fix for XWIKI-19444: copy custom upload.js located in web/resources/uicomponents/widgets over the default one and 
+  remove upload.min.js
+
 ## Main wiki
 
 ### New Install
