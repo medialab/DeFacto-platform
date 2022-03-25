@@ -1412,9 +1412,9 @@
   </object>
   <object>
     <name>XWiki.XWikiPreferences</name>
-    <number>2</number>
+    <number>1</number>
     <className>XWiki.XWikiGlobalRights</className>
-    <guid>d7713b24-e91b-448e-83c1-7da0a129e4ec</guid>
+    <guid>6674a338-b63a-41dc-bf96-dd558a2f46cb</guid>
     <class>
       <name>XWiki.XWikiGlobalRights</name>
       <customClass/>
@@ -2753,7 +2753,7 @@ Hello ${xwiki.getUserName("$xwikiname", false)},
 Your account on ${wikiname} has been successfully activated. You can now login at ${host}${xwiki.getURL('XWiki.XWikiLogin', 'login')} using your username (${xwiki.getDocument($xwikiname).documentReference.name}).</confirmation_email_content>
     </property>
     <property>
-      <core.defaultDocumentSyntax/>
+      <core.defaultDocumentSyntax>xwiki/2.1</core.defaultDocumentSyntax>
     </property>
     <property>
       <dateformat>dd/MM/yyyy HH:mm</dateformat>
@@ -2876,7 +2876,13 @@ Your account on ${wikiname} has been successfully activated. You can now login a
 #end
 &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
 &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
-&lt;link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&amp;display=swap" rel="stylesheet"&gt; </meta>
+&lt;link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&amp;display=swap" rel="stylesheet"&gt; 
+&lt;link rel="manifest" href="$xwiki.getAttachmentURL('XWiki.PWA.WebHome', 'manifest.json')" /&gt;
+&lt;meta name="mobile-web-app-capable" content="yes" /&gt;
+&lt;meta name="apple-mobile-web-app-capable" content="yes" /&gt;
+&lt;meta name="application-name" content="DE FACTO" /&gt;
+&lt;meta name="apple-mobile-web-app-title" content="DE FACTO" /&gt;
+</meta>
     </property>
     <property>
       <minoredit/>
@@ -2885,7 +2891,7 @@ Your account on ${wikiname} has been successfully activated. You can now login a
       <multilingual>0</multilingual>
     </property>
     <property>
-      <obfuscateEmailAddresses/>
+      <obfuscateEmailAddresses>0</obfuscateEmailAddresses>
     </property>
     <property>
       <parent/>
@@ -2957,7 +2963,7 @@ Your account on ${wikiname} has been successfully activated. You can now login a
       <title>$tdoc.getRenderedTitle('plain/1.0')#if ($doc.fullName != 'Main.WebHome') – De Facto – Des clés pour mieux s'informer#end</title>
     </property>
     <property>
-      <upload_maxsize>107374182400</upload_maxsize>
+      <upload_maxsize>1073741824000000</upload_maxsize>
     </property>
     <property>
       <validation_email_content>#set ($wikiname = $request.serverName)
