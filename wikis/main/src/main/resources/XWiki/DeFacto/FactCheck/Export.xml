@@ -1,0 +1,176 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.Export" locale="">
+  <web>XWiki.DeFacto.FactCheck</web>
+  <name>Export</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Export des données au format JSON</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($key = $xwiki.getXWiki().Param('defacto.api.key'))
+#set ($rkey = $request.key)
+#if ("$!rkey" == $key)
+  #set ($hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, DateProperty as pdate where obj.name = doc.fullName and obj.className = :class and pdate.id.id = obj.id and pdate.name = 'pdate' and doc.hidden = false order by pdate.value desc")
+  #set ($query = $services.query.hql($hql))
+  ##set ($discard = $query.setLimit(20))
+  #set ($discard = $query.bindValue('class', 'XWiki.DeFacto.FactCheck.FactCheckClass'))
+  #set ($entries = $query.execute())
+  #set ($data = [])
+  #set ($formatter = $xwiki.jodatime.getDateTimeFormatterForPattern("yyyy-MM-dd'T'HH:mm:ss.SSZZ"))
+  #foreach ($entry in $entries)
+    ## NB: when using $escapetool.json for escaping, we get escaped unicode characters for accents, which decreases readability, and it seems 
+    ## characters are already escaped when using the jsonResponse macro. TODO: check
+    #set ($page = $xwiki.getDocument($entry[0]))
+    #set ($object = $page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
+    #set ($originalUrl = $object.getValue('link'))
+    #set ($chapeau = $object.getValue('chapeau'))
+    #set ($media = $object.getValue('media'))
+    #set ($mediaPage = $xwiki.getDocument($media))
+    #set ($mediaObject = $mediaPage.getObject('XWiki.DeFacto.Media.MediaClass'))
+    #set ($mediaUrl = $mediaObject.getValue('site'))
+    #set ($xdom = $services.rendering.parse($chapeau, 'xwiki/2.1'))
+    #set ($renderedChapeau = $services.rendering.render($xdom , "xhtml/1.0"))
+    #set ($xdom = $services.rendering.parse("((($chapeau\n)))\n$page.content", 'xwiki/2.1'))
+    #set ($renderedContent = $services.rendering.render($xdom , "xhtml/1.0"))
+    #set ($pdate = $object.getValue('pdate'))
+    #if ("$!pdate" != '')
+      #set ($pdate = $formatter.print($pdate))
+    #end
+    #set ($medias = [])
+    #set ($headerImage = $object.getValue('headerImage'))
+    #if ("$!headerImage" != '')
+      #set ($attachment = $page.getAttachment($headerImage))
+      #if ($attachment != $NULL)
+        #set ($headerImageUrl = $xwiki.getAttachmentURL($page.documentReference, $headerImage))
+        #set ($spaces = $services.model.serialize($page.getDocumentReference().getLastSpaceReference(), 'compactwiki'))
+        #set ($headerImageUrl = $xcontext.getURLFactory().createAttachmentURL($headerImage, $spaces, 'WebHome', 'download', '', $xcontext.context))
+      #end
+      #set ($discard = $medias.add({
+        'url': "$headerImageUrl"
+      }))
+    #end
+    #set ($authors = $object.getValue('authors'))
+    #set ($claimReviewObj = $page.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
+    #if ($claimReviewObj != $NULL)
+      #set ($claimReviewed = $claimReviewObj.getValue('claimReviewed'))
+      #if ("$!claimReviewed" != '')
+        #set ($claimReview = {
+          '@context': 'https://schema.org',
+          '@type': 'ClaimReview',
+          'url': $page.getExternalURL(),
+          'datePublished': $pdate,
+          'author': {'type': 'Organization', 'name': $authors},
+          'claimReviewed': $claimReviewed,
+          'itemReviewed': {
+            '@type': 'Claim',
+            'author': {'@type': $claimReviewObj.getValue('itemReviewedAuthorType'), 'name': $claimReviewObj.getValue('itemReviewedAuthorName')},
+            'datePublished': $claimReviewObj.getValue('itemReviewedDatePublished'),
+            'appearance': {
+              'url': $claimReviewObj.getValue('itemReviewedAppearanceUrl'),
+              'headline': $claimReviewObj.getValue('itemReviewedAppearanceHeadline')
+            }
+          },
+          'reviewRating': {
+            '@type': 'Rating',
+            'ratingValue': $claimReviewObj.getValue('reviewRatingValue'),
+            'bestRating': '5',
+            'worstRating': '1',
+            'alternateName': $claimReviewObj.getValue('reviewRatingAlternateName')
+          }
+        })
+      #else
+        #set ($claimReview = {})
+      #end
+    #end
+    #set ($themeTitles = [])
+    #set ($themes = $object.getValue('themes'))
+    #foreach ($theme in $themes)
+      #set ($themePage = $xwiki.getDocument($theme))
+      #set ($discard = $themeTitles.add($themePage.displayTitle))
+    #end
+    #set ($tagObject = $page.getObject('XWiki.TagClass'))
+    #if ($tagObject != $NULL)
+      #set ($tags = $tagObject.getValue('tags'))
+    #end
+    ## Use vocabulary inspired from Atom
+    #set ($item = {
+      'id': $services.model.serialize($page.getPageReference()),
+      'title': $entry[1],
+      'link': $page.getExternalURL(),
+      'channel': {
+        'id': $services.model.serialize($mediaPage.getPageReference()),
+        'name': $mediaPage.displayTitle,
+        'url': $mediaUrl
+      },
+      'original-url': $originalUrl,
+      'body': $renderedContent,
+      'chapeau': $renderedChapeau,
+      'published': "$!pdate",
+      'authors': $authors,
+      'themes': $themeTitles,
+      'tags': $tags,
+      'medias': $medias,
+      'claim-review': $claimReview
+    })
+    #set ($discard = $data.add($item))
+  #end
+  #set ($meta = {
+    'schema': '0.1'
+    })
+  #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
+  #jsonResponse({'data': $data, 'meta': $meta})
+#else
+{{info}}
+Cette page permet d'exporter la base de données de fact-checks au format JSON. Une clé d'API est requise.
+#end
+{{/velocity}}</content>
+  <object>
+    <name>XWiki.DeFacto.FactCheck.Export</name>
+    <number>0</number>
+    <className>XWiki.RequiredRightClass</className>
+    <guid>e5ebbd27-fb7b-4c8e-9d82-a4bb22be75a5</guid>
+    <class>
+      <name>XWiki.RequiredRightClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <level>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>level</name>
+        <number>1</number>
+        <picker>0</picker>
+        <prettyName>level</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>1</size>
+        <sort>none</sort>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <values>edit|programming</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </level>
+    </class>
+    <property>
+      <level>programming</level>
+    </property>
+  </object>
+</xwikidoc>
