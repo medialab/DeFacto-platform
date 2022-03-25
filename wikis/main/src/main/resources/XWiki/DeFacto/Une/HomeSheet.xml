@@ -87,6 +87,7 @@
   (% class="defacto-home-block defacto-home-factcheck-pick" %)(((
     = Choix de la rédaction =
     {{pageBox reference="$factCheckPick" pick="true"/}}
+    (% class='defacto-factcheck-pick' data-id='$escapetool.xml($factCheckPick)' %)((()))
   )))
   #end
 
@@ -96,6 +97,7 @@
     )))
      [[Abonnez-vous&gt;&gt;Newsletter.WebHome]] à notre newsletter pour rester informé(e) des dernières publications et des événéments ! [[[+]&gt;&gt;Newsletter.WebHome]]
   )))
+
   (% class="defacto-teaser-box defacto-teaser-box-two" %)(((
     #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
 
@@ -114,22 +116,23 @@
     = Fact-checks =
 
     #set ($uneConfigTags = $uneConfig.getValue('tags'))
-    #set ($baseQueryString = 'text=*&amp;r=1&amp;f_type=DOCUMENT&amp;f_class=XWiki.DeFacto.FactCheck.FactCheckClass&amp;sort=property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1&amp;rows=6&amp;facet=true')
+    #set ($baseQueryString = "text=*&amp;r=1&amp;f_type=DOCUMENT&amp;f_class=XWiki.DeFacto.FactCheck.FactCheckClass&amp;sort=property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1&amp;rows=6&amp;facet=true&amp;exclude=$escapetool.url($factCheckPick)")
 
     {{html clean="false"}}
       &lt;ul class="nav nav-tabs" role="tablist"&gt;
-        &lt;li role="presentation" class="active"&gt;&lt;a class="defacto-filter" data-exclude="$escapetool.xml($factCheckPick)" href="#une" data-url="$xwiki.getURL($doc.fullName, 'view', $baseQueryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation" class="active"&gt;&lt;a class="defacto-filter" href="#une" data-url="$xwiki.getURL($doc.fullName, 'view', $baseQueryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
         #if ("$!uneConfigTags" != '')
           #foreach ($tag in $uneConfigTags)
             #set ($queryString = "${baseQueryString}&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)")
-            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-exclude="$escapetool.xml($factCheckPick)" href="#$tag" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
+            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" href="#$tag" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
           #end
         #end
         #getThemes($themes)
         #foreach ($theme in $themes)
           #set ($queryString = "${baseQueryString}&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string=$escapetool.url($theme[0])")
-          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" data-exclude="$escapetool.xml($factCheckPick)" href="#$theme[0]" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
+          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" href="#$theme[0]" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
         #end
+        #*
         &lt;li role="presentation" class="defacto-filter-media"&gt;
           &lt;div class="btn-group"&gt;
             &lt;button type="button" class="btn dropdown-toggle defacto-media-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;
@@ -155,6 +158,7 @@
             &lt;/ul&gt;
           &lt;/div&gt;
         &lt;/li&gt;
+        *#
       &lt;/ul&gt;
     {{/html}}
 
@@ -402,6 +406,7 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
     var anchor = $(event.target).closest('a');
     var url = anchor.attr('data-url');
     url = url || anchor.attr('href');
+    $('.search-ui').empty();
     anchor.size() &gt; 0 &amp;&amp; $(document).trigger('xwiki:search:update', url);
   };
 
@@ -481,6 +486,13 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
     embedded: true,
     'f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean': '1'
   };
+  var pick = $('.defacto-factcheck-pick');
+  if (pick.length &gt; 0) {
+    var id = pick.attr('data-id');
+    if (id != undefined) {
+      parameters['exclude'] =  id;
+    }
+  }
 
 ///xwiki/bin/view/Main/Search?text=*&amp;r=1&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string=Themes.Sante.WebHome
 
@@ -497,8 +509,6 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
   query.fail(function(error) {
     console.log('error: ' + error);
   });
-
-  
 });</code>
     </property>
     <property>
@@ -639,7 +649,7 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
     padding: 0;
   }
   .defacto-home-factcheck-pick {
-    grid-row-start: 2;
+    grid-row-start: 1;
     display: flex;
     flex-direction: column;
     padding-bottom: 19px;
@@ -668,7 +678,7 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
   }
 
   .defacto-home-about {
-    grid-row-start: 1;
+    grid-row-start: 7;
     display: flex;
     flex-direction: column;
     .defacto-box {
@@ -693,7 +703,57 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
     }
   }
 
-  .defacto-home-fact-checks {
+
+  .defacto-section-link {
+    text-align: right;
+    a {
+      color: @blue !important;
+      font-weight: normal !important;
+    }
+  }
+  /**
+  .defacto-themes {
+    margin: 0;
+    .defacto-themes-dropdown {
+      padding: 10px 15px;
+      box-shadow: none;
+      font-size: inherit;
+      border: 0;
+      background: @yellow;
+      .caret {
+        margin-left: 0.5em;
+      }
+    }
+    .dropdown-menu {
+      font-size: inherit;
+    }
+  }*/
+  .xwiki-carousel {
+    /** height: 500px; */
+  }
+  .defacto-home-block &gt; h1 {
+    text-transform: uppercase;
+  }
+  .defacto-teaser-box {
+    .defacto-box-icon {
+      float: left;
+      margin-right: 0.5em;
+      font-size: 2.5em;
+      color: @darkyellow;
+    }
+  }
+  .defacto-teaser-box-one {
+    grid-row-start: 2;
+    border: 1px solid @darkyellow;
+    padding: 1em;
+  }
+  .defacto-teaser-box-two {
+    grid-row-start: 4;
+    border: 1px solid @darkyellow;
+    padding: 1em;
+  }
+
+    .defacto-home-fact-checks {
     grid-row-start: 5;
 
     .nav-tabs {
@@ -738,54 +798,6 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
     }
   }
 
-  .defacto-section-link {
-    text-align: right;
-    a {
-      color: @blue !important;
-      font-weight: normal !important;
-    }
-  }
-  /**
-  .defacto-themes {
-    margin: 0;
-    .defacto-themes-dropdown {
-      padding: 10px 15px;
-      box-shadow: none;
-      font-size: inherit;
-      border: 0;
-      background: @yellow;
-      .caret {
-        margin-left: 0.5em;
-      }
-    }
-    .dropdown-menu {
-      font-size: inherit;
-    }
-  }*/
-  .xwiki-carousel {
-    /** height: 500px; */
-  }
-  .defacto-home-block &gt; h1 {
-    text-transform: uppercase;
-  }
-  .defacto-teaser-box {
-    .defacto-box-icon {
-      float: left;
-      margin-right: 0.5em;
-      font-size: 2.5em;
-      color: @darkyellow;
-    }
-  }
-  .defacto-teaser-box-one {
-    grid-row-start: 3;
-    border: 1px solid @darkyellow;
-    padding: 1em;
-  }
-  .defacto-teaser-box-two {
-    grid-row-start: 4;
-    border: 1px solid @darkyellow;
-    padding: 1em;
-  }
   /*
   .defacto-teaser {
     display: flex;
