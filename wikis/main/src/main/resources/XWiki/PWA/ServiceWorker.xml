@@ -19,7 +19,9 @@
   <content>{{velocity}}
 #if ($request.xpage == 'plain')
 $response.setHeader('Content-Type', 'text/javascript')
-$response.setHeader('Service-Worker-Allowed', '/XWiki/PWA/ServiceWorker')
+## TODO: it would be better to use ('Service-Worker-Allowed', '/XWiki/PWA/ServiceWorker') possibly by adding ?xpage=plain&amp;outputSyntax=plain
+## however it does not seem to work: we get exceptions in the JavaScript console
+$response.setHeader('Service-Worker-Allowed', '/')
 self.addEventListener('fetch', function() {
     return;
 });
