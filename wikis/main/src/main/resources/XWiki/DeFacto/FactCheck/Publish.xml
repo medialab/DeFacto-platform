@@ -36,6 +36,21 @@
     #set ($discard = $factCheck.set('pdate', $datetool.date))
     #set ($discard = $page.save())
     #set ($nflag = !$flag)
+    #if ($action == 'publish-and-pick')
+      #set ($uneConfigPage = $xwiki.getDocument('XWiki.DeFacto.Une.UneConfig'))
+      #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
+      #set ($discard = $uneConfig.set('factCheckPick', $reference))
+      #set ($discard = $uneConfigPage.save())
+    #elseif ($action == 'unpublish')
+      ## Unpick fact-check in case it was picked
+      #set ($uneConfigPage = $xwiki.getDocument('XWiki.DeFacto.Une.UneConfig'))
+      #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
+      #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
+      #if ($factCheckPick == $reference)
+        #set ($discard = $uneConfig.set('factCheckPick', ''))
+        #set ($discard = $uneConfigPage.save())
+      #end
+    #end
     $response.sendRedirect($xwiki.getURL($source, 'view', "published=$nflag"))
   #end
 #end

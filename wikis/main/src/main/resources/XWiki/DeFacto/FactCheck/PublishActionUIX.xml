@@ -153,12 +153,24 @@
     #set ($action = 'unpublish')
   #end
   {{html clean='false'}}
-  &lt;div class="btn-group" id="tmPublish"&gt;
-    &lt;a class="btn btn-default title="$title" href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Publish', 'view', "reference=$escapetool.url($doc.fullName)&amp;amp;action=$action&amp;amp;token=$services.csrf.getToken()")" role="button"&gt;
+    &lt;div class="btn-group"&gt;
+     &lt;a class="btn btn-default title="$title" href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Publish', 'view', "reference=$escapetool.url($doc.fullName)&amp;amp;action=$action&amp;amp;token=$services.csrf.getToken()")" role="button"&gt;
       $services.icon.renderHTML('check')
       &lt;span class="btn-label"&gt;$title&lt;/span&gt;
     &lt;/a&gt;
-  &lt;/div&gt;
+    #if ("$!published" != '1')
+      #set ($action = 'publish-and-pick')
+      &lt;button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;
+        &lt;span class="caret"&gt;&lt;/span&gt;
+        &lt;span class="sr-only"&gt;Ouvrir/Fermer le menu déroulant&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;ul class="dropdown-menu "&gt;
+        &lt;li&gt;
+          &lt;a href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Publish', 'view', "reference=$escapetool.url($doc.fullName)&amp;amp;action=$action&amp;amp;token=$services.csrf.getToken()")" rel="nofollow"&gt;&lt;span class="btn-label"&gt;Publier et placer en choix de la rédaction&lt;/span&gt;&lt;/a&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    #end
+    &lt;/div&gt;
   {{/html}}
 #end
 {{/velocity}}</content>
