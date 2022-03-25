@@ -27,6 +27,7 @@
         &lt;li role="presentation" class="active"&gt;&lt;a href="#une" aria-controls="une" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
         &lt;li role="presentation"&gt;&lt;a href="#medias" aria-controls="medias" role="tab" data-toggle="tab"&gt;Médias&lt;/a&gt;&lt;/li&gt;
         &lt;li role="presentation"&gt;&lt;a href="#factchecks" aria-controls="medias" role="tab" data-toggle="tab"&gt;Fact checks&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation"&gt;&lt;a href="#aide" aria-controls="medias" role="tab" data-toggle="tab"&gt;Aide&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     {{/html}}
 
@@ -87,6 +88,10 @@
       (% role="tabpanel" class="tab-pane" id="factchecks" %)(((
         {{include reference="XWiki.DeFacto.FactCheck.WebHome"/}}
       )))
+      (% role="tabpanel" class="tab-pane" id="aide" %)(((
+        {{include reference="Administration.Aide.WebHome"/}}
+      )))
+
     )))
 )))
 {{/velocity}}</content>
