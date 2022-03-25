@@ -466,6 +466,7 @@ body[class*="space-XWiki\.DeFacto"] {
 
 #mainContentArea {
   box-shadow: none;
+  padding: 0 30px 20px 30px;
 }
 
 /** Display all tabs when editing tabbed content, eg in page A-propos */
@@ -549,6 +550,10 @@ body[class*="space-XWiki\.DeFacto"] {
         }
       }
     }
+  }
+
+  #mainContentArea {
+    padding: 20px 30px;
   }
 
   body[class*="space-A-propos"], body[class*="space-Actus"], body[class*="space-Comprendre"], body[class*="space-Explorer"], body[class*="space-Mentions-legales"] {
