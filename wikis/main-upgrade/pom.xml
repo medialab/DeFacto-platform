@@ -27,7 +27,7 @@
         <configuration>
           <includeDependencies>true</includeDependencies>
           <excludes>
-            <exclude>**/Main/WebHome</exclude>
+            <exclude>**/Main/WebHome.xml</exclude>
             <!-- Exclude XWikiPreferences and Administration.WebPreferences in case rights were updated in production
              -->
             <exclude>**/XWiki/XWikiPreferences.xml</exclude>
@@ -44,6 +44,7 @@
             <exclude>/Medias/**</exclude>
             <exclude>/Mentions-legales/**</exclude>
             <exclude>/Themes/**</exclude>
+            <exclude>/Administration/Aide/**</exclude>
             <exclude>**/XWiki/DeFacto/Une/QuiSommesNous.xml</exclude>
             <exclude>**/XWiki/DeFacto/Une/Teaser.xml</exclude>
           </excludes>
