@@ -242,4 +242,43 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
 }
 
 {{/groovy}}</content>
+  <object>
+    <name>XWiki.DeFacto.FactCheck.RssFeedImporter</name>
+    <number>0</number>
+    <className>XWiki.RequiredRightClass</className>
+    <guid>40b3be55-19b1-47a4-92c2-f8a35fe9c984</guid>
+    <class>
+      <name>XWiki.RequiredRightClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <level>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>level</name>
+        <number>1</number>
+        <picker>0</picker>
+        <prettyName>level</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>1</size>
+        <sort>none</sort>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <values>edit|programming</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </level>
+    </class>
+    <property>
+      <level>programming</level>
+    </property>
+  </object>
 </xwikidoc>
