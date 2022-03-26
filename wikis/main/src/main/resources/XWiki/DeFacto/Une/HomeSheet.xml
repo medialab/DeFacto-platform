@@ -795,9 +795,12 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
                 margin-left: 0.5em;
               }
             }
-            .dropdown-menu &gt; li &gt; a {
-              display: flex;
-              justify-content: space-between;
+            .dropdown-menu {
+              min-width: 300px;
+              &gt; li &gt; a {
+                display: flex;
+                justify-content: space-between;
+              }
             }
           }
         }
