@@ -170,5 +170,33 @@
     * [[{{translation key="solr.sortBy.$entry.key"/}}$!sortOrderIndicator&gt;&gt;path:${url}||class="$class"]]
   #end
 #end
+
+## Customized to evaluate dynamically the facet display content, otherwise it gets
+## displayed as non interpetrated Velocity script.
+#macro (displaySearchFacetBody $facetField)
+  &lt;div class="search-facet-body"&gt;
+    #set ($facetDisplayer = $solrConfig.facetDisplayers.get($facetField.name))
+    #if (!$facetDisplayer &amp;&amp; $facetField.name.startsWith('property.'))
+      ## Choose a facet displayer based on the property type.
+      #getXClassProperty($facetField.name $property)
+      ## We rely on configuration instead of using a naming convention like "Main.Solr${property.classType}Facet"
+      ## because most of the property types don't need a custom facet displayer.
+      #set ($facetDisplayer = $solrConfig.facetDisplayersByPropertyType.get($property.classType))
+    #end
+    #if ($facetDisplayer)
+      #set ($facetDisplayer = $xwiki.getDocument($facetDisplayer))
+      #if ("$!facetDisplayer.content" != '')
+        #set ($script = $!facetDisplayer.content.replaceAll('\{\{(.+?)\}\}', '')) ## Remove all macros
+        #evaluate($script)
+      #else
+        #displaySearchFacetValues($facetValues)
+      #end
+    #else
+      #displaySearchFacetValues($facetValues)
+    #end
+  &lt;/div&gt;
+#end
+
+
 {{/velocity}}</content>
 </xwikidoc>

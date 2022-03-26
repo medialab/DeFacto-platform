@@ -123,23 +123,18 @@
     = Fact-checks =
 
     #set ($uneConfigTags = $uneConfig.getValue('tags'))
-    #set ($baseQueryString = "text=*&amp;r=1&amp;f_type=DOCUMENT&amp;f_class=XWiki.DeFacto.FactCheck.FactCheckClass&amp;sort=property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1&amp;rows=6&amp;facet=true&amp;exclude=$escapetool.url($factCheckPick)")
-
     {{html clean="false"}}
       &lt;ul class="nav nav-tabs" role="tablist"&gt;
-        &lt;li role="presentation" class="active"&gt;&lt;a class="defacto-filter" href="#une" data-url="$xwiki.getURL($doc.fullName, 'view', $baseQueryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation" class="active"&gt;&lt;a class="defacto-filter" href="#une" data-filter-type="une" aria-controls="search" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
         #if ("$!uneConfigTags" != '')
           #foreach ($tag in $uneConfigTags)
-            #set ($queryString = "${baseQueryString}&amp;f_property.XWiki.TagClass.tags_string=$escapetool.url($tag)")
-            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" href="#$tag" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
+            &lt;li role="presentation"&gt;&lt;a class="defacto-filter" href="#$escapetool.xml("tag:$tag")" data-filter-type="tag" data-filter-value="$escapetool.xml($tag)" aria-controls="search" role="tab" data-toggle="tab"&gt;$tag&lt;/a&gt;&lt;/li&gt;
           #end
         #end
         #getThemes($themes)
         #foreach ($theme in $themes)
-          #set ($queryString = "${baseQueryString}&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string=$escapetool.url($theme[0])")
-          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" href="#$theme[0]" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
+          &lt;li role="presentation"&gt;&lt;a class="defacto-filter" href="#$escapetool.xml("theme:$theme[0]")" data-filter-type="theme" data-filter-value="$escapetool.xml($theme[0])" aria-controls="search" role="tab" data-toggle="tab"&gt;$theme[1]&lt;/a&gt;&lt;/li&gt;
         #end
-        #*
         &lt;li role="presentation" class="defacto-filter-media"&gt;
           &lt;div class="btn-group"&gt;
             &lt;button type="button" class="btn dropdown-toggle defacto-media-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"&gt;
@@ -151,21 +146,16 @@
               #foreach ($mediaEntry in $mediaList)
                 #set ($mediaTitle = $mediaEntry[0])
                 #set ($mediaName = $mediaEntry[1])
-                #if ($mediaName == 'all')
-                  #set ($queryString = $baseQueryString)
-                #else
-                  #set ($queryString = "${baseQueryString}&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.media_string=$escapetool.url($mediaName)")
-                #end
                 &lt;li&gt;
-                  &lt;a class="defacto-filter" data-filter-value="$escapetool.xml($mediaName)" data-filter-type="media" data-exclude="$escapetool.xml($factCheckPick)" href="#$escapetool.xml("media:$mediaName")" data-url="$xwiki.getURL($doc.fullName, 'view', $queryString)" aria-controls="search"&gt;
-                  $mediaTitle
+                  &lt;a class="defacto-filter" data-filter-type="media" data-filter-value="$escapetool.xml($mediaName)" href="#$escapetool.xml("media:$mediaName")" aria-controls="search"&gt;
+                  &lt;span class="defacto-facet-value"&gt;$mediaTitle&lt;/span&gt;
+                  &lt;span class="defacto-facet-count" data-media="$escapetool.xml($mediaName)"&gt;&lt;/span&gt;
                   &lt;/a&gt;
                 &lt;/li&gt;
               #end
             &lt;/ul&gt;
           &lt;/div&gt;
         &lt;/li&gt;
-        *#
       &lt;/ul&gt;
     {{/html}}
 
@@ -286,141 +276,73 @@
  *   and a UI reload
  */
 
-require(['jquery', 'xwiki-events-bridge'], function($) {
-  var enhanceSearchResultHighlights = function() {
-    var highlights = $(this).removeClass('hidden').parent().prev('.search-result-highlights').addClass('preview');
-
-    // Workaround for IE8 which doesn't support :first-of-type CSS selector.
-    highlights.find('.search-result-highlight').first().addClass('first').parent('dd').addClass('first')
-      .prev('dt').addClass('first');
-
-    $(this).one('click', function(event) {
-      event.preventDefault();
-      $(event.target).remove();
-      highlights.removeClass('preview');
-    });
-  };
-
-  var collapseAllFacets = function(event) {
-    event.preventDefault();
-    $(event.target).closest('.search-facets').find('.search-facet').removeClass('expanded');
-    $(event.target).hide().parent().children('.search-facets-action-expandAll').show();
-  };
-
-  var expandAllFacets = function(event) {
-    event.preventDefault();
-    $(event.target).closest('.search-facets').find('.search-facet').addClass('expanded');
-    $(event.target).hide().parent().children('.search-facets-action-collapseAll').show();
-  };
-
-  var updateExpandCollapseAllFacetsState = function(facetsContainer) {
-    var facetCount = facetsContainer.find('.search-facet').size();
-    var expandedFacetCount = facetsContainer.find('.search-facet.expanded').size();
-    if (expandedFacetCount &gt; facetCount / 2) {
-      facetsContainer.find('.search-facets-action-collapseAll').show()
-        .parent().children('.search-facets-action-expandAll').hide();
-    } else {
-      facetsContainer.find('.search-facets-action-expandAll').show()
-        .parent().children('.search-facets-action-collapseAll').hide();
-    }
-  };
-
-  var addFacetValueCheckbox = function() {
-    var checkBox = $(document.createElement('input')).attr('type', 'checkbox');
-    checkBox.prop('checked', $(this).hasClass('selected'));
-    // Add the 'checked' attribute so that it can be easily located with CSS.
-    checkBox.prop('checked') &amp;&amp; checkBox.attr('checked', 'checked');
-    checkBox.click($.proxy(this, 'click'));
-    // Remove the 'selected' class because the selected state is marked using the check box.
-    $(this).removeClass('selected').before(checkBox);
-  };
-
-  var enhanceSearchFacets = function() {
-    var facetsContainer = $(this);
-
-    // Add the ability to collapse the facets pane on extra small screens (phones).
-    facetsContainer.find('.search-facets-header').click(function() {
-      facetsContainer.toggleClass('collapsed-xs');
-    });
-
-    // Global Expand/Collapse toggle.
-    facetsContainer.find('.search-facets-action-collapseAll').removeClass('hidden').click(collapseAllFacets);
-    facetsContainer.find('.search-facets-action-expandAll').removeClass('hidden').click(expandAllFacets);
-    updateExpandCollapseAllFacetsState(facetsContainer);
-
-    // Expand/Collapse toggle for each facet.
-    facetsContainer.find('.search-facet-header').click(function(event) {
-      $(event.target).parent('.search-facet').toggleClass('expanded');
-      updateExpandCollapseAllFacetsState(facetsContainer);
-    });
-
-    // Add a check box before each facet value. We do this from JavaScript because the behaviour of a check box inside
-    // a link is not consistent across different browsers (some follow the link when the check box is clicked, others
-    // don't) and having the check box outside the facet value link requires JavaScript to synchronize them.
-    facetsContainer.find('.search-facet-body a.itemName').each(addFacetValueCheckbox);
-  };
-
-  var getQueryString = function(url) {
-    var queryIndex = url.indexOf('?');
-    return queryIndex &lt; 0 ? '' : url.substr(queryIndex + 1);
-  };
-
-  var getSearchUIState = function() {
-    var expandedFacets = [];
-    $('.search-facet.expanded').each(function() {
-      expandedFacets.push($(this).attr('data-name'));
-    });
-    return {
-      'expandedFacets': expandedFacets
-    };
-  };
-
-  var setSearchUIState = function(state) {
-    state = state || {};
-    var expandedFacets = state.expandedFacets || [];
-    $('.search-facet').not('.expanded').each(function() {
-      if (expandedFacets.indexOf($(this).attr('data-name')) &gt;= 0) {
-        $(this).addClass('expanded');
-      }
-    });
-  };
+require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
+  var state = {};
 
   var updateSearchUI = function(html) {
     $('.search-ui').replaceWith(html);
-    enhanceSearchUI();
+    registerPaginationLinks();
     $(document).trigger('xwiki:dom:updated', {'elements': $('.search-ui').toArray()});
-  };
-
-  var searchRequest = null;
-
-  var pushSearchUIState = function(viewURL) {
-    // If there is a request in progress, abort it to prevent its callback from being called.
-    searchRequest &amp;&amp; searchRequest.abort();
-    $('.search-ui').attr('aria-busy', true);
-    var getURL = XWiki.currentDocument.getURL('get', getQueryString(viewURL));
-    searchRequest = $.get(getURL).done(function(html) {
-      var state = getSearchUIState();
-      updateSearchUI(html);
-      setSearchUIState(state);
-      window.history.replaceState &amp;&amp; window.history.replaceState(state, document.title);
-      // Make sure the browser address bar reflects the new state (and thus the new state can be bookmarked).
-      window.history.pushState &amp;&amp; window.history.pushState(state, document.title, viewURL);
+    var medias = $('ul.property\\.XWiki\\.DeFacto\\.FactCheck\\.FactCheckClass\\.media_string li');
+    // The total needs to be computed by adding all media count since it's not present in the facet block
+    var total = 0;
+    medias.each(function(index, element) {
+      var $element = $(element);
+      var itemCount = $element.find('.itemCount');
+      var itemName = $element.find('.itemName');
+      var href = $(itemName).attr('href');
+      var count = parseInt($(itemCount).text());
+      total += count;
+      const regex = /f_property.XWiki.DeFacto.FactCheck.FactCheckClass.media_string=(Medias.[^&amp;]*)/g;
+      var match = regex.exec(href);
+      var matches = [];
+      while (match != null) {
+        matches.push(match[1]);
+        match = regex.exec(href);
+      }
+      // We need the last occurrence between the current facet value is present, if any
+      if (matches.length &gt; 0) {
+        var media = matches[matches.length - 1];
+        $("span.defacto-facet-count[data-media='" + media + "']").text(count);
+      }
+      // A special treatment is needed for the active media filter because its href does not contain its reference
+      if (itemName.hasClass('selected') &amp;&amp; state['media']) {
+        if (count !== 0)
+          $("span.defacto-facet-count[data-media='" + state['media'] + "']").text(count);
+        else
+          $("span.defacto-facet-count[data-media='" + state['media'] + "']").text('');
+      }
     });
+    if (total !== 0)
+      $("span.defacto-facet-count[data-media='all']").text(total);
+    else
+      $("span.defacto-facet-count[data-media='all']").text('');
   };
 
   var reloadSearchUI = function(event) {
     event.preventDefault();
-    var anchor = $(event.target).closest('a');
-    var url = anchor.attr('data-url');
-    url = url || anchor.attr('href');
-    $('.search-ui').empty();
-    anchor.size() &gt; 0 &amp;&amp; $(document).trigger('xwiki:search:update', url);
+    var $this = $(this);
+    if ($this.attr('data-filter-type') == 'media') {
+      // Mark current media filter as active, other ones as inactive
+      $('a.defacto-filter[data-filter-type="media"]').removeClass('active');
+      $this.addClass('active');
+    }
+    // Reset all counters in the "Fact-checkers" tab
+    $('span.defacto-facet-count').text('');
+    var link = $(event.target).closest('a');
+    var filterType = link.attr('data-filter-type');
+    var filterValue = link.attr('data-filter-value');
+    var href = link.attr('href');
+    // Pagination
+    const regex = /firstIndex=([^&amp;]*)/g;
+    var match = regex.exec(href);
+    var firstIndex = 0;
+    if (match) {
+      firstIndex = match[1];
+    }
+    updateState(filterType, filterValue);
+    search(firstIndex);
   };
-
-  // Others (e.g. a custom facet) can trigger a search UI update by firing this event.
-  $(document).on('xwiki:search:update', function(event, viewURL) {
-    pushSearchUIState(viewURL);
-  });
 
   $(window).on('popstate', function(event) {
     // If there is a request in progress, abort it to prevent its callback from being called.
@@ -457,65 +379,114 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
     $(data.elements).find('noscript.skin-extension-imports').remove();
   });
 
-  var enhanceSearchUI = function() {
-    $('.search-result-highlightAll').each(enhanceSearchResultHighlights);
-    $('.search-facets').each(enhanceSearchFacets);
+  var registerPaginationLinks = function() {
     $([
-      '.search-results-sort a.sort-item',
-      '.search-options a.options-item',
       '.pagination a',
-      '.controlPagination a',
-      'a.search-facets-action-reset',
-      '.search-facet a.itemName',
-      '.search-facet-body a.more',
-      '.search-facet-body .selectedLocation a',
-      'a.defacto-filter'
+      '.controlPagination a'
     ].join(',')).click(reloadSearchUI);
   };
 
-  enhanceSearchUI();
-
-  // 'f_property.XWiki.DeFacto.FactCheck.FactCheckClass.media_string': Medias.Les-Surligneurs.WebHome,
-
-  $('.search-ui').attr('aria-busy', true);
-  $('.search-ui').empty();
-  var solrServiceURL = new XWiki.Document('Search', 'Main').getURL('get');
-  var parameters =  {
-    sort: 'property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date',
-    sortOrder: 'desc',
-    highlight: false,
-    facet: true,
-    rows: 6,
-    r: '1',
-    f_type: 'DOCUMENT',
-    text: '*',
-    f_class: 'XWiki.DeFacto.FactCheck.FactCheckClass',
-    embedded: true,
-    'f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean': '1'
-  };
-  var pick = $('.defacto-factcheck-pick');
-  if (pick.length &gt; 0) {
-    var id = pick.attr('data-id');
-    if (id != undefined) {
-      parameters['exclude'] =  id;
+  var updateState = function(filterType, filterValue) {
+    if (filterType &amp;&amp; filterType !== 'une' &amp;&amp; filterValue) {
+      state[filterType] = filterValue;
+    }
+    // Tags and Themes facets are exclusive, while the Media one is inclusive
+    if (filterType == 'tag' || filterType == 'une')
+      delete state['theme'];
+    if (filterType == 'theme' || filterType == 'une')
+      delete state['tag'];
+    if (state['media']) {
+      // Retrieve media label
+      var mediaLabel = 'Fact-checkeurs';
+      if (state['media'] != 'all') {
+        var element = $('a.defacto-filter[data-filter-value="' + state['media'] + '"] .defacto-facet-value');
+        mediaLabel = $(element).text();
+      }
+      $('.defacto-filter-media .defacto-media-dropdown').html(mediaLabel + '&lt;span class="caret"&gt;&lt;/span&gt;');
     }
   }
 
-///xwiki/bin/view/Main/Search?text=*&amp;r=1&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string=Themes.Sante.WebHome
+  var readStateFromURL = function() {
+    if(window.location.hash) {
+      var hash = window.location.hash;
+      const regex = /[#|]*([^:]*):([^|]*)/g;
+      var match = regex.exec(hash);
+      while (match != null) {
+        if (match.length == 3) {
+          state[match[1]] = match[2];
+        }
+        match = regex.exec(hash);
+      }
+    }
+    updateState();
+  }
 
-  var query = $.get(solrServiceURL, parameters);
-  query.done(function(data) {
-    var state = getSearchUIState();
-    updateSearchUI(data);
-    setSearchUIState(state);
-    window.history.replaceState &amp;&amp; window.history.replaceState(state, document.title);
-    // Make sure the browser address bar reflects the new state (and thus the new state can be bookmarked).
-    var home = new XWiki.Document('WebHome', 'Main');
-    window.history.pushState &amp;&amp; window.history.pushState(state, document.title, home.getURL() + '?text=*&amp;r=1&amp;f_type=DOCUMENT&amp;f_class=XWiki.DeFacto.FactCheck.FactCheckClass&amp;sort=property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date&amp;embedded=true&amp;f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean=1');
-  });
-  query.fail(function(error) {
-    console.log('error: ' + error);
-  });
+  var search = function(firstIndex) {
+    $('.search-ui').attr('aria-busy', true);
+    $('.search-ui').empty();
+    var solrServiceURL = new XWiki.Document('Search', 'Main').getURL('get');
+    var parameters =  {
+      sort: 'property.XWiki.DeFacto.FactCheck.FactCheckClass.pdate_date',
+      sortOrder: 'desc',
+      highlight: false,
+      facet: true,
+      rows: 6,
+      firstIndex: firstIndex,
+      r: '1',
+      f_type: 'DOCUMENT',
+      text: '*',
+      f_class: 'XWiki.DeFacto.FactCheck.FactCheckClass',
+      embedded: true,
+      'f_property.XWiki.DeFacto.FactCheck.FactCheckClass.published_boolean': '1'
+    };
+    var pick = $('.defacto-factcheck-pick');
+    if (pick.length &gt; 0) {
+      var id = pick.attr('data-id');
+      if (id != undefined) {
+        parameters['exclude'] =  id;
+      }
+    }
+    if (state['tag'] !== undefined) {
+      parameters['f_property.XWiki.TagClass.tags_string'] = state['tag'];
+    }
+    if (state['theme'] !== undefined) {
+      parameters['f_property.XWiki.DeFacto.FactCheck.FactCheckClass.themes_string'] = state['theme'];
+    }
+    if (state['media'] !== undefined &amp;&amp; state['media'] !== 'all') {
+      parameters['f_property.XWiki.DeFacto.FactCheck.FactCheckClass.media_string'] = state['media'];
+    }
+
+    var query = $.get(solrServiceURL, parameters);
+    query.done(function(data) {
+      updateSearchUI(data);
+      // Make sure the browser address bar reflects the new state (and thus the new state can be bookmarked).
+      var home = new XWiki.Document('WebHome', 'Main');
+      var hash = '';
+      for (const [key, value] of Object.entries(state)) {
+        hash += '|' + key + ':' + value;
+      }
+      window.history.replaceState(state, document.title, home.getURL() + '#'  + hash);
+    });
+    query.fail(function(error) {
+      console.log('error: ' + error);
+    });
+  }
+
+  $('a.defacto-filter').on('click', reloadSearchUI);
+
+  readStateFromURL();
+
+  var tab;
+  if (state['tag']) {
+    tab = $('.nav-tabs a[data-filter-value="' + state['tag'] + '"]');
+  } else if (state['theme']) {
+    tab = $('.nav-tabs a[data-filter-value="' + state['theme'] + '"]');
+  }
+  if (tab !== undefined &amp;&amp; tab.tab !== undefined) {
+    tab.tab('show');
+  }
+  search(0);
+
 });</code>
     </property>
     <property>
@@ -655,6 +626,7 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
     background: none;
     padding: 0;
   }
+
   .defacto-home-factcheck-pick {
     grid-row-start: 1;
     display: flex;
@@ -710,7 +682,6 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
     }
   }
 
-
   .defacto-section-link {
     text-align: right;
     a {
@@ -718,6 +689,7 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
       font-weight: normal !important;
     }
   }
+
   /**
   .defacto-themes {
     margin: 0;
@@ -735,12 +707,15 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
       font-size: inherit;
     }
   }*/
+
   .xwiki-carousel {
     /** height: 500px; */
   }
+
   .defacto-home-block &gt; h1 {
     text-transform: uppercase;
   }
+
   .defacto-teaser-box {
     .defacto-box-icon {
       float: left;
@@ -749,11 +724,13 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
       color: @darkyellow;
     }
   }
+
   .defacto-teaser-box-one {
     grid-row-start: 2;
     border: 1px solid @darkyellow;
     padding: 1em;
   }
+
   .defacto-teaser-box-pwa {
     grid-row-start: 3;
     border: 1px solid @darkyellow;
@@ -775,13 +752,14 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
       }
     }
   }
+
   .defacto-teaser-box-two {
     grid-row-start: 4;
     border: 1px solid @darkyellow;
     padding: 1em;
   }
 
-    .defacto-home-fact-checks {
+  .defacto-home-fact-checks {
     grid-row-start: 5;
 
     .nav-tabs {
@@ -817,6 +795,10 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
                 margin-left: 0.5em;
               }
             }
+            .dropdown-menu &gt; li &gt; a {
+              display: flex;
+              justify-content: space-between;
+            }
           }
         }
       }
@@ -837,6 +819,7 @@ require(['jquery', 'xwiki-events-bridge'], function($) {
       }
     }
   }*/
+
   .defacto-home-about, .defacto-home-explorer {
     p {
       a {
