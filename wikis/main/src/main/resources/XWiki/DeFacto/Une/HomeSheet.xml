@@ -283,6 +283,12 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
     $('.search-ui').replaceWith(html);
     registerPaginationLinks();
     $(document).trigger('xwiki:dom:updated', {'elements': $('.search-ui').toArray()});
+    // Hide all media list items except "all", only the non-empty ones will be shown
+    $('a.defacto-filter[data-filter-type="media"]').each(function(index, element) {
+      var $element = $(element);
+      if ($element.attr('data-filter-value') !== 'all')
+        $element.parent().css('display', 'none');
+    });
     var medias = $('ul.property\\.XWiki\\.DeFacto\\.FactCheck\\.FactCheckClass\\.media_string li');
     // The total needs to be computed by adding all media count since it's not present in the facet block
     var total = 0;
@@ -304,19 +310,19 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
       if (matches.length &gt; 0) {
         var media = matches[matches.length - 1];
         $("span.defacto-facet-count[data-media='" + media + "']").text(count);
+        var mediaElement = $('a.defacto-filter[data-filter-value="' + media + '"]');
+        $(mediaElement).parent().css('display', 'block');
       }
       // A special treatment is needed for the active media filter because its href does not contain its reference
       if (itemName.hasClass('selected') &amp;&amp; state['media']) {
-        if (count !== 0)
+        if (count !== 0) {
           $("span.defacto-facet-count[data-media='" + state['media'] + "']").text(count);
-        else
-          $("span.defacto-facet-count[data-media='" + state['media'] + "']").text('');
+          var mediaElement = $('a.defacto-filter[data-filter-value="' + state['media'] + '"]');
+          $(mediaElement).parent().css('display', 'block');
+        }
       }
     });
-    if (total !== 0)
-      $("span.defacto-facet-count[data-media='all']").text(total);
-    else
-      $("span.defacto-facet-count[data-media='all']").text('');
+    $("span.defacto-facet-count[data-media='all']").text(total);
   };
 
   var reloadSearchUI = function(event) {
