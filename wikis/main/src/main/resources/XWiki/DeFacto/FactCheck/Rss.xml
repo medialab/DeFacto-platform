@@ -83,10 +83,6 @@ entries.each{ entry -&gt;
   def SyndContent entryDescription = new SyndContentImpl();
   entryDescription.setType("text/html");
   def chapeau = object.getValue("chapeau");
-  // There is an issue with emoticons it seems. The generated XML is wrong when not adding a space between brackets and parenthesis
-  // or between italics and parenthesis
-  chapeau = chapeau.replaceAll('\\]\\]\\)', ']] )')
-  chapeau = chapeau.replaceAll('//\\)', '// )')
   def xdom = services.rendering.parse(chapeau, "xwiki/2.1");
   def chapeauHtml = services.rendering.render(xdom , "xhtml/1.0");
   entryDescription.setValue(chapeauHtml);
@@ -94,10 +90,6 @@ entries.each{ entry -&gt;
   def entryContents = new ArrayList()
   def entryContent = new SyndContentImpl();
   def content = chapeau + "\n\n" + page.content;
-  // There is an issue with emoticons it seems. The generated XML is wrong when not adding a space between brackets and parenthesis
-  // or between italics and parenthesis
-  content = content.replaceAll('\\]\\]\\)', ']] )')
-  content = content.replaceAll('//\\)', '// )')
   def contentXdom = services.rendering.parse(content, "xwiki/2.1");
   def renderedContent = services.rendering.render(contentXdom , "xhtml/1.0");
   entryContent.setType("text/html");

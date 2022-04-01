@@ -51,10 +51,6 @@ class RssUtils {
         // set published date, language, enclosure etc.
         entryDescription.setType("text/html");
         def content = page.content;
-        // There is an issue with emoticons it seems. The generated XML is wrong when not adding a space between brackets and parenthesis
-        // or between italics and parenthesis
-        content = content.replaceAll('\\]\\]\\)', ']] )')
-        content = content.replaceAll('//\\)', '// )')
         def xdom = services.rendering.parse(content, "xwiki/2.1");
         def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
         entryDescription.setValue(renderedContent);
@@ -73,8 +69,10 @@ class RssUtils {
     if (xcontext.action == 'get') {
       response.setContentType("application/xml");
       def feedStr = output.outputString(feed, true);
-      out.println(feedStr);
-
+      response.setCharacterEncoding('utf-8')
+      response.writer.write(feedStr)
+      response.flushBuffer()
+      xcontext.setFinished(true)
     } else {
       out.println("{{code language='xml'}}")
       out.println(output.outputString(feed));
