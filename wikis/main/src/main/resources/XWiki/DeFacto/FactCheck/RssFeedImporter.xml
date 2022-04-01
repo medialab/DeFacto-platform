@@ -73,11 +73,10 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
     def input = new SyndFeedInput();
     def feed = input.build(new XmlReader(httpcon));
 
-    //def feed = romeFeedFactory.createFeed(parameters)
     def newEntriesCount = 0
     java.util.Collections.reverse(feed.entries)
     feed.entries.eachWithIndex{ it, index -&gt;
-      if (index &lt; 1) {
+      if (index &lt; 30) {
         def title = it.title.trim()
         def author = it.author
         def publishedDate = it.publishedDate
