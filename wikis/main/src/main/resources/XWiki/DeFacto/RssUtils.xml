@@ -26,7 +26,8 @@ class RssUtils {
     super();
   }
 
-  SyndFeed createFeed(pageList, services, xwiki) {
+  /** Method to create a generic feed. Used both by XWiki.DeFacto.Rss and and XWiki.DeFacto.FactCheck.Rss */
+  SyndFeed createFeed(pageList, services, xwiki, includeDescription) {
     def SyndFeed feed = new SyndFeedImpl();
     feed.setFeedType("rss_2.0");
     feed.setTitle('DE FACTO');
@@ -44,19 +45,22 @@ class RssUtils {
       entry.setLink(page.getExternalURL());
       // Set the entry title
       entry.setTitle(page.displayTitle);
-      // Add the description to the entry
-      def SyndContent entryDescription = new SyndContentImpl();
-      // set published date, language, enclosure etc.
-      entryDescription.setType("text/html");
-      def content = page.content;
-      // There is an issue with emoticons it seems. The generated XML is wrong when not adding a space between brackets and parenthesis
-      // or between italics and parenthesis
-      content = content.replaceAll('\\]\\]\\)', ']] )')
-      content = content.replaceAll('//\\)', '// )')
-      def xdom = services.rendering.parse(content, "xwiki/2.1");
-      def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
-      entryDescription.setValue(renderedContent);
-      entry.setDescription(entryDescription);
+      if (includeDescription == true) {
+        // Add the description to the entry
+        def SyndContent entryDescription = new SyndContentImpl();
+        // set published date, language, enclosure etc.
+        entryDescription.setType("text/html");
+        def content = page.content;
+        // There is an issue with emoticons it seems. The generated XML is wrong when not adding a space between brackets and parenthesis
+        // or between italics and parenthesis
+        content = content.replaceAll('\\]\\]\\)', ']] )')
+        content = content.replaceAll('//\\)', '// )')
+        def xdom = services.rendering.parse(content, "xwiki/2.1");
+        def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
+        entryDescription.setValue(renderedContent);
+        entry.setDescription(entryDescription);
+      }
+
       entry.setPublishedDate(page.getCreationDate());
       entries.add(entry);
     }
