@@ -44,13 +44,20 @@
       <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
     </claimReviewed>
     <claimReviewedComment>
+      <contenttype>---</contenttype>
+      <customDisplay/>
       <disabled>0</disabled>
+      <editor>---</editor>
+      <hint/>
       <name>claimReviewedComment</name>
       <number>15</number>
+      <picker>1</picker>
       <prettyName>claimReviewedComment</prettyName>
       <rows>5</rows>
       <size>40</size>
       <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
     </claimReviewedComment>
     <itemReviewedAppearanceAuthorName>
@@ -233,6 +240,23 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.DateClass</classType>
     </itemReviewedDatePublished>
+    <json>
+      <contenttype>---</contenttype>
+      <customDisplay/>
+      <disabled>0</disabled>
+      <editor>---</editor>
+      <hint/>
+      <name>json</name>
+      <number>16</number>
+      <picker>1</picker>
+      <prettyName>json</prettyName>
+      <rows>5</rows>
+      <size>40</size>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+    </json>
     <reviewRatingAlternateName>
       <customDisplay/>
       <disabled>0</disabled>

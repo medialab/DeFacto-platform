@@ -101,11 +101,12 @@ entries.each{ entry -&gt;
   if (claimReviewObj != null) {
     def claimReviewed = claimReviewObj.getValue('claimReviewed')
     if (claimReviewed != '') {
-      def claimReviewElement = new org.jdom2.Element("json", org.jdom2.Namespace.getNamespace("claimReview", "https://schema.org/ClaimReview"))
+      def claimReviewElement = new org.jdom2.Element("review", org.jdom2.Namespace.getNamespace("schema", "https://schema.org/"))
+      claimReviewElement.setAttribute('encodingFormat', 'application/ld+json')
       def json = groovy.json.JsonOutput.toJson([
         '@context': 'https://schema.org',
         '@type': 'ClaimReview',
-        'url': page.getExternalURL(),
+        'url': object.getValue('link'),
         'datePublished': page.getDate(),
         'author': ['type': 'Organization', 'name': "$articleAuthors"],
         'claimReviewed': claimReviewed,
