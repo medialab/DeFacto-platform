@@ -19,7 +19,7 @@
   <content>{{include reference="RssUtils"/}}
 
 {{groovy}}
-def hql = "select doc.fullName, doc.title from XWikiDocument as doc where doc.fullName not like :location and doc.hidden = false and doc.fullName not like 'XWiki.%' order by doc.creationDate desc";
+def hql = "select doc.fullName, doc.title from XWikiDocument as doc where doc.fullName not like :location and doc.hidden = false and doc.fullName not like 'XWiki.%' and doc.fullName not like 'Administration.%' order by doc.creationDate desc";
 def query = services.query.hql(hql);
 query.setLimit(20)
 query.bindValue('location', 'Media%')

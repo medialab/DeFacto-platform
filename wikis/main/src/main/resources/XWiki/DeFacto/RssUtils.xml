@@ -19,6 +19,7 @@
   <content>{{groovy}}
 import com.rometools.rome.io.*;
 import com.rometools.rome.feed.synd.*;
+import org.xwiki.security.authorization.Right;
 
 class RssUtils {
 
@@ -36,29 +37,31 @@ class RssUtils {
     feed.setUri('https://defacto-observatoire.fr/')
     def List&lt;SyndEntry&gt; entries = new ArrayList&lt;&gt;();
     pageList.each{ result -&gt;
-      def SyndEntry entry = new SyndEntryImpl();
-      def List&lt;SyndPerson&gt; eventAuthors = new ArrayList&lt;SyndPerson&gt;();
-      def page = xwiki.getDocument(result[0])
+      if (services.security.authorization.hasAccess(Right.VIEW, services.model.resolveDocument(result[0]))) {
+        def SyndEntry entry = new SyndEntryImpl();
+        def List&lt;SyndPerson&gt; eventAuthors = new ArrayList&lt;SyndPerson&gt;();
+        def page = xwiki.getDocument(result[0])
 
-      // Define the GUID
-      entry.setUri(page.fullName);
-      entry.setLink(page.getExternalURL());
-      // Set the entry title
-      entry.setTitle(page.displayTitle);
-      if (includeDescription == true) {
-        // Add the description to the entry
-        def SyndContent entryDescription = new SyndContentImpl();
-        // set published date, language, enclosure etc.
-        entryDescription.setType("text/html");
-        def content = page.content;
-        def xdom = services.rendering.parse(content, "xwiki/2.1");
-        def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
-        entryDescription.setValue(renderedContent);
-        entry.setDescription(entryDescription);
+        // Define the GUID
+        entry.setUri(page.fullName);
+        entry.setLink(page.getExternalURL());
+        // Set the entry title
+        entry.setTitle(page.displayTitle);
+        if (includeDescription == true) {
+          // Add the description to the entry
+          def SyndContent entryDescription = new SyndContentImpl();
+          // set published date, language, enclosure etc.
+          entryDescription.setType("text/html");
+          def content = page.content;
+          def xdom = services.rendering.parse(content, "xwiki/2.1");
+          def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
+          entryDescription.setValue(renderedContent);
+          entry.setDescription(entryDescription);
+        }
+
+        entry.setPublishedDate(page.getCreationDate());
+        entries.add(entry);
       }
-
-      entry.setPublishedDate(page.getCreationDate());
-      entries.add(entry);
     }
     feed.setEntries(entries);
     return feed;
