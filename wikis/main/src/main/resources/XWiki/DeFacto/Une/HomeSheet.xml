@@ -802,7 +802,7 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
               }
             }
             .dropdown-menu {
-              min-width: 300px;
+              min-width: 275px;
               &gt; li &gt; a {
                 display: flex;
                 justify-content: space-between;
