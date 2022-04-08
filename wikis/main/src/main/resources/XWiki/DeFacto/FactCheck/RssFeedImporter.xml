@@ -55,6 +55,7 @@ def byte[] getBytes(String url, String username, String password) {
 
 if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; services.csrf.isTokenValid(request.token)) {
   def FACTCHECKS_SPACE = 'Fact-checks';
+  def MEDIA_RSS = "http://search.yahoo.com/mrss/"
   def media = request.media
   def mediaReference = services.model.resolveDocument(media)
   def mediaPage = xwiki.getDocument(mediaReference)
@@ -124,7 +125,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
             if (enclosureType != null &amp;&amp; enclosureType.startsWith('image')) {
               def fileName = enclosure;
               if (enclosure.startsWith('http')) {
-                def bytes = getBytes(enclosure, "defacto", "we9sa4Pe");
+                def bytes = getBytes(enclosure, username, password);
                 if (bytes != null) {
                   def bais = new ByteArrayInputStream(bytes);
                   def idx = enclosure.lastIndexOf('/');
@@ -167,13 +168,31 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           def claimReviewData = null
           def claimReviewJson = null
           def foreignMarkup = it.getForeignMarkup();
+
           foreignMarkup.each{ foreignElement -&gt;
+            def namespace = foreignElement.getNamespace()
+            def namespaceURI = null
+            if (namespace != null) {
+              namespaceURI = namespace.getURI()
+            }
             if ('enclosed'.equals(foreignElement.name)) {
               content = foreignElement.getText()
             } else if ('review'.equals(foreignElement.name)) {
               claimReviewJson = foreignElement.getText().trim()
               def jsonSlurper = new JsonSlurper()
               claimReviewData = jsonSlurper.parseText(claimReviewJson)
+            } else if ('content'.equals(foreignElement.name) &amp;&amp; MEDIA_RSS.equals(namespaceURI)) {
+              def url = foreignElement.getAttributeValue('url');
+              if (url != null &amp;&amp; url.equals(enclosure)) {
+                def description = foreignElement.getChildText('description', namespace);
+                def credit = foreignElement.getChildText('credit', namespace);
+                if (description != null) {
+                  object.set('headerImageCaption', description);
+                }
+                if (credit  != null) {
+                  object.set('headerImageCredits', credit);
+                }
+              }
             }
           }
 
@@ -233,7 +252,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
             def imageBlocks = xdom.getBlocks(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT)
             for (ImageBlock imageBlock : imageBlocks) {
               String imageReference = imageBlock.getReference().getReference();
-              def bytes = getBytes(imageReference, "defacto", "we9sa4Pe");
+              def bytes = getBytes(imageReference, username, password);
               if (bytes != null) {
                 def bais = new ByteArrayInputStream(bytes);
                 def idx = imageReference.lastIndexOf('/');
@@ -306,7 +325,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
       }
     }
     if (media != null) {
-      response.sendRedirect(xwiki.getURL(media, 'view', "count=$newEntriesCount"))
+      //response.sendRedirect(xwiki.getURL(media, 'view', "count=$newEntriesCount"))
     }
   }
 }
