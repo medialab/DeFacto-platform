@@ -277,7 +277,15 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
             def itemReviewed = claimReviewData.itemReviewed
             claimReview.set('itemReviewedAuthorName', itemReviewed?.author?.name)
             if (itemReviewed?.author != null) {
-              claimReview.set('itemReviewedAuthorType', itemReviewed.author.get('@type'))
+              // Workaround for an issue with Factuel ClaimReview JSON
+              def type = itemReviewed.author.get('@type')
+              if (type != null) {
+                if (type == "Personne") {
+                  type = "Person"
+                  claimReviewJson = claimReviewJson.replace('"@type":"Personne"', '"@type":"Person"')
+                }
+                claimReview.set('itemReviewedAuthorType', type)
+              }
             }
             claimReview.set('itemReviewedAuthorUrl', itemReviewed?.author?.url)
             claimReview.set('itemReviewedAppearanceUrl', itemReviewed?.appearance)
