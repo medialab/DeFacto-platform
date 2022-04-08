@@ -39,5 +39,6 @@
 })
 #set ($columns = ['doc.title', 'authors', 'themes', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
 #livetable('factchecks' $columns $columnsProperties $options)
+##{{livetableExporter livetable="factchecks" format="csv" /}}
 {{/velocity}}</content>
 </xwikidoc>
