@@ -67,6 +67,7 @@ factcheck.livetable._actions=Actions
 factcheck.livetable._actions.edit=Modifier
 factcheck.livetable._actions.delete=Supprimer
 factcheck.livetable.emptyvalue=-
+factcheck.livetable.reviewRatingAlternateName=Évaluation
 
 
 # Live table specific keys
