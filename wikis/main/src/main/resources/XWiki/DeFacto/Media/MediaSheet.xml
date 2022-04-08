@@ -82,12 +82,13 @@
     'doc.title': {"link":"view"},
     'authors': {'html': true},
     'themes': {},
+    'reviewRatingAlternateName' : {'class' : 'XWiki.DeFacto.Review.ClaimReviewClass', 'filterable' : 'true', 'sortable' : 'true'},
     'pdate': {},
     'published': {},
     'media': {'type': 'hidden'},
     'doc.date': {'filterable': true},
-    'doc.author': {"link":"author"},
-    '_actions': {"sortable":false,"filterable":false,"html":true,"actions":["edit","delete"]}
+    'doc.author': {'link': 'author'},
+    '_actions': {'sortable':false, 'filterable':false, 'html':true, 'actions': ['edit','delete']}
   })
   #set ($parent = $services.model.serialize($doc.documentReference.parent, 'compactwiki'))
   #set ($location = "${parent}")
@@ -104,7 +105,7 @@
     'queryFilters': '',
     'extraParams': "&amp;location=$escapetool.url($location)&amp;media=$escapetool.url($services.model.serialize($doc.documentReference, 'compactwiki'))"
   })
-  #set ($columns = ['doc.title', 'authors', 'themes', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
+  #set ($columns = ['doc.title', 'authors', 'themes', 'reviewRatingAlternateName', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
   #if ($isGuest)
     #set ($discard = $options.remove('queryFilters'))
     #set ($discard = $columns.remove('published'))
