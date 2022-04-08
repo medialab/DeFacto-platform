@@ -325,7 +325,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
       }
     }
     if (media != null) {
-      //response.sendRedirect(xwiki.getURL(media, 'view', "count=$newEntriesCount"))
+      response.sendRedirect(xwiki.getURL(media, 'view', "count=$newEntriesCount"))
     }
   }
 }
