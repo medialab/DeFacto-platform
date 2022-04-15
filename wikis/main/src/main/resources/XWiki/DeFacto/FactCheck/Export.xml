@@ -110,7 +110,6 @@
         'name': $mediaPage.displayTitle,
         'url': $mediaUrl
       },
-      'original-url': $originalUrl,
       'chapeau': $renderedChapeau,
       'published': "$!pdate",
       'authors': $authors,
@@ -119,6 +118,9 @@
       'medias': $medias,
       'claim-review': $claimReview
     })
+    #if ("$!originalUrl" != '')
+      #set ($discard = $item.put('original-url', $originalUrl))
+    #end
     #if ("$!request.body" == 'true')
       #set ($xdom = $services.rendering.parse("((($chapeau\n)))\n$page.content", 'xwiki/2.1'))
       #set ($renderedContent = $services.rendering.render($xdom , "xhtml/1.0"))
