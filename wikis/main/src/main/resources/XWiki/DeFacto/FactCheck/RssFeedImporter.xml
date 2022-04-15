@@ -292,13 +292,17 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           // Also add a ClaimReview object
           def claimReview = page.newObject('XWiki.DeFacto.Review.ClaimReviewClass')
           if (claimReviewData != null) {
+            // In some cases the ClaimReview is a list. For now we use only the first item in that case.
+            if (claimReviewData instanceof List &amp;&amp; claimReviewData.size() &gt; 0) {
+              claimReviewData = claimReviewData.get(0);
+            }
             claimReview.set('claimReviewed', claimReviewData.claimReviewed)
             def itemReviewed = claimReviewData.itemReviewed
             claimReview.set('itemReviewedAuthorName', itemReviewed?.author?.name)
             if (itemReviewed?.author != null) {
-              // Workaround for an issue with Factuel ClaimReview JSON
               def type = itemReviewed.author.get('@type')
               if (type != null) {
+                // Workaround for an issue with Factuel ClaimReview JSON
                 if (type == "Personne") {
                   type = "Person"
                   claimReviewJson = claimReviewJson.replace('"@type":"Personne"', '"@type":"Person"')
@@ -319,12 +323,14 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           }
 
           page.setHidden(true)
-          page.save()
+          if (request.debug == null) {
+            page.save()
+          }
           newEntriesCount++
         }
       }
     }
-    if (media != null) {
+    if (media != null &amp;&amp; request.debug == null) {
       response.sendRedirect(xwiki.getURL(media, 'view', "count=$newEntriesCount"))
     }
   }
