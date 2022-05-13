@@ -279,7 +279,9 @@
   )))
 
   (% class="defacto-fact-check-body" %)(((
-    $doc.display('content')
+    ##$doc.display('content')
+    ## TODO: check why the figure elements are not present anymore when using display("content")
+    $doc.getContent()
   )))
   #set ($tagObject = $doc.getObject('XWiki.TagClass'))
   #if ($tagObject != $NULL)
@@ -698,6 +700,39 @@ div.grid-with-margin {
   grid-template-columns: 1fr 1fr;
   column-gap: 1em;
 }
+
+.defacto-fact-check .defacto-fact-check-body figure p {
+  margin-bottom: 0;
+}
+
+figure {
+  margin: 1rem 0;
+  display: block;
+  text-align: center;
+  figcaption {
+    text-align: center;
+    margin: 10px 30px 20px;
+    div[itemprop="caption"], div[itemprop="credit"] {
+      display: inline;
+      font-style: italic;
+      color: #96a3aa;
+      p {
+        display: inline;
+      }
+    }
+    div[itemprop="credit"] {
+      margin-left: 1rem;
+      &amp;:before {
+        content: "(";
+      }
+      &amp;:after {
+        content: ")"
+      }
+    }
+  }
+}
+
+/** end AFP Factuel */
 
 .defacto-fact-check-edit {
   h1 {

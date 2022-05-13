@@ -204,6 +204,13 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
 
           transformedContent = transformedContent.replaceAll('&lt;iframe', '&lt;div data-tag="iframe"')
           transformedContent = transformedContent.replaceAll('&lt;/iframe&gt;', '&lt;/div&gt;')
+
+          // This is needed to keep the "figure" elements attributes
+          transformedContent = transformedContent.replaceAll('&lt;figure', '&lt;div data-tag="figure"')
+          transformedContent = transformedContent.replaceAll('&lt;/figure&gt;', '&lt;/div&gt;')
+          transformedContent = transformedContent.replaceAll('&lt;figcaption', '&lt;div data-tag="figcaption"')
+          transformedContent = transformedContent.replaceAll('&lt;/figcaption&gt;', '&lt;/div&gt;')
+
           def xdom = services.rendering.parse(transformedContent, 'html/4.01')
           if (xdom != null) {
             def blocks = xdom.getBlocks(new AnyBlockMatcher(), Block.Axes.DESCENDANT)
@@ -216,7 +223,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                   blockParameters.put('url', src);
                   def videoBlock = new MacroBlock('video', blockParameters, true);
                   block.getParent().replaceChild(videoBlock, block);
-                } else {
+                } else if (dataTagValue != 'figure' &amp;&amp; dataTagValue != 'figcaption') {
                   // Using xhtml/1.0 there otherwise we can some comments characters added when serializing it seems: /*~/*~
                   def blockHtml = services.rendering.render(block, 'xhtml/1.0');
                   blockHtml = blockHtml.replaceAll("&lt;div([^&gt;]*)data-tag=\"$dataTagValue\"", "&lt;$dataTagValue\$1")
@@ -246,24 +253,79 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
               object.set('chapeau', chapeau.trim());
             }
 
-            // Import images
-            // TODO: we should check that each image has not been imported yet (as header image, or previously in the content)
-            def imageBlocks = xdom.getBlocks(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT)
-            for (ImageBlock imageBlock : imageBlocks) {
-              String imageReference = imageBlock.getReference().getReference();
-              def bytes = getBytes(imageReference, username, password);
-              if (bytes != null) {
-                def bais = new ByteArrayInputStream(bytes);
-                def idx = imageReference.lastIndexOf('/');
-                def fileName = imageReference.substring(idx+1);
-                page.addAttachment(fileName, bais);
-                def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
-                def newImageBlock = new ImageBlock(ref, false);
-                imageBlock.getParent().replaceChild(newImageBlock, imageBlock);
-              } else {
-                out.println("No image found at " + imageReference)
+            // Import AFP Factuel images, which are wrapped in a &lt;figure class="image"&gt;&lt;/figure&gt;
+            if (mediaShortName.equals("Factuel")) {
+              def figureImageBlocks = xdom.getBlocks(new AnyBlockMatcher(), Block.Axes.DESCENDANT)
+              for (Block block : figureImageBlocks) {
+                def tag = block.getParameter('data-tag');
+                //out.println("* Block: $block $cssClass")
+                if (tag != null &amp;&amp; tag.equals("figure")) {
+                  //out.println("* Block: $block")
+                  def imageBlock = block.getFirstBlock(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT);
+                  String imageReference = imageBlock.getReference().getReference();
+                  def bytes = getBytes(imageReference, username, password);
+                  String caption = "";
+                  String credit = "";
+                  if (bytes != null) {
+                    def bais = new ByteArrayInputStream(bytes);
+                    def idx = imageReference.lastIndexOf('/');
+                    def fileName = imageReference.substring(idx+1);
+                    page.addAttachment(fileName, bais);
+                    def children = block.getChildren();
+                    for (Block child: children) {
+                      tag = child.getParameter('data-tag');
+                      if (tag != null &amp;&amp; tag.equals('figcaption')) {
+                        def info = child.getChildren();
+                        for (Block cinfo: info) {
+                          String itemPropValue = cinfo.getParameter("itemprop");
+                          //out.println("** $cinfo " + itemPropValue);
+                          if (itemPropValue == 'caption') {
+                            caption = services.rendering.render(cinfo, 'xwiki/2.1')
+                          } else if (itemPropValue == 'credit') {
+                            credit = services.rendering.render(cinfo, 'xwiki/2.1')
+                          }
+                        }
+                      }
+                    }
+                    // TODO: factorize code
+                    def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
+                    def newImageBlock = new ImageBlock(ref, false);
+                    // TODO: check which rendering syntax should be used
+                    def imageHtml = services.rendering.render(newImageBlock, 'xwiki/2.1')
+                    def blockParameters = new HashMap();
+                    //out.println("* New image block: $newImageBlock $imageHtml")
+                    def figCaptionBlock = new MacroBlock('figureCaption', blockParameters, caption + credit, false);
+                    def figCaptionHtml = services.rendering.render(figCaptionBlock, 'xwiki/2.1')
+                    // TODO: we don't want the image to be wrapped into a paragraph
+                    def macroBlock = new MacroBlock('figure', blockParameters, imageHtml + '\n\n' + figCaptionHtml, false);
+                    block.getParent().replaceChild(macroBlock, block);
+                  } else {
+                    out.println("No image found at " + imageReference)
+                  }
+                }
+              }
+            } else {
+              // Import images
+              // TODO: we should check that each image has not been imported yet (as header image, or previously in the content)
+              def imageBlocks = xdom.getBlocks(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT)
+              for (ImageBlock imageBlock : imageBlocks) {
+                String imageReference = imageBlock.getReference().getReference();
+                def bytes = getBytes(imageReference, username, password);
+                if (bytes != null) {
+                  def bais = new ByteArrayInputStream(bytes);
+                  def idx = imageReference.lastIndexOf('/');
+                  def fileName = imageReference.substring(idx+1);
+                  page.addAttachment(fileName, bais);
+                  def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
+                  def newImageBlock = new ImageBlock(ref, false);
+                  imageBlock.getParent().replaceChild(newImageBlock, imageBlock);
+                } else {
+                  out.println("No image found at " + imageReference)
+                }
               }
             }
+
+
             def factCheckBody = services.rendering.render(xdom, 'xwiki/2.1');
 
             // Replace all relative links by absolute ones
@@ -324,6 +386,8 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           page.setHidden(true)
           if (request.debug == null) {
             page.save()
+          } else {
+            out.println("\n\n{{code language='html'}}\n\n\n" + page.getContent() + "\n\n\n{{/code}}\n\n")
           }
           newEntriesCount++
         }
