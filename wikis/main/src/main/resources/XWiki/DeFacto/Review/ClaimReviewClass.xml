@@ -109,7 +109,7 @@
       <disabled>0</disabled>
       <hint/>
       <name>itemReviewedAppearanceName</name>
-      <number>8</number>
+      <number>7</number>
       <picker>0</picker>
       <prettyName>itemReviewedAppearanceName</prettyName>
       <size>30</size>
@@ -158,18 +158,21 @@
       <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
     </itemReviewedAppearanceType>
     <itemReviewedAppearanceUrl>
+      <contenttype>---</contenttype>
       <customDisplay/>
       <disabled>0</disabled>
+      <editor>---</editor>
       <hint/>
       <name>itemReviewedAppearanceUrl</name>
-      <number>7</number>
-      <picker>0</picker>
+      <number>8</number>
+      <picker>1</picker>
       <prettyName>itemReviewedAppearanceUrl</prettyName>
-      <size>30</size>
+      <rows>5</rows>
+      <size>40</size>
       <unmodifiable>0</unmodifiable>
       <validationMessage/>
       <validationRegExp/>
-      <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
     </itemReviewedAppearanceUrl>
     <itemReviewedAuthorName>
       <customDisplay/>
