@@ -735,6 +735,7 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
     grid-row-start: 2;
     border: 1px solid @darkyellow;
     padding: 1em;
+    font-size: 1.2em;
   }
 
   .defacto-teaser-box-pwa {
@@ -762,7 +763,49 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
   .defacto-teaser-box-two {
     grid-row-start: 4;
     border: 1px solid @darkyellow;
-    padding: 1em;
+    padding: 1.5em;
+    background: url("$xwiki.getAttachmentURL('XWiki.DeFacto.Une.Teaser', 'visuel.jpg')");
+    background-position: 20% 50%;
+    color: white;
+    .defacto-teaser {
+      /** color: white; */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      .defacto-teaser-left {
+        font-size: 26px;
+        margin: 0 2em 0 1em;
+        text-align: center;
+        p {
+          background: @yellow;
+          padding: 0.3em 0.6em;
+          color: black;
+        }
+      }
+      .defacto-teaser-right {
+        font-size: 1.2em;
+        a {
+          color: #d1173e;
+          font-weight: 500;
+        }
+        .defacto-participer {
+          text-align: center;
+          margin-top: 1em;
+          .defacto-participer-label {
+            background: #d1173e;
+            padding: 0.5em 1em;
+            border-radius: 30px;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-size: 18px;
+            a {
+              color: white;
+            }
+          }
+        }
+      }
+    }
   }
 
   .defacto-home-fact-checks {
@@ -991,6 +1034,19 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
         }
       }
     }
+    .defacto-teaser-box-two {
+      padding: 1em;
+      .defacto-teaser {
+        flex-direction: row;
+        .defacto-teaser-right {
+          .defacto-participer {
+            .defacto-participer-label {
+              font-size: inherit;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -1016,7 +1072,7 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
       <name/>
     </property>
     <property>
-      <parse>0</parse>
+      <parse>1</parse>
     </property>
     <property>
       <use>onDemand</use>
