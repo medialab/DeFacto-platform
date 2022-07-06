@@ -563,11 +563,13 @@ body[class*="space-XWiki\.DeFacto"] {
     }
   }
 
+  /** Used for the cover image in NewsSheet, PublicationSheet, ResourceSheet, SoftwareSheet */
   .defacto-sheet-cover-image {
     float: right;
     margin: 0 0 2em 2em;
     img {
       max-height: 400px;
+      max-width: 600px;
     }
   }
 
