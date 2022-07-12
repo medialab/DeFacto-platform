@@ -98,12 +98,14 @@
      [[Abonnez-vous&gt;&gt;Newsletter.WebHome]] à notre newsletter pour rester informé(e) des dernières publications et des événéments ! [[[+]&gt;&gt;Newsletter.WebHome]]
   )))
 
+  #*
   (% class="defacto-teaser-box defacto-teaser-box-pwa" style="display: none;" %)(((
     (% class="defacto-box-icon" %)(((
       $services.icon.render('phone')
     )))
      {{include reference="XWiki.PWA.WebHome" /}}
   )))
+  *#
 
   (% class="defacto-teaser-box defacto-teaser-box-two" %)(((
     #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
