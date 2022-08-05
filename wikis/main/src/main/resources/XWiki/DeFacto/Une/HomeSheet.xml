@@ -37,22 +37,6 @@
 
        {{include reference="XWiki.DeFacto.Une.QuiSommesNous"/}}
 
-       {{html clean="false"}}
-        &lt;div class="xwiki-defacto-logos"&gt;
-        &lt;a href="https://medialab.sciencespo.fr/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'sciencespo-w.png')"/&gt;
-        &lt;/a&gt;
-        &lt;a href="https://www.afp.com" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'afp-w.png')"/&gt;
-        &lt;/a&gt;
-        &lt;a href="https://www.clemi.fr/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'clemi-w.png')"/&gt;
-        &lt;/a&gt;
-        &lt;a href="https://www.xwiki.com/" target="_blank"&gt;
-          &lt;img src="$xwiki.getAttachmentURL('XWiki.DeFacto.LnF.Logos', 'xwiki-w.png')"/&gt;
-        &lt;/a&gt;
-        &lt;/div&gt;
-        {{/html}}
     )))
   )))
 
@@ -677,7 +661,7 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
     .xwiki-defacto-logos {
       display: grid;
       grid-template-columns: 50% 50%;
-      grid-row-gap: 10px;
+      grid-row-gap: 0;
       align-items: center;
       a {
         text-align: center;
@@ -924,7 +908,35 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
   }
 }
 
-@media (min-width: @screen-md-min) {
+.search-ui + .defacto-is-loading {
+  display: none;
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 4rem;
+  height: 4rem;
+  vertical-align: text-bottom;
+  border: 3px solid @yellow;
+  border-right-color: @yellow;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border 1s linear infinite;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+.search-ui[aria-busy="true"] + .defacto-is-loading {
+  display: block;
+  height: 300px;
+  text-align: center;
+  margin: 5em;
+}
+
+
+@media (min-width: @screen-lg-min) {
   .defacto-home {
     grid-template-columns: ~"[col1-start] 35%  [col2-start] 65%  [col2-end]";
     grid-template-rows: ~"[row1-start] fit-content(100%) [row2-start] fit-content(100%) [row3-start] 10fr [row3-end]";
@@ -975,32 +987,6 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
   }
 }
 
-.search-ui + .defacto-is-loading {
-  display: none;
-}
-
-.spinner-border {
-  display: inline-block;
-  width: 4rem;
-  height: 4rem;
-  vertical-align: text-bottom;
-  border: 3px solid @yellow;
-  border-right-color: @yellow;
-  border-right-color: transparent;
-  border-radius: 50%;
-  animation: spinner-border 1s linear infinite;
-}
-
-@keyframes spinner-border {
-  to { transform: rotate(360deg); }
-}
-
-.search-ui[aria-busy="true"] + .defacto-is-loading {
-  display: block;
-  height: 300px;
-  text-align: center;
-  margin: 5em;
-}
 
 @media (min-width: @screen-lg-min) {
   .defacto-home {
@@ -1016,7 +1002,7 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
           flex-basis: 50%;
           img {
             width: 100%;
-            height: 450px;
+            height: 300px;
             object-fit: cover;
           }
         }
@@ -1058,7 +1044,7 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
       .xwiki-defacto-logos {
         a {
           img {
-            padding: 1em;
+            padding: 0.5em 1em;
             max-width: 180px;
           }
         }
