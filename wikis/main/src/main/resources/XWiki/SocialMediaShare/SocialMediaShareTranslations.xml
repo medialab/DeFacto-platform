@@ -4,7 +4,7 @@
   <web>XWiki.SocialMediaShare</web>
   <name>SocialMediaShareTranslations</name>
   <language/>
-  <defaultLanguage>en</defaultLanguage>
+  <defaultLanguage>fr</defaultLanguage>
   <translation>0</translation>
   <creator>xwiki:XWiki.Admin</creator>
   <parent>Main.WebHome</parent>
