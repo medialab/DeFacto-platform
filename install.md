@@ -15,9 +15,9 @@ The project consists of a main wiki installed with the standard flavor.
 Install the following extensions:
 
 * Video macro: org.xwiki.contrib:macro-video version 1.14.1
+* HTML 4.01 syntax extension: org.xwiki.rendering:xwiki-rendering-syntax-html 13.4.3
 * HTTP application: org.xwiki.contrib:xwiki-http-lib version 1.0
 * Relations application: org.xwiki.contrib:application-relations-ui version 3.0
-* HTML 4.01 syntax extension
 
 Uninstall the following extensions:
 
@@ -46,6 +46,9 @@ No specific configuration.
 * Update wiki to monolingual, French only (check)
 * Import XAR with Admin account, with options "reset history to 1.1", and "import as backup package" activated
 * Add API key in xwiki.cfg: defacto.api.key
+* Add BasicAuth accounts for protected feeds, for example: 
+  * defacto.media.Factuel.feed.login=
+  * defacto.media.Factuel.feed.password=
 
 ### Upgrade
 
