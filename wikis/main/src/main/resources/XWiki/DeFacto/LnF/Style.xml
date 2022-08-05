@@ -599,7 +599,18 @@ body[class*="space-XWiki\.DeFacto"] {
   }
 }
 
-</code>
+.xwiki-social-media-share-list {
+  text-align: right;
+  .btn-primary {
+    background-image: none;
+    background-color: @yellow;
+    border: none;
+    transition: background-color .4s ease;
+    &amp;:hover {
+      background: darken(@yellow, 10%);
+    }
+  }
+}</code>
     </property>
     <property>
       <contentType>LESS</contentType>
