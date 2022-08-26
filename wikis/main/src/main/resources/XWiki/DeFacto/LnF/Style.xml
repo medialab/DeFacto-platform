@@ -474,8 +474,15 @@ body[class*="space-XWiki\.DeFacto"] {
   display: block !important;
 }
 
-#xdocTags, #xdocAuthors {
-  display: none;
+#xdocFooter {
+  /* This is to push the social media sharing buttons to the right. */
+  justify-content: flex-end;
+  #xdocTags, #xdocAuthors {
+    display: none;
+  }
+  .xwiki-social-media-share-content-footer-uix {
+    margin-right: 0;
+  }
 }
 
 #mainContentArea, #xdocFooter {

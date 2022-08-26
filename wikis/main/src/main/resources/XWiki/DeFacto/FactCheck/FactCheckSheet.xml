@@ -283,6 +283,9 @@
     ## TODO: check why the figure elements are not present anymore when using display("content")
     $doc.getContent()
   )))
+
+  {{socialMediaShare media="twitter,facebook,linkedin,mail" twitterExtra=" – via @DEFACTO_UE"/}}
+
   #set ($tagObject = $doc.getObject('XWiki.TagClass'))
   #if ($tagObject != $NULL)
     #set ($tags = $tagObject.getValue('tags'))
@@ -794,6 +797,10 @@ figure {
   }
 }
 
+/** Do not display share buttons UIX in the footer since they're already present in the sheet. */
+.xwiki-social-media-share-content-footer-uix {
+  display: none;
+}
 </code>
     </property>
     <property>

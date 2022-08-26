@@ -489,40 +489,54 @@
     <property>
       <code>{{velocity}}
 ## TODOs:
+## - support of the "media" parameters to share only on specified media
 ## - accessibility sr-only (see if needed in addition to aria-label)
 ## - option to use just the document title or the full title
 ## - see if social media icons can be added to the IconSet keys since they exist in FontAwesome
 ## - see also https://support.atlassian.com/confluence-cloud/docs/share-a-page-or-blog-post/
 ## - Use the Navigatore Share API on mobile
+## - Check why $macro is null when called from a UIX
 #set ($discard = $xwiki.jsx.use('XWiki.SocialMediaShare.SocialMediaShareMacro'))
 #set ($discard = $xwiki.ssx.use('XWiki.SocialMediaShare.SocialMediaShareMacro'))
-#set ($externalURL = $doc.getExternalURL())
-#set ($twitterExtra = "$!wikimacro.parameters.twitterExtra")
+## $macro is $NULL when executed from UIX
+#if ($macro == $NULL)
+  #set ($macro = {})
+#end
+#set ($macro.externalURL = $doc.getExternalURL())
+#set ($macro.twitterExtra = "$!wikimacro.parameters.twitterExtra")
+#set ($macro.title = $!xwiki.getSpacePreference('title'))
+## Copied from htmlheader.vm
+#if ($macro.title != '')
+  ## Evaluate the title since it can have velocity code.
+  #set($macro.title = "#evaluate($macro.title)")
+#else
+  #set ($macro.title = $!tdoc.displayTitle)
+#end
 #set ($socialMediaParameters = [{
     'id': 'twitter',
     'icon': 'twitter',
     'url': 'https://twitter.com/intent/tweet',
-    'queryString': "url=$escapetool.url($externalURL)&amp;text=$escapetool.url($tdoc.displayTitle)$escapetool.url($twitterExtra)"
+    'queryString': "url=$escapetool.url($macro.externalURL)&amp;text=$escapetool.url($macro.title)$escapetool.url($macro.twitterExtra)"
   }, {
     'id': 'linkedin',
     'icon': 'linkedin',
     'url': 'https://www.linkedin.com/shareArticle',
-    'queryString': "mini=true&amp;url=$escapetool.url($externalURL)"
+    'queryString': "mini=true&amp;url=$escapetool.url($macro.externalURL)"
   }, {
     'id': 'facebook',
     'icon': 'facebook',
     'url': 'https://www.facebook.com/sharer.php',
-    'queryString': "u=$escapetool.url($externalURL)"
+    'queryString': "u=$escapetool.url($macro.externalURL)"
   }, {
     'id': 'whatsapp',
     'icon': 'whatsapp',
     'url': 'https://api.whatsapp.com/send',
-    'queryString': "text=$escapetool.url($tdoc.displayTitle) $escapetool.url($externalURL))"
+    'queryString': "text=$escapetool.url($macro.title) $escapetool.url($macro.externalURL))"
   }, {
     'id': 'mail',
     'icon': 'envelope',
     'url': 'mailto:',
-    'queryString': "subject=$escapetool.url($tdoc.displayTitle)&amp;body=$escapetool.url($externalURL)"
+    'queryString': "subject=$escapetool.url($macro.title)&amp;body=$escapetool.url($macro.externalURL)"
   }])
 
 {{html clean="false"}}
