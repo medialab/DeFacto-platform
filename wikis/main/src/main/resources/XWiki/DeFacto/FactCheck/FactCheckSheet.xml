@@ -121,9 +121,10 @@
       = $doc.displayPrettyName('locations', false, false) =
       $doc.display('locations')
 
-      = $doc.displayPrettyName('categories', false, false) =
-      $doc.display('categories')
     #end
+
+    = $doc.displayPrettyName('categories', false, false) =
+    $doc.display('categories')
 
     = $doc.displayPrettyName('media', false, false) =
     $doc.display('media')
@@ -241,7 +242,9 @@
       (% class="defacto-fact-check-header-media-legend" %)(((
         #if ("$!headerImageCaption" != '')
           (% class="defacto-fact-check-header-media-caption" %)(((
+            {{html}}
             $headerImageCaption
+            {{/html}}
           )))
         #end
         #if ("$!headerImageCredits" != '')
@@ -736,6 +739,20 @@ figure {
 }
 
 /** end AFP Factuel */
+
+/** FTVI */
+
+
+/** Needed for "encadré dark mode" - See https://www.ftvi-preprod.fr/vrai-ou-fake/test-encadre-darkmode-3_1985602.html */
+.defacto-fact-check .subheader {
+  color: @text-color;
+}
+
+/** Needed for "encadré dark mode" */
+.defacto-fact-check strong {
+  color: @text-color;
+}
+
 
 .defacto-fact-check-edit {
   h1 {

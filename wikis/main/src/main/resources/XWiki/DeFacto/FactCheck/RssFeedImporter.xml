@@ -53,6 +53,22 @@ def byte[] getBytes(String url, String username, String password) {
   }
 }
 
+/** Extract info from media:content node and store it in the header image object attributes */
+
+def void maybeExtractEnclosureMetadataFromMediaContentNode(enclosure, foreignElement, namespace, object) {
+  def url = foreignElement.getAttributeValue('url');
+  if (url != null &amp;&amp; url.equals(enclosure)) {
+    def description = foreignElement.getChildText('description', namespace);
+    def credit = foreignElement.getChildText('credit', namespace);
+    if (description != null) {
+      object.set('headerImageCaption', description);
+    }
+    if (credit  != null) {
+      object.set('headerImageCredits', credit);
+    }
+  }
+}
+
 if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; services.csrf.isTokenValid(request.token)) {
   def FACTCHECKS_SPACE = 'Fact-checks';
   def MEDIA_RSS = "http://search.yahoo.com/mrss/"
@@ -95,6 +111,8 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                 locations.append(category.name.substring(9) + '\n')
               } else if (category.name.startsWith('Tags/')) {
                 tags.append(category.name.substring(5) + '\n')
+              } else {
+                tags.append(category.name + '\n')
               }
             }
           }
@@ -181,16 +199,10 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
               def jsonSlurper = new JsonSlurper()
               claimReviewData = jsonSlurper.parseText(claimReviewJson)
             } else if ('content'.equals(foreignElement.name) &amp;&amp; MEDIA_RSS.equals(namespaceURI)) {
-              def url = foreignElement.getAttributeValue('url');
-              if (url != null &amp;&amp; url.equals(enclosure)) {
-                def description = foreignElement.getChildText('description', namespace);
-                def credit = foreignElement.getChildText('credit', namespace);
-                if (description != null) {
-                  object.set('headerImageCaption', description);
-                }
-                if (credit  != null) {
-                  object.set('headerImageCredits', credit);
-                }
+              maybeExtractEnclosureMetadataFromMediaContentNode(enclosure, foreignElement, namespace, object);
+            } else if ('group'.equals(foreignElement.name) &amp;&amp; MEDIA_RSS.equals(namespaceURI)) {
+              foreignElement.getChildren().each { child -&gt;
+                maybeExtractEnclosureMetadataFromMediaContentNode(enclosure, child, namespace, object);
               }
             }
           }
@@ -223,7 +235,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                   blockParameters.put('url', src);
                   def videoBlock = new MacroBlock('video', blockParameters, true);
                   block.getParent().replaceChild(videoBlock, block);
-                } else if (dataTagValue != 'figure' &amp;&amp; dataTagValue != 'figcaption') {
+                } else /** newformat:start if (dataTagValue != 'figure' &amp;&amp; dataTagValue != 'figcaption') newformat:end */ {
                   // Using xhtml/1.0 there otherwise we can some comments characters added when serializing it seems: /*~/*~
                   def blockHtml = services.rendering.render(block, 'xhtml/1.0');
                   blockHtml = blockHtml.replaceAll("&lt;div([^&gt;]*)data-tag=\"$dataTagValue\"", "&lt;$dataTagValue\$1")
@@ -236,25 +248,35 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
               }
             }
 
-            // Extract first h2 block and turn it into the fact-check chapeau
-            def headerBlocks = xdom.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT)
-            if (headerBlocks.size() &gt; 0) {
-              def firstHeaderBlock = headerBlocks.get(0)
-              def chapeau = services.rendering.render(firstHeaderBlock, 'xwiki/2.1');
-              // Factuel: the first paragraph heading can be level 1, 2 or 3
-              // TODO: use regex
-              chapeau = chapeau.replaceAll('^= ', '')
-              chapeau = chapeau.replaceAll(' =$', '')
-              chapeau = chapeau.replaceAll('^== ', '')
-              chapeau = chapeau.replaceAll(' ==$', '')
-              chapeau = chapeau.replaceAll('^=== ', '')
-              chapeau = chapeau.replaceAll(' ===$', '')
-              firstHeaderBlock.getParent().removeBlock(firstHeaderBlock);
-              object.set('chapeau', chapeau.trim());
+            /** Chapeau */
+            if (mediaShortName.equals('FTVI')) {
+              // FTVI: the chapeau is in the "description" field, the content is in "content:enclosed"
+              if (it.description != null &amp;&amp; it.description.value != null) {
+                def chapeauXdom = services.rendering.parse('&lt;div&gt;' + it.description.value.trim() + '&lt;/div&gt;', 'html/4.01')
+                object.set('chapeau', services.rendering.render(chapeauXdom, 'xwiki/2.1'));
+              }
+            } else {
+              // Extract first h2 block and turn it into the fact-check chapeau
+              def headerBlocks = xdom.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT)
+              if (headerBlocks.size() &gt; 0) {
+                def firstHeaderBlock = headerBlocks.get(0)
+                def chapeau = services.rendering.render(firstHeaderBlock, 'xwiki/2.1');
+                // Factuel: the first paragraph heading can be level 1, 2 or 3
+                // TODO: use regex
+                chapeau = chapeau.replaceAll('^= ', '')
+                chapeau = chapeau.replaceAll(' =$', '')
+                chapeau = chapeau.replaceAll('^== ', '')
+                chapeau = chapeau.replaceAll(' ==$', '')
+                chapeau = chapeau.replaceAll('^=== ', '')
+                chapeau = chapeau.replaceAll(' ===$', '')
+                firstHeaderBlock.getParent().removeBlock(firstHeaderBlock);
+                object.set('chapeau', chapeau.trim());
+              }
             }
 
             // Import AFP Factuel images, which are wrapped in a &lt;figure class="image"&gt;&lt;/figure&gt;
-            if (mediaShortName.equals("Factuel")) {
+            /** newformat : remove "false" to activate new format */
+            if (false &amp;&amp; mediaShortName.equals("Factuel")) {
               def figureImageBlocks = xdom.getBlocks(new AnyBlockMatcher(), Block.Axes.DESCENDANT)
               for (Block block : figureImageBlocks) {
                 def tag = block.getParameter('data-tag');
