@@ -28,6 +28,7 @@
     <xwiki.revapi.skip>true</xwiki.revapi.skip>
 
     <extraXarEntryTypes.version>1.0</extraXarEntryTypes.version>
+    <socialMediaShare.version>1.0-SNAPSHOT</socialMediaShare.version>
   </properties>
   <scm>
     <connection>scm:git:git://git.xwikisas.com/defacto/defacto-platform.git</connection>
