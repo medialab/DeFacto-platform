@@ -17,12 +17,20 @@
   <syntaxId>plain/1.0</syntaxId>
   <hidden>true</hidden>
   <content># Class fields
-XWiki.Carousel.CarouselClass_slides=Slides
+XWiki.Carousel.CarouselClass_color=Couleur du texte
+XWiki.Carousel.CarouselClass_bgcolor=Couleur de fond
+
+#Slide
+XWiki.Carousel.SlideClass=Diapositive
+XWiki.Carousel.SlideClass_page=Page
+XWiki.Carousel.SlideClass_index=Position dans le carousel
 
 # Sheet keys
 carousel.sheet.description=This page controls how Carousel pages are displayed in both view and edit modes.
 carousel.sheet.noObject=The current page doesn't have the expected Carousel object.
 carousel.sheet.noFields=The Carousel application doesn't have any fields to display.
+carousel.sheet.slides=Diapositives
+carousel.sheet.addSlide=Ajouter une diapositive
 
 # Live table generic keys
 carousel.livetable.doc.title=Titre de la page

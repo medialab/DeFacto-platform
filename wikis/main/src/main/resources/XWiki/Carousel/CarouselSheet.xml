@@ -30,41 +30,368 @@
   {{/$messageType}}
   #stop
 #end
-#set ($discard = $xwiki.jsfx.use('uicomponents/edit/editableProperty.js', {
-  'forceSkinAction': true,
-  'language': $xcontext.locale
-}))
 #set ($discard = $doc.use($object))
 #set ($editing = $xcontext.action == 'edit')
 #if ($editing)
+  #set ($discard = $xwiki.jsx.use('XWiki.Carousel.CarouselSheet'))
+  #set ($discard = $xwiki.ssx.use('XWiki.Carousel.CarouselSheet'))
+
   {{html wiki="true" clean="false"}}
   &lt;div class="xform"&gt;
     &lt;dl&gt;
-      &lt;dt #if (!$editing &amp;&amp; $hasEdit)
-          class="editableProperty"
-          data-property="$escapetool.xml($services.model.serialize($object.getProperty('id').reference))"
-          data-property-type="object"#end&gt;
-        &lt;label#if ($editing) for="XWiki.Carousel.CarouselClass_0_id"#end&gt;
-          $escapetool.xml($doc.displayPrettyName('id', false, false))
+      &lt;dt&gt;
+        &lt;label#if ($editing) for="XWiki.Carousel.CarouselClass_0_bgcolor"#end&gt;
+          $escapetool.xml($doc.displayPrettyName('bgcolor', false, false))
         &lt;/label&gt;
       &lt;/dt&gt;
-      &lt;dd&gt;$doc.display('id')&lt;/dd&gt;
+      &lt;dd&gt;$doc.display('bgcolor')&lt;/dd&gt;
     &lt;/dl&gt;
     &lt;dl&gt;
-      &lt;dt #if (!$editing &amp;&amp; $hasEdit)
-          class="editableProperty"
-          data-property="$escapetool.xml($services.model.serialize($object.getProperty('slides').reference))"
-          data-property-type="object"#end&gt;
-        &lt;label#if ($editing) for="XWiki.Carousel.CarouselClass_0_slides"#end&gt;
-          $escapetool.xml($doc.displayPrettyName('slides', false, false))
+      &lt;dt&gt;
+        &lt;label#if ($editing) for="XWiki.Carousel.CarouselClass_0_color"#end&gt;
+          $escapetool.xml($doc.displayPrettyName('color', false, false))
         &lt;/label&gt;
       &lt;/dt&gt;
-      &lt;dd&gt;$doc.display('slides')&lt;/dd&gt;
+      &lt;dd&gt;$doc.display('color')&lt;/dd&gt;
     &lt;/dl&gt;
   &lt;/div&gt;
   {{/html}}
+
+  == $services.localization.render('carousel.sheet.slides') ==
+
+  #set ($slides = $doc.getObjects('XWiki.Carousel.SlideClass'))
+  (% class="xwiki-carousel-slide-list" %)(((
+    #foreach ($slide in $slides)
+      #set ($reference = $slide.getValue('page'))
+      {{html}}
+      &lt;div class="xwiki-carousel-slide"&gt;
+        &lt;span class="xwiki-carousel-slide-handle"&gt;$services.icon.renderHTML('more-vertical')&lt;/span&gt;
+        #set ($number = $slide.number)
+        #set ($pagePickerParams = {
+          'name': "XWiki.Carousel.SlideClass_${number}_page",
+          'value': $reference
+        })
+        #pagePicker($pagePickerParams)
+        &lt;button class="btn btn-default" name="xwiki-carousel-delete-slide" data-number="$number"&gt;$services.icon.renderHTML('cross')&lt;/button&gt;
+        &lt;input name="XWiki.Carousel.SlideClass_${number}_index" type="hidden" value="$!slide.getValue('index')"/&gt;
+      &lt;/div&gt;
+      {{/html}}
+
+    #end
+  )))
+
+  (% class="btn btn-primary" name="xwiki-carousel-add-slide" %)Add slide(%%)
 #else
   {{carousel reference="$doc.fullName"/}}
 #end
 {{/velocity}}</content>
+  <object>
+    <name>XWiki.Carousel.CarouselSheet</name>
+    <number>0</number>
+    <className>XWiki.JavaScriptExtension</className>
+    <guid>ed753b2a-1c21-4f20-9415-f6cb71d4450f</guid>
+    <class>
+      <name>XWiki.JavaScriptExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>require.config({
+  paths: {
+    'xwiki-suggestPages': "$xwiki.getSkinFile('uicomponents/suggest/suggestPages.js', true)" +
+      "?v=$escapetool.url($xwiki.version)",
+    'jquery-ui' : "$!services.webjars.url('jquery-ui', 'jquery-ui.min')"
+  },
+  shim: {
+    'jquery-ui' : ['jquery']
+  }
+});
+
+require(['jquery', 'xwiki-meta', 'xwiki-suggestPages', 'jquery-ui'], function($, xm) {
+  let restURL = xm.restURL;
+
+  function updateSlideOrder() {
+    var form = $('#mainContentArea &gt; form');
+    form.find('input[name$="_index"]').each(function (index, element) {
+      console.log('slide', index, element);
+      $(element).attr('value', index);
+    });
+  }
+
+  function registerDeleteButtons() {
+    $('button[name="xwiki-carousel-delete-slide"]').off('click');
+    $('button[name="xwiki-carousel-delete-slide"]').on('click', function(event) {
+      event.preventDefault();
+      var notification = new XWiki.widgets.Notification('Removing slide', 'inprogress');
+      const number = $(this).attr('data-number');
+      const parent = $(this).parent();
+      const actionURL = restURL + '/objects/XWiki.Carousel.SlideClass/' + number + '?minorRevision=true';
+      $.ajax({
+        url: actionURL,
+        type: 'DELETE'
+      }).done(function (data) {
+        notification.hide();
+        parent.remove();
+        new XWiki.widgets.Notification('Slide removed', 'done');
+      }).fail(function () {
+        notification.hide();
+        new XWiki.widgets.Notification('An error occurred', 'error');
+      });
+    });
+  }
+
+  $('span[name="xwiki-carousel-add-slide"]').on('click', function(event) {
+    var notification = new XWiki.widgets.Notification('Adding slide', 'inprogress');
+    const actionURL = restURL + '/objects?media=json&amp;minorRevision=true';
+    var params = {
+      'className': 'XWiki.Carousel.SlideClass'
+    };
+    $.post(actionURL, params).done(function (data) {
+      notification.hide();
+      new XWiki.widgets.Notification('Slide added', 'done');
+      const number = data.number;
+      let newSlide = $('&lt;div class="xwiki-carousel-slide"/&gt;')
+      let slideSelect = $(`&lt;select name="XWiki.Carousel.SlideClass_${number}_page"&gt;&lt;/select&gt;`);
+      newSlide.append(slideSelect);
+      newSlide.append($(`&lt;button class="btn btn-default" name="xwiki-carousel-delete-slide" data-number="${number}"&gt;Delete&lt;/button&gt;`));
+      newSlide.append($(`&lt;input type="hidden" name="XWiki.Carousel.SlideClass_${number}_index" value="100"/&gt;`));
+      newSlide.appendTo('.xwiki-carousel-slide-list');
+      slideSelect.suggestPages({});
+      registerDeleteButtons();
+      // We update the previousVersion field in the form to avoid any merge conflict on save
+      $('#previousVersion').attr('value', data.pageVersion);
+    }).fail(function () {
+      notification.hide();
+      new XWiki.widgets.Notification('An error occurred', 'error');
+    });
+  });
+
+   $('.xwiki-carousel-slide-list').sortable({
+    stop: function(event, ui) {
+      updateSlideOrder();
+    },
+    placeholder: 'xwiki-ui-sortable-placeholder'
+  });
+
+  registerDeleteButtons();
+});</code>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>1</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+  <object>
+    <name>XWiki.Carousel.CarouselSheet</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>609081ac-35c7-443f-a531-709ff72dbaed</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>.xwiki-carousel-slide {
+  display: flex;
+  .selectize-control {
+    flex-grow: 5;
+    margin: 0 1em 0 0;
+  }
+  .xwiki-carousel-slide-handle {
+    cursor: pointer;
+    width: 15px;
+    text-align: left;
+    padding-top: 2px;
+  }
+}</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
 </xwikidoc>

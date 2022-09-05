@@ -27,7 +27,7 @@
     <nameField/>
     <validationScript/>
     <bgcolor>
-      <customDisplay/>
+      <customDisplay>{{include reference="XWiki.ColorPickerDisplayer"/}}</customDisplay>
       <disabled>0</disabled>
       <hint/>
       <name>bgcolor</name>
@@ -41,7 +41,7 @@
       <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </bgcolor>
     <color>
-      <customDisplay/>
+      <customDisplay>{{include reference="XWiki.ColorPickerDisplayer"/}}</customDisplay>
       <disabled>0</disabled>
       <hint/>
       <name>color</name>
