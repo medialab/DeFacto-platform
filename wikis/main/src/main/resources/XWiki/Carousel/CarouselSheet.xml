@@ -17,6 +17,31 @@
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
   <content>{{velocity}}
+#macro (sortXObjects $inputObjects $propertyName $reverse $return)
+  #set ($macro.objectsMap = {})
+  #foreach ($object in $inputObjects)
+    #set ($key = $object.getValue($propertyName))
+    #set ($macro.sameKeyObjects = $macro.objectsMap.get($key))
+    #if (!$macro.sameKeyObjects)
+      #set ($macro.sameKeyObjects = [])
+      #set ($discard = $macro.objectsMap.put($key, $macro.sameKeyObjects))
+    #end
+    #set ($discard = $macro.sameKeyObjects.add($object))
+  #end
+  #set ($outputObjects = [])
+  #foreach ($key in $collectiontool.sort($macro.objectsMap.keySet()))
+    #set ($macro.sameKeyObjects = $macro.objectsMap.get($key))
+    #foreach ($sameKeyObject in $macro.sameKeyObjects)
+      #if ($reverse == true)
+        #set ($discard = $outputObjects.add(0, $sameKeyObject))
+      #else
+        #set ($discard = $outputObjects.add($sameKeyObject))
+      #end
+    #end
+  #end
+  #set ($return = $NULL)
+  #setVariable("$return" $outputObjects)
+#end
 #set ($object = $doc.getObject('XWiki.Carousel.CarouselClass'))
 #if (!$object)
   #set ($messageKey = 'carousel.sheet.description')
@@ -60,8 +85,9 @@
   == $services.localization.render('carousel.sheet.slides') ==
 
   #set ($slides = $doc.getObjects('XWiki.Carousel.SlideClass'))
+  #sortXObjects($slides, 'index', false, $sortedSlides)
   (% class="xwiki-carousel-slide-list" %)(((
-    #foreach ($slide in $slides)
+    #foreach ($slide in $sortedSlides)
       #set ($reference = $slide.getValue('page'))
       {{html}}
       &lt;div class="xwiki-carousel-slide"&gt;
@@ -188,8 +214,9 @@ require(['jquery', 'xwiki-meta', 'xwiki-suggestPages', 'jquery-ui'], function($,
 
   function updateSlideOrder() {
     var form = $('#mainContentArea &gt; form');
+    /* We update each slide index rather than updating page references in case the SlideClass contains other 
+     * attributes in the future, that we want to keep in order. */
     form.find('input[name$="_index"]').each(function (index, element) {
-      console.log('slide', index, element);
       $(element).attr('value', index);
     });
   }
@@ -228,8 +255,9 @@ require(['jquery', 'xwiki-meta', 'xwiki-suggestPages', 'jquery-ui'], function($,
       const number = data.number;
       let newSlide = $('&lt;div class="xwiki-carousel-slide"/&gt;')
       let slideSelect = $(`&lt;select name="XWiki.Carousel.SlideClass_${number}_page"&gt;&lt;/select&gt;`);
+      newSlide.append($('&lt;span class="xwiki-carousel-slide-handle"&gt;&lt;span class="fa fa-ellipsis-v"&gt;&lt;/span&gt;&lt;/span&gt;'));
       newSlide.append(slideSelect);
-      newSlide.append($(`&lt;button class="btn btn-default" name="xwiki-carousel-delete-slide" data-number="${number}"&gt;Delete&lt;/button&gt;`));
+      newSlide.append($(`&lt;button class="btn btn-default" name="xwiki-carousel-delete-slide" data-number="${number}"&gt;&lt;span class="fa fa-times"&gt;&lt;/span&gt;&lt;/button&gt;`));
       newSlide.append($(`&lt;input type="hidden" name="XWiki.Carousel.SlideClass_${number}_index" value="100"/&gt;`));
       newSlide.appendTo('.xwiki-carousel-slide-list');
       slideSelect.suggestPages({});
