@@ -268,7 +268,7 @@
         <separators>|, </separators>
         <size>5</size>
         <unmodifiable>0</unmodifiable>
-        <values>action=Action|doc.reference=Document|icon.theme=Thème des icônes|locale=Langue|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=URL de base pour la requête|request.parameters=Paramètres de la requête|request.url=URL de la requête|request.wiki=Wiki de la requête|user=Utilisateur|wiki=Wiki</values>
+        <values>action=Action|doc.reference=Document|icon.theme=Icon theme|locale=Language|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=Request base URL|request.parameters=Request parameters|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </async_context>
       <async_enabled>
@@ -472,38 +472,42 @@
     #set ($slides = $page.getObjects('XWiki.Carousel.SlideClass'))
     #set ($sortedSlides = [])
     #sortXWikiObjectsList($slides, 'index', $sortedSlides)
+    #set ($counter = 0)
     #foreach ($slide in $sortedSlides)
-      &lt;div class="xwiki-carousel-slide item#if ($foreach.index == 0) active#end"&gt;
-        #set ($slideName = $slide.getValue('page'))
-        #if ($xwiki.exists($slideName))
-          #set ($slidePage = $xwiki.getDocument($slideName))
-          #set ($coverImageObject = $slidePage.getFirstObject('coverImage'))
-          #set ($coverImage = $coverImageObject.getValue('coverImage'))
-          #set ($abstract = $coverImageObject.getValue('abstract'))
-          #if ("$!abstract" == '')
-            #set ($abstract = $slidePage.content.trim())
-          #end
-          &lt;div class="xwiki-carousel-slide-body"&gt;
-            #if ("$!coverImage" != '')
-              #set ($slideImageReference = $services.model.resolveAttachment($slideImage))
-              &lt;div class="xwiki-carousel-slide-image"&gt;
-                &lt;a href="$xwiki.getURL($slideName)"&gt;
-                  &lt;img src="$slidePage.getAttachmentURL($coverImage)"/&gt;
-                &lt;/a&gt;
-              &lt;/div&gt;
+      #set ($slideName = $slide.getValue('page'))
+      #if ($services.security.authorization.hasAccess('view', $slideName))
+        &lt;div class="xwiki-carousel-slide item#if ($counter == 0) active#end"&gt;
+          #if ($xwiki.exists($slideName))
+            #set ($slidePage = $xwiki.getDocument($slideName))
+            #set ($coverImageObject = $slidePage.getFirstObject('coverImage'))
+            #set ($coverImage = $coverImageObject.getValue('coverImage'))
+            #set ($abstract = $coverImageObject.getValue('abstract'))
+            #if ("$!abstract" == '')
+              #set ($abstract = $slidePage.content.trim())
             #end
-            &lt;div class="xwiki-carousel-slide-text"&gt;
-              &lt;h2 class="xwiki-carousel-slide-title"&gt;&lt;a href="$xwiki.getURL("$slideName")"&gt;$slidePage.displayTitle&lt;/a&gt;&lt;/h2&gt;
-              #set ($abstractLength = $abstract.length())
-              #set ($max = $mathtool.min($maxTextLength, $abstractLength))
-              #set ($abstract = $stringtool.abbreviate($abstract, $max))
-              #set ($body = "$abstract [[[+]&gt;&gt;$slideName]]")
-              #set ($xdom = $services.rendering.parse($body, 'xwiki/2.1'))
-              $services.rendering.render($xdom, 'xhtml/1.0')
+            &lt;div class="xwiki-carousel-slide-body"&gt;
+              #if ("$!coverImage" != '')
+                #set ($slideImageReference = $services.model.resolveAttachment($slideImage))
+                &lt;div class="xwiki-carousel-slide-image"&gt;
+                  &lt;a href="$xwiki.getURL($slideName)"&gt;
+                    &lt;img src="$slidePage.getAttachmentURL($coverImage)"/&gt;
+                  &lt;/a&gt;
+                &lt;/div&gt;
+              #end
+              &lt;div class="xwiki-carousel-slide-text"&gt;
+                &lt;h2 class="xwiki-carousel-slide-title"&gt;&lt;a href="$xwiki.getURL("$slideName")"&gt;$slidePage.displayTitle&lt;/a&gt;&lt;/h2&gt;
+                #set ($abstractLength = $abstract.length())
+                #set ($max = $mathtool.min($maxTextLength, $abstractLength))
+                #set ($abstract = $stringtool.abbreviate($abstract, $max))
+                #set ($body = "$abstract [[[+]&gt;&gt;$slideName]]")
+                #set ($xdom = $services.rendering.parse($body, 'xwiki/2.1'))
+                $services.rendering.render($xdom, 'xhtml/1.0')
+              &lt;/div&gt;
             &lt;/div&gt;
-          &lt;/div&gt;
-        #end
-      &lt;/div&gt;
+          #end
+        &lt;/div&gt;
+        #set ($counter = $mathtool.add($counter, 1))
+      #end
     #end
   &lt;/div&gt;
   &lt;a class="left carousel-control" href="#$carouselId" role="button" data-slide="prev"&gt;
