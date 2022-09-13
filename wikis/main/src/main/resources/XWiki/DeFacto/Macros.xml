@@ -130,61 +130,71 @@
   #set ($dateFormatter = $xwiki.jodatime.getDateTimeFormatterForPattern('EEEE dd MMMMM yyyy').withLocale('fr'))
   #foreach ($entry in $list)
     #set ($reference = $entry[0])
-    #set ($page = $xwiki.getDocument($reference))
-    #set ($object = $page.getObject('XWiki.DeFacto.News.NewsClass'))
-    #set ($type = $object.getValue('type'))
+    #if ($services.security.authorization.hasAccess('view', $reference))
+      #set ($page = $xwiki.getDocument($reference))
+      #set ($object = $page.getObject('XWiki.DeFacto.News.NewsClass'))
+      #set ($type = $object.getValue('type'))
 
-    {{box cssClass="defacto-box defacto-box-news"}}
-      (% class="defacto-box-image" %)(((
-        #set ($coverImage = $object.getValue('coverImage'))
-        #if ("$!coverImage" != '')
-          [[[[image:$reference@$coverImage]]&gt;&gt;$page.fullName]]
-        #end
-      )))
-      (% class="defacto-box-body" %)(((
-        {{html wiki="false" clean="false"}}
-          #if ("$!type" == 'press')
-            #set ($link = $object.getValue('link'))
-            #if ($services.security.authorization.hasAccess('edit', $page.fullName))
-              &lt;a class="defacto-edit-button" href="$xwiki.getURL($page.fullName, 'edit')"&gt;$services.icon.renderHTML('pencil')&lt;/a&gt;
-            #end
-            &lt;h2&gt;&lt;a href="$link" target="_blank"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
-          #else
-            &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+      {{box cssClass="defacto-box defacto-box-news"}}
+        (% class="defacto-box-image" %)(((
+          #set ($coverImage = $object.getValue('coverImage'))
+          #if ("$!coverImage" != '')
+            [[[[image:$reference@$coverImage]]&gt;&gt;$page.fullName]]
           #end
-        {{/html}}
+        )))
+        (% class="defacto-box-body" %)(((
+          {{html wiki="false" clean="false"}}
+            #if ("$!type" == 'press')
+              #set ($link = $object.getValue('link'))
+              #if ($services.security.authorization.hasAccess('edit', $page.fullName))
+                &lt;a class="defacto-edit-button" href="$xwiki.getURL($page.fullName, 'edit')"&gt;$services.icon.renderHTML('pencil')&lt;/a&gt;
+              #end
+              &lt;h2&gt;&lt;a href="$link" target="_blank"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+            #else
+              &lt;h2&gt;&lt;a href="$xwiki.getURL($page.fullName)"&gt;$page.displayTitle&lt;/a&gt;&lt;/h2&gt;
+            #end
+          {{/html}}
 
-        #displayNewsScheduleInfo($object, $dateFormatter)
-        #set ($abstract = $object.getValue('abstract'))
-        #if ("$!abstract" != '')
-          (% class="defacto-news-abstract" %)(((
-            $abstract #if ("$!type" != 'press')[[[+]&gt;&gt;$page.fullName]]#end
-          )))
-        #end
-      )))
-    {{/box}}
+          #displayNewsScheduleInfo($object, $dateFormatter)
+          #set ($abstract = $object.getValue('abstract'))
+          #if ("$!abstract" != '')
+            (% class="defacto-news-abstract" %)(((
+              $abstract #if ("$!type" != 'press')[[[+]&gt;&gt;$page.fullName]]#end
+            )))
+          #end
+        )))
+      {{/box}}
+    #end
   #end
 #end
 
 #macro (displaySoftwareList $list)
   (% class="row" %)(((
+    #set ($counter = 0)
     #foreach ($entry in $list)
-      ## Add clearfix every two columns for making column wrapping work with Bootstrap 3
-      #set ($r = $foreach.index % 2)
-      #if ($foreach.index &gt; 0 &amp;&amp; $r == 0)
-        (% class="clearfix" %)((()))
-      #end
-      (% class="col-xs-12 col-md-6" %)(((
-        {{resourceBox reference="$entry[0]"/}}
+      #set ($reference = $entry[0])
+      #if ($services.security.authorization.hasAccess('view', $reference))
+        ## Add clearfix every two columns for making column wrapping work with Bootstrap 3
+        #set ($r = $counter % 2)
+        #if ($counter &gt; 0 &amp;&amp; $r == 0)
+          (% class="clearfix" %)((()))
+        #end
+        (% class="col-xs-12 col-md-6" %)(((
+          {{resourceBox reference="$reference"/}}
 
-      )))
+        )))
+        #set ($counter = $mathtool.add($counter, 1))
+      #end
     #end
   )))
 #end
 
 #macro (displayPublicationList $list)
   #foreach ($entry in $list)
-    {{resourceBox reference="$entry[0]"/}}
+    #set ($reference = $entry[0])
+    #if ($services.security.authorization.hasAccess('view', $reference))
+      {{resourceBox reference="$reference"/}}
+    #end
 
   #end
 #end
@@ -192,7 +202,9 @@
 #macro (displayResourceList $list)
   #foreach ($entry in $list)
     #set ($reference = $entry[0])
-    {{resourceBox reference="$entry[0]"/}}
+    #if ($services.security.authorization.hasAccess('view', $reference))
+      {{resourceBox reference="$entry[0]"/}}
+    #end
 
   #end
 #end
