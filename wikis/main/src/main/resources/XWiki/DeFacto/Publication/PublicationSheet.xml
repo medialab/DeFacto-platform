@@ -192,9 +192,11 @@
 
 $doc.display('content', $object)
 
+#if ($object.getValue('pubLink') != '')
 == $doc.displayPrettyName('pubLink', false, false) ==
 
 $doc.display('pubLink', $object)
+#end
 
 == $doc.displayPrettyName('authors', false, false) ==
 
