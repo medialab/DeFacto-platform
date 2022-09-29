@@ -32,6 +32,7 @@ nbproject
 .clover
 *~
 /bin/
+notes
 
 #deploy
 *.sh
