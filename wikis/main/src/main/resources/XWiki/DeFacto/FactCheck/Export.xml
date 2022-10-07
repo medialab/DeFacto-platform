@@ -153,15 +153,21 @@
   #else
     #set ($exporter = $services.defactoCsvExporter)
     #set ($csv = $exporter.toCsv($data))
-    ## The code below was adapted from the macro "jsonResponse" in macros.vm
-    #set ($discard = $response.setContentType('text/csv'))
-    #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
-    #set ($characterEncoding = 'utf-8')
-    #set ($discard = $response.setCharacterEncoding($characterEncoding))
-    #set ($discard = $response.writer.write($csv))
-    #set ($discard = $response.setContentLength($csv.getBytes($characterEncoding).size()))
-    #set ($discard = $response.flushBuffer())
-    #set ($discard = $xcontext.setFinished(true))
+    #if ($csv != $NULL)
+      ## The code below was adapted from the macro "jsonResponse" in macros.vm
+      #set ($discard = $response.setContentType('text/csv'))
+      #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
+      #set ($characterEncoding = 'utf-8')
+      #set ($discard = $response.setCharacterEncoding($characterEncoding))
+      #set ($discard = $response.writer.write($csv))
+      #set ($discard = $response.setContentLength($csv.getBytes($characterEncoding).size()))
+      #set ($discard = $response.flushBuffer())
+      #set ($discard = $xcontext.setFinished(true))
+    #else
+      {{warning}}
+      Une erreur est survenue lors de l'export.
+      {{/warning}}
+    #end
   #end
 #else
 {{info}}
