@@ -147,7 +147,6 @@
   #set ($meta = {
     'schema': '0.1'
     })
-  #set ($format = $request.format)
   #if ($format == 'json')
     #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
     #jsonResponse({'data': $data, 'meta': $meta})
