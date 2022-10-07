@@ -18,6 +18,9 @@ Install the following extensions:
 * HTML 4.01 syntax extension: org.xwiki.rendering:xwiki-rendering-syntax-html 13.4.3
 * HTTP application: org.xwiki.contrib:xwiki-http-lib version 1.0
 * Relations application: org.xwiki.contrib:application-relations-ui version 3.0
+* OpenCSV: com.opencsv:opencsv version 3.10
+* Script Component
+* Social Media Share extension: https://git.xwikisas.com/xwiki-sas-cpt/defacto/application-socialmediashare
 
 Uninstall the following extensions:
 
