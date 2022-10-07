@@ -1,0 +1,121 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.CsvExporter" locale="">
+  <web>XWiki.DeFacto.FactCheck</web>
+  <name>CsvExporter</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>CsvExporter</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content/>
+  <object>
+    <name>XWiki.DeFacto.FactCheck.CsvExporter</name>
+    <number>0</number>
+    <className>XWiki.ScriptComponentClass</className>
+    <guid>7235af5e-6494-4395-92ed-84c15e3ef0b9</guid>
+    <class>
+      <name>XWiki.ScriptComponentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>2</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>|wiki|global|user</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+      <script_content>
+        <disabled>0</disabled>
+        <editor>Text</editor>
+        <name>script_content</name>
+        <number>3</number>
+        <prettyName>Script</prettyName>
+        <rows>20</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </script_content>
+      <script_language>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>script_language</name>
+        <number>1</number>
+        <prettyName>Language</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>groovy|python</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </script_language>
+    </class>
+    <property>
+      <scope>wiki</scope>
+    </property>
+    <property>
+      <script_content>package org.xwiki.contrib.defacto.export;
+
+import java.io.StringWriter;
+import java.util.List;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import org.xwiki.component.annotation.Component;
+import org.xwiki.script.service.ScriptService;
+
+import com.opencsv.CSVWriter;
+
+@Component
+@Named("defactoCsvExporter")
+@Singleton
+public class CsvExporter implements ScriptService
+{
+    public String toCsv(List&lt;String[]&gt; entries)
+    {
+        StringWriter stringWriter = new StringWriter();
+        CSVWriter writer = new CSVWriter(stringWriter);
+        for (String[] entry : entries) {
+            writer.writeNext(entry);
+        }
+        return stringWriter.toString();
+    }
+}
+
+</script_content>
+    </property>
+    <property>
+      <script_language>groovy</script_language>
+    </property>
+  </object>
+</xwikidoc>

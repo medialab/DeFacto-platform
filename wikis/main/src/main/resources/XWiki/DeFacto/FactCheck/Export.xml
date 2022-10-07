@@ -19,7 +19,13 @@
   <content>{{velocity}}
 #set ($key = $xwiki.getXWiki().Param('defacto.api.key'))
 #set ($rkey = $request.key)
-#if ("$!rkey" == $key)
+#set ($format = $request.format)
+#if ("$!format" == '' || "$!format" == 'json')
+  #set ($format = 'json')
+#else
+  #set ($format = 'csv')
+#end
+#if ("$!key" != '' &amp;&amp; "$!rkey" == $key)
   #set ($hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, DateProperty as pdate where obj.name = doc.fullName and obj.className = :class and pdate.id.id = obj.id and pdate.name = 'pdate' and doc.hidden = false order by pdate.value desc")
   #set ($query = $services.query.hql($hql))
   ##set ($discard = $query.setLimit(20))
@@ -27,6 +33,11 @@
   #set ($entries = $query.execute())
   #set ($data = [])
   #set ($formatter = $xwiki.jodatime.getDateTimeFormatterForPattern("yyyy-MM-dd'T'HH:mm:ss.SSZZ"))
+  ## Add CSV header in case the format is CSV
+  #if ($format == 'csv')
+    #set ($item = ['ID', 'Title', 'DE FACTO URL', 'Original URL', "DE FACTO Publication Date"])
+    #set ($discard = $data.add($item))
+  #end
   #foreach ($entry in $entries)
     ## NB: when using $escapetool.json for escaping, we get escaped unicode characters for accents, which decreases readability, and it seems 
     ## characters are already escaped when using the jsonResponse macro. TODO: check
@@ -41,6 +52,7 @@
     #set ($xdom = $services.rendering.parse($chapeau, 'xwiki/2.1'))
     #set ($renderedChapeau = $services.rendering.render($xdom , "xhtml/1.0"))
     #set ($pdate = $object.getValue('pdate'))
+    #set ($guid = $object.getValue('guid'))
     #if ("$!pdate" != '')
       #set ($pdate = $formatter.print($pdate))
     #end
@@ -100,39 +112,58 @@
     #if ($tagObject != $NULL)
       #set ($tags = $tagObject.getValue('tags'))
     #end
-    ## Use vocabulary inspired from Atom
-    #set ($item = {
-      'id': $services.model.serialize($page.getPageReference()),
-      'title': $entry[1],
-      'link': $page.getExternalURL(),
-      'channel': {
-        'id': $services.model.serialize($mediaPage.getPageReference()),
-        'name': $mediaPage.displayTitle,
-        'url': $mediaUrl
-      },
-      'chapeau': $renderedChapeau,
-      'published': "$!pdate",
-      'authors': $authors,
-      'themes': $themeTitles,
-      'tags': $tags,
-      'medias': $medias,
-      'claim-review': $claimReview
-    })
-    #if ("$!originalUrl" != '')
-      #set ($discard = $item.put('original-url', $originalUrl))
-    #end
-    #if ("$!request.body" == 'true')
-      #set ($xdom = $services.rendering.parse("((($chapeau\n)))\n$page.content", 'xwiki/2.1'))
-      #set ($renderedContent = $services.rendering.render($xdom , "xhtml/1.0"))
-      #set ($discard = $item.put('body', $renderedContent))
+    #if ($format == 'json')
+      ## Use vocabulary inspired from Atom
+      #set ($item = {
+        'id': $services.model.serialize($page.getPageReference()),
+        'title': $entry[1],
+        'link': $page.getExternalURL(),
+        'channel': {
+          'id': $services.model.serialize($mediaPage.getPageReference()),
+          'name': $mediaPage.displayTitle,
+          'url': $mediaUrl
+        },
+        'chapeau': $renderedChapeau,
+        'published': "$!pdate",
+        'authors': $authors,
+        'themes': $themeTitles,
+        'tags': $tags,
+        'medias': $medias,
+        'claim-review': $claimReview
+      })
+      #if ("$!originalUrl" != '')
+        #set ($discard = $item.put('original-url', $originalUrl))
+      #end
+      #if ("$!request.body" == 'true')
+        #set ($xdom = $services.rendering.parse("((($chapeau\n)))\n$page.content", 'xwiki/2.1'))
+        #set ($renderedContent = $services.rendering.render($xdom , "xhtml/1.0"))
+        #set ($discard = $item.put('body', $renderedContent))
+      #end
+    #else
+      #set ($item = [$guid, $entry[1], $page.getExternalURL(), "$!originalUrl", "$!pdate"])
     #end
     #set ($discard = $data.add($item))
   #end
   #set ($meta = {
     'schema': '0.1'
     })
-  #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
-  #jsonResponse({'data': $data, 'meta': $meta})
+  #set ($format = $request.format)
+  #if ($format == 'json')
+    #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
+    #jsonResponse({'data': $data, 'meta': $meta})
+  #else
+    #set ($exporter = $services.defactoCsvExporter)
+    #set ($csv = $exporter.toCsv($data))
+    ## The code below was adapted from the macro "jsonResponse" in macros.vm
+    #set ($discard = $response.setContentType('text/csv'))
+    #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
+    #set ($characterEncoding = 'utf-8')
+    #set ($discard = $response.setCharacterEncoding($characterEncoding))
+    #set ($discard = $response.writer.write($csv))
+    #set ($discard = $response.setContentLength($csv.getBytes($characterEncoding).size()))
+    #set ($discard = $response.flushBuffer())
+    #set ($discard = $xcontext.setFinished(true))
+  #end
 #else
 {{info}}
 Cette page permet d'exporter la base de données de fact-checks au format JSON. Une clé d'API est requise.
