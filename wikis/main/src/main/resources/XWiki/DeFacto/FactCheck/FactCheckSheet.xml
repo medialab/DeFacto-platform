@@ -78,6 +78,12 @@
     = $doc.displayPrettyName('headerAudio', false, false) =
     $doc.display('headerAudio')
 
+    = $doc.displayPrettyName('headerAudioDescription', false, false) =
+    $doc.display('headerAudioDescription')
+
+    = $doc.displayPrettyName('headerVideo', false, false) =
+    $doc.display('headerVideo')
+
     = $doc.displayPrettyName('chapeau', false, false) =
     $doc.display('chapeau')
 
@@ -233,8 +239,13 @@
   )))
   #end
   *#
+  #set ($headerVideo = $object.getValue('headerVideo'))
   #set ($headerImage = $object.getValue('headerImage'))
-  #if ("$!headerImage" != '')
+  #if ("$!headerVideo" != '')
+    {{html clean="false"}}
+      &lt;iframe allowfullscreen="true" frameborder="0" scrolling="no" width="100%" height="500px" src="$headerVideo"&gt;&lt;/iframe&gt;
+    {{/html}}
+  #elseif ("$!headerImage" != '')
     (% class="defacto-fact-check-header-image" %)(((
       [[image:$headerImage||queryString="width=1000"]]
       #set ($headerImageCaption = $object.getValue('headerImageCaption'))
@@ -242,9 +253,7 @@
       (% class="defacto-fact-check-header-media-legend" %)(((
         #if ("$!headerImageCaption" != '')
           (% class="defacto-fact-check-header-media-caption" %)(((
-            {{html}}
             $headerImageCaption
-            {{/html}}
           )))
         #end
         #if ("$!headerImageCredits" != '')
@@ -254,12 +263,19 @@
     )))
   #end
   #set ($headerAudio = $object.getValue('headerAudio'))
+  #set ($headerAudioDescription = $object.getValue('headerAudioDescription'))
   #if ("$!headerAudio" != '')
     {{html clean="false"}}
       &lt;audio controls src="$headerAudio"&gt;
         Le fichier audio ne peut être lu par votre navigateur car celui-ci ne peut interpréter la balise &lt;code&gt;audio&lt;/code&gt;.
       &lt;/audio&gt;
     {{/html}}
+
+    #if ("$!headerAudioDescription" != '')
+    (% class="defacto-fact-check-header-audio-description" %)(((
+      $headerAudioDescription
+    )))
+    #end
   #end
   #set ($media = $object.getValue('media'))
   #if ("$!media" != '')
@@ -676,6 +692,13 @@
       }
     }
   }
+
+  .defacto-fact-check-quote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17.5px;
+    border-left: 5px solid #eeeeee;
+  }
 }
 
 /************************ AFP Factuel **********************/
@@ -742,17 +765,24 @@ figure {
 
 /** FTVI */
 
+.defacto-fact-check .defacto-fact-check-body {
+  /** Needed for "encadré dark mode" - See https://www.ftvi-preprod.fr/vrai-ou-fake/test-encadre-darkmode-3_1985602.html */
+  .defacto-fact-check .subheader {
+    color: @text-color;
+  }
 
-/** Needed for "encadré dark mode" - See https://www.ftvi-preprod.fr/vrai-ou-fake/test-encadre-darkmode-3_1985602.html */
-.defacto-fact-check .subheader {
-  color: @text-color;
+  /** Needed for "encadré dark mode" */
+  .defacto-fact-check strong {
+    color: @text-color;
+  }
+
+  .ftvi_citation_author p, p.ftvi_citation_source {
+    margin-bottom: 0;
+  }
 }
 
-/** Needed for "encadré dark mode" */
-.defacto-fact-check strong {
-  color: @text-color;
-}
 
+/** end FTVI */
 
 .defacto-fact-check-edit {
   h1 {

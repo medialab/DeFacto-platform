@@ -55,7 +55,7 @@
         <editor>---</editor>
         <hint/>
         <name>categories</name>
-        <number>20</number>
+        <number>22</number>
         <picker>0</picker>
         <prettyName>categories</prettyName>
         <rows>5</rows>
@@ -72,7 +72,7 @@
         <editor>---</editor>
         <hint/>
         <name>chapeau</name>
-        <number>13</number>
+        <number>15</number>
         <picker>1</picker>
         <prettyName>chapeau</prettyName>
         <rows>5</rows>
@@ -87,7 +87,7 @@
         <disabled>0</disabled>
         <hint/>
         <name>content</name>
-        <number>14</number>
+        <number>16</number>
         <prettyName>content</prettyName>
         <script/>
         <unmodifiable>0</unmodifiable>
@@ -102,7 +102,7 @@
         <editor>---</editor>
         <hint/>
         <name>contentHtml</name>
-        <number>15</number>
+        <number>17</number>
         <picker>1</picker>
         <prettyName>contentHtml</prettyName>
         <rows>5</rows>
@@ -131,7 +131,7 @@
         <disabled>0</disabled>
         <hint/>
         <name>headerAudio</name>
-        <number>10</number>
+        <number>12</number>
         <picker>1</picker>
         <prettyName>headerAudio</prettyName>
         <size>30</size>
@@ -140,6 +140,23 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </headerAudio>
+      <headerAudioDescription>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>---</editor>
+        <hint/>
+        <name>headerAudioDescription</name>
+        <number>13</number>
+        <picker>1</picker>
+        <prettyName>headerAudioDescription</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </headerAudioDescription>
       <headerImage>
         <customDisplay/>
         <disabled>0</disabled>
@@ -155,13 +172,13 @@
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </headerImage>
       <headerImageCaption>
-        <contenttype>---</contenttype>
+        <contenttype>FullyRenderedText</contenttype>
         <customDisplay/>
         <disabled>0</disabled>
         <editor>---</editor>
         <hint/>
         <name>headerImageCaption</name>
-        <number>11</number>
+        <number>10</number>
         <picker>1</picker>
         <prettyName>headerImageCaption</prettyName>
         <rows>5</rows>
@@ -178,7 +195,7 @@
         <editor>---</editor>
         <hint/>
         <name>headerImageCredits</name>
-        <number>12</number>
+        <number>11</number>
         <picker>1</picker>
         <prettyName>headerImageCredits</prettyName>
         <rows>5</rows>
@@ -188,6 +205,23 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
       </headerImageCredits>
+      <headerVideo>
+        <contenttype>PureText</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>---</editor>
+        <hint/>
+        <name>headerVideo</name>
+        <number>14</number>
+        <picker>1</picker>
+        <prettyName>headerVideo</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </headerVideo>
       <link>
         <customDisplay/>
         <disabled>0</disabled>
@@ -209,7 +243,7 @@
         <editor>---</editor>
         <hint/>
         <name>locations</name>
-        <number>19</number>
+        <number>21</number>
         <picker>1</picker>
         <prettyName>locations</prettyName>
         <rows>5</rows>
@@ -232,7 +266,7 @@
         <largeStorage>0</largeStorage>
         <multiSelect>0</multiSelect>
         <name>media</name>
-        <number>16</number>
+        <number>18</number>
         <picker>0</picker>
         <prettyName>media</prettyName>
         <relationalStorage>1</relationalStorage>
@@ -254,7 +288,7 @@
         <editor>---</editor>
         <hint/>
         <name>mediaTopics</name>
-        <number>18</number>
+        <number>20</number>
         <picker>1</picker>
         <prettyName>mediaTopics</prettyName>
         <rows>5</rows>
@@ -322,7 +356,7 @@
         <largeStorage>0</largeStorage>
         <multiSelect>1</multiSelect>
         <name>themes</name>
-        <number>17</number>
+        <number>19</number>
         <picker>0</picker>
         <prettyName>themes</prettyName>
         <relationalStorage>1</relationalStorage>
@@ -389,6 +423,9 @@
       <headerAudio/>
     </property>
     <property>
+      <headerAudioDescription/>
+    </property>
+    <property>
       <headerImage/>
     </property>
     <property>
@@ -396,6 +433,9 @@
     </property>
     <property>
       <headerImageCredits/>
+    </property>
+    <property>
+      <headerVideo/>
     </property>
     <property>
       <link/>
@@ -461,12 +501,29 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
       </claimReviewed>
+      <claimReviewedComment>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>---</editor>
+        <hint/>
+        <name>claimReviewedComment</name>
+        <number>15</number>
+        <picker>1</picker>
+        <prettyName>claimReviewedComment</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </claimReviewedComment>
       <itemReviewedAppearanceAuthorName>
         <customDisplay/>
         <disabled>0</disabled>
         <hint/>
         <name>itemReviewedAppearanceAuthorName</name>
-        <number>10</number>
+        <number>11</number>
         <picker>1</picker>
         <prettyName>itemReviewedAppearanceAuthorName</prettyName>
         <size>30</size>
@@ -482,7 +539,7 @@
         <emptyIsToday>1</emptyIsToday>
         <hint/>
         <name>itemReviewedAppearanceDatePublished</name>
-        <number>9</number>
+        <number>10</number>
         <picker>1</picker>
         <prettyName>itemReviewedAppearanceDatePublished</prettyName>
         <size>20</size>
@@ -492,28 +549,39 @@
         <classType>com.xpn.xwiki.objects.classes.DateClass</classType>
       </itemReviewedAppearanceDatePublished>
       <itemReviewedAppearanceHeadline>
-        <contenttype>---</contenttype>
         <customDisplay/>
         <disabled>0</disabled>
-        <editor>---</editor>
         <hint/>
         <name>itemReviewedAppearanceHeadline</name>
-        <number>8</number>
+        <number>9</number>
         <picker>1</picker>
         <prettyName>itemReviewedAppearanceHeadline</prettyName>
-        <rows>5</rows>
-        <size>40</size>
+        <size>30</size>
         <unmodifiable>0</unmodifiable>
         <validationMessage/>
         <validationRegExp/>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </itemReviewedAppearanceHeadline>
+      <itemReviewedAppearanceName>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>itemReviewedAppearanceName</name>
+        <number>7</number>
+        <picker>0</picker>
+        <prettyName>itemReviewedAppearanceName</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </itemReviewedAppearanceName>
       <itemReviewedAppearancePublisherName>
         <customDisplay/>
         <disabled>0</disabled>
         <hint/>
         <name>itemReviewedAppearancePublisherName</name>
-        <number>11</number>
+        <number>12</number>
         <picker>1</picker>
         <prettyName>itemReviewedAppearancePublisherName</prettyName>
         <size>30</size>
@@ -548,18 +616,21 @@
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </itemReviewedAppearanceType>
       <itemReviewedAppearanceUrl>
+        <contenttype>PureText</contenttype>
         <customDisplay/>
         <disabled>0</disabled>
+        <editor>PureText</editor>
         <hint/>
         <name>itemReviewedAppearanceUrl</name>
-        <number>7</number>
+        <number>8</number>
         <picker>1</picker>
         <prettyName>itemReviewedAppearanceUrl</prettyName>
-        <size>30</size>
+        <rows>5</rows>
+        <size>40</size>
         <unmodifiable>0</unmodifiable>
         <validationMessage/>
         <validationRegExp/>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
       </itemReviewedAppearanceUrl>
       <itemReviewedAuthorName>
         <customDisplay/>
@@ -630,12 +701,29 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.DateClass</classType>
       </itemReviewedDatePublished>
+      <json>
+        <contenttype>---</contenttype>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <editor>---</editor>
+        <hint/>
+        <name>json</name>
+        <number>16</number>
+        <picker>1</picker>
+        <prettyName>json</prettyName>
+        <rows>5</rows>
+        <size>40</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </json>
       <reviewRatingAlternateName>
         <customDisplay/>
         <disabled>0</disabled>
         <hint/>
         <name>reviewRatingAlternateName</name>
-        <number>13</number>
+        <number>14</number>
         <picker>1</picker>
         <prettyName>reviewRatingAlternateName</prettyName>
         <size>30</size>
@@ -655,7 +743,7 @@
         <largeStorage>0</largeStorage>
         <multiSelect>0</multiSelect>
         <name>reviewRatingValue</name>
-        <number>12</number>
+        <number>13</number>
         <picker>0</picker>
         <prettyName>reviewRatingValue</prettyName>
         <relationalStorage>1</relationalStorage>
@@ -674,6 +762,9 @@
       <claimReviewed/>
     </property>
     <property>
+      <claimReviewedComment/>
+    </property>
+    <property>
       <itemReviewedAppearanceAuthorName/>
     </property>
     <property>
@@ -681,6 +772,9 @@
     </property>
     <property>
       <itemReviewedAppearanceHeadline/>
+    </property>
+    <property>
+      <itemReviewedAppearanceName/>
     </property>
     <property>
       <itemReviewedAppearancePublisherName/>
@@ -702,6 +796,9 @@
     </property>
     <property>
       <itemReviewedDatePublished/>
+    </property>
+    <property>
+      <json/>
     </property>
     <property>
       <reviewRatingAlternateName/>

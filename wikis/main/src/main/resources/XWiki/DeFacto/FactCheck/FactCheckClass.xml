@@ -50,7 +50,7 @@
       <editor>---</editor>
       <hint/>
       <name>categories</name>
-      <number>20</number>
+      <number>22</number>
       <picker>0</picker>
       <prettyName>categories</prettyName>
       <rows>5</rows>
@@ -67,7 +67,7 @@
       <editor>---</editor>
       <hint/>
       <name>chapeau</name>
-      <number>13</number>
+      <number>15</number>
       <picker>1</picker>
       <prettyName>chapeau</prettyName>
       <rows>5</rows>
@@ -82,7 +82,7 @@
       <disabled>0</disabled>
       <hint/>
       <name>content</name>
-      <number>14</number>
+      <number>16</number>
       <prettyName>content</prettyName>
       <script/>
       <unmodifiable>0</unmodifiable>
@@ -97,7 +97,7 @@
       <editor>---</editor>
       <hint/>
       <name>contentHtml</name>
-      <number>15</number>
+      <number>17</number>
       <picker>1</picker>
       <prettyName>contentHtml</prettyName>
       <rows>5</rows>
@@ -126,7 +126,7 @@
       <disabled>0</disabled>
       <hint/>
       <name>headerAudio</name>
-      <number>10</number>
+      <number>12</number>
       <picker>1</picker>
       <prettyName>headerAudio</prettyName>
       <size>30</size>
@@ -135,6 +135,23 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </headerAudio>
+    <headerAudioDescription>
+      <contenttype>---</contenttype>
+      <customDisplay/>
+      <disabled>0</disabled>
+      <editor>---</editor>
+      <hint/>
+      <name>headerAudioDescription</name>
+      <number>13</number>
+      <picker>1</picker>
+      <prettyName>headerAudioDescription</prettyName>
+      <rows>5</rows>
+      <size>40</size>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+    </headerAudioDescription>
     <headerImage>
       <customDisplay/>
       <disabled>0</disabled>
@@ -150,13 +167,13 @@
       <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
     </headerImage>
     <headerImageCaption>
-      <contenttype>---</contenttype>
+      <contenttype>FullyRenderedText</contenttype>
       <customDisplay/>
       <disabled>0</disabled>
       <editor>---</editor>
       <hint/>
       <name>headerImageCaption</name>
-      <number>11</number>
+      <number>10</number>
       <picker>1</picker>
       <prettyName>headerImageCaption</prettyName>
       <rows>5</rows>
@@ -173,7 +190,7 @@
       <editor>---</editor>
       <hint/>
       <name>headerImageCredits</name>
-      <number>12</number>
+      <number>11</number>
       <picker>1</picker>
       <prettyName>headerImageCredits</prettyName>
       <rows>5</rows>
@@ -183,6 +200,23 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
     </headerImageCredits>
+    <headerVideo>
+      <contenttype>PureText</contenttype>
+      <customDisplay/>
+      <disabled>0</disabled>
+      <editor>---</editor>
+      <hint/>
+      <name>headerVideo</name>
+      <number>14</number>
+      <picker>1</picker>
+      <prettyName>headerVideo</prettyName>
+      <rows>5</rows>
+      <size>40</size>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+    </headerVideo>
     <link>
       <customDisplay/>
       <disabled>0</disabled>
@@ -204,7 +238,7 @@
       <editor>---</editor>
       <hint/>
       <name>locations</name>
-      <number>19</number>
+      <number>21</number>
       <picker>1</picker>
       <prettyName>locations</prettyName>
       <rows>5</rows>
@@ -227,7 +261,7 @@
       <largeStorage>0</largeStorage>
       <multiSelect>0</multiSelect>
       <name>media</name>
-      <number>16</number>
+      <number>18</number>
       <picker>0</picker>
       <prettyName>media</prettyName>
       <relationalStorage>1</relationalStorage>
@@ -249,7 +283,7 @@
       <editor>---</editor>
       <hint/>
       <name>mediaTopics</name>
-      <number>18</number>
+      <number>20</number>
       <picker>1</picker>
       <prettyName>mediaTopics</prettyName>
       <rows>5</rows>
@@ -317,7 +351,7 @@
       <largeStorage>0</largeStorage>
       <multiSelect>1</multiSelect>
       <name>themes</name>
-      <number>17</number>
+      <number>19</number>
       <picker>0</picker>
       <prettyName>themes</prettyName>
       <relationalStorage>1</relationalStorage>

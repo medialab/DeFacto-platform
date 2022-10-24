@@ -53,7 +53,7 @@ def byte[] getBytes(String url, String username, String password) {
   }
 }
 
-/** Extract info from media:content node and store it in the header image object attributes */
+/** Extract info from media:content node and store it in the header image or header audio object attributes */
 
 def void maybeExtractEnclosureMetadataFromMediaContentNode(enclosure, foreignElement, namespace, object) {
   def url = foreignElement.getAttributeValue('url');
@@ -61,10 +61,24 @@ def void maybeExtractEnclosureMetadataFromMediaContentNode(enclosure, foreignEle
     def description = foreignElement.getChildText('description', namespace);
     def credit = foreignElement.getChildText('credit', namespace);
     if (description != null) {
-      object.set('headerImageCaption', description);
+      // Header image description can contain html -&gt; we transform it to wiki syntax.
+      def descriptionXdom = services.rendering.parse('&lt;div&gt;' + description.trim() + '&lt;/div&gt;', 'html/4.01')
+      object.set('headerImageCaption', services.rendering.render(descriptionXdom, 'xwiki/2.1'));
     }
     if (credit  != null) {
       object.set('headerImageCredits', credit);
+    }
+  } else if (url != null) {
+    // Likely an audio
+    def type = foreignElement.getAttributeValue('type');
+    if (type.startsWith('audio')) {
+      object.set('headerAudio', url);
+      def description = foreignElement.getChildText('description', namespace);
+      if (description != null) {
+        // Header audio description can contain html -&gt; we transform it to wiki syntax.
+        def descriptionXdom = services.rendering.parse('&lt;div&gt;' + description.trim() + '&lt;/div&gt;', 'html/4.01')
+        object.set('headerAudioDescription', services.rendering.render(descriptionXdom, 'xwiki/2.1'));
+      }
     }
   }
 }
@@ -214,6 +228,12 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           transformedContent = transformedContent.replaceAll('&lt;script', '&lt;div data-tag="script"')
           transformedContent = transformedContent.replaceAll('&lt;/script&gt;', '&lt;/div&gt;')
 
+          // FTVI: remove iframe Twitter trackers and replace iframe tweet by "div class='twitter-tweet'" with URL to tweet
+          transformedContent = transformedContent.replaceAll('&lt;iframe[^&gt;]*title="Twitter settings iframe"[^&gt;]*&gt;&lt;/iframe&gt;', '')
+          transformedContent = transformedContent.replaceAll('&lt;iframe[^&gt;]*title="Twitter analytics iframe"[^&gt;]*&gt;&lt;/iframe&gt;', '')
+          // NB: only the tweet ID matters, not the Twitter user see https://www.bram.us/2017/11/22/accessing-a-tweet-using-only-its-id-and-without-the-twitter-api/
+          transformedContent = transformedContent.replaceAll('&lt;iframe[^&gt;]*data-tweet-id="([^"]*)"[^&gt;]*&gt;&lt;/iframe&gt;', '&lt;div data-tag="tweet" data-tweet-id="$1"&gt;$1&lt;/div&gt;')
+
           transformedContent = transformedContent.replaceAll('&lt;iframe', '&lt;div data-tag="iframe"')
           transformedContent = transformedContent.replaceAll('&lt;/iframe&gt;', '&lt;/div&gt;')
 
@@ -222,6 +242,12 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           transformedContent = transformedContent.replaceAll('&lt;/figure&gt;', '&lt;/div&gt;')
           transformedContent = transformedContent.replaceAll('&lt;figcaption', '&lt;div data-tag="figcaption"')
           transformedContent = transformedContent.replaceAll('&lt;/figcaption&gt;', '&lt;/div&gt;')
+
+          // This is needed to process quotes correctly because the quote macro does not support wiki syntax
+          transformedContent = transformedContent.replaceAll('&lt;blockquote', '&lt;div data-tag="blockquote"')
+          transformedContent = transformedContent.replaceAll('&lt;/blockquote&gt;', '&lt;/div&gt;')
+          transformedContent = transformedContent.replaceAll('&lt;cite', '&lt;div data-tag="cite"')
+          transformedContent = transformedContent.replaceAll('&lt;/cite&gt;', '&lt;/div&gt;')
 
           def xdom = services.rendering.parse(transformedContent, 'html/4.01')
           if (xdom != null) {
@@ -235,15 +261,43 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                   blockParameters.put('url', src);
                   def videoBlock = new MacroBlock('video', blockParameters, true);
                   block.getParent().replaceChild(videoBlock, block);
-                } else /** newformat:start if (dataTagValue != 'figure' &amp;&amp; dataTagValue != 'figcaption') newformat:end */ {
-                  // Using xhtml/1.0 there otherwise we can some comments characters added when serializing it seems: /*~/*~
-                  def blockHtml = services.rendering.render(block, 'xhtml/1.0');
-                  blockHtml = blockHtml.replaceAll("&lt;div([^&gt;]*)data-tag=\"$dataTagValue\"", "&lt;$dataTagValue\$1")
-                  blockHtml = blockHtml.replaceAll('&lt;/div&gt;', "&lt;/$dataTagValue&gt;")
-                  def blockParameters = new HashMap();
-                  blockParameters.put('clean', 'false');
-                  def macroBlock = new MacroBlock('html', blockParameters, blockHtml, false);
-                  block.getParent().replaceChild(macroBlock, block);
+                } else /** new Factuel format:start if (dataTagValue != 'figure' &amp;&amp; dataTagValue != 'figcaption') newformat:end */ {
+                  // Using xhtml/1.0 there otherwise some comments characters get added when serializing it seems: /*~/*~
+                  // Special case of the blockquote macro: we replace it with a div with a style because the quote macro does
+                  // not support wiki syntax
+                  if (dataTagValue.equals("blockquote")) {
+                    def parameters = new HashMap();
+                    parameters.put("class", "defacto-fact-check-quote")
+                    def groupBlock = new GroupBlock(block.getChildren(), parameters);
+                    block.getParent().replaceChild(groupBlock, block);
+                  } else if (dataTagValue.equals("cite")) {
+                    def parameters = new HashMap();
+                    def clazz = block.getParameters().get('class');
+                    if (clazz != null) {
+                      parameters.put('class', clazz + ' defacto-fact-check-quote-cite');
+                    } else {
+                      parameters.put('class', 'defacto-fact-check-quote-cite');
+                    }
+                    def groupBlock = new GroupBlock(block.getChildren(), parameters);
+                    block.getParent().replaceChild(groupBlock, block);
+                  } else if (dataTagValue.equals("tweet")) {
+                    def tweetId = block.getParameter('data-tweet-id');
+                    def parameters = new HashMap();
+                    def url = "https://twitter.com/user/status/${tweetId}";
+                    parameters.put('url', url.toString());
+                    def macroBlock = new MacroBlock('tweet', parameters, url.toString(), false);
+                    block.getParent().replaceChild(macroBlock, block);
+                  } else {
+                    def blockHtml = services.rendering.render(block, 'xhtml/1.0');
+                    blockHtml = blockHtml.replaceAll("&lt;div([^&gt;]*)data-tag=\"$dataTagValue\"", "&lt;$dataTagValue\$1")
+                    def idx = blockHtml.lastIndexOf('&lt;/div&gt;');
+                    blockHtml = blockHtml.substring(0, idx);
+                    blockHtml += "&lt;/$dataTagValue&gt;";
+                    def blockParameters = new HashMap();
+                    blockParameters.put('clean', 'false');
+                    def macroBlock = new MacroBlock('html', blockParameters, blockHtml, false);
+                    block.getParent().replaceChild(macroBlock, block);
+                  }
                 }
               }
             }
@@ -347,9 +401,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
               }
             }
 
-
             def factCheckBody = services.rendering.render(xdom, 'xwiki/2.1');
-
             // Replace all relative links by absolute ones
             // We consider that relative links always appear as "&gt;&gt;path:/"
             factCheckBody = factCheckBody.replaceAll('&gt;&gt;path:/', "&gt;&gt;url:$mediaHome")
