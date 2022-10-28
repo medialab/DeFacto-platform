@@ -195,10 +195,16 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           object.set('media', media)
 
           // "content" is either the description, or the full content. In case there is full content, we extract the chapeau as the first paragraph
-          def content = it.description?.value;
+          def description = it.description?.value;
           def claimReviewData = null
           def claimReviewJson = null
           def foreignMarkup = it.getForeignMarkup();
+
+          def contents = it.contents;
+          def content = null;
+          if (contents != null &amp;&amp; contents.size() &gt; 0) {
+            content = contents.get(0).value;
+          }
 
           foreignMarkup.each{ foreignElement -&gt;
             def namespace = foreignElement.getNamespace()
@@ -206,7 +212,9 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
             if (namespace != null) {
               namespaceURI = namespace.getURI()
             }
+
             if ('enclosed'.equals(foreignElement.name)) {
+              // Maybe not needed anymore: was used initially (by mistake?) by AFP Factuel for the main content
               content = foreignElement.getText()
             } else if ('review'.equals(foreignElement.name)) {
               claimReviewJson = foreignElement.getText().trim()
@@ -231,6 +239,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           // FTVI: remove iframe Twitter trackers and replace iframe tweet by "div class='twitter-tweet'" with URL to tweet
           transformedContent = transformedContent.replaceAll('&lt;iframe[^&gt;]*title="Twitter settings iframe"[^&gt;]*&gt;&lt;/iframe&gt;', '')
           transformedContent = transformedContent.replaceAll('&lt;iframe[^&gt;]*title="Twitter analytics iframe"[^&gt;]*&gt;&lt;/iframe&gt;', '')
+          // FTVI tweets
           // NB: only the tweet ID matters, not the Twitter user see https://www.bram.us/2017/11/22/accessing-a-tweet-using-only-its-id-and-without-the-twitter-api/
           transformedContent = transformedContent.replaceAll('&lt;iframe[^&gt;]*data-tweet-id="([^"]*)"[^&gt;]*&gt;&lt;/iframe&gt;', '&lt;div data-tag="tweet" data-tweet-id="$1"&gt;$1&lt;/div&gt;')
 
@@ -261,8 +270,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                   blockParameters.put('url', src);
                   def videoBlock = new MacroBlock('video', blockParameters, true);
                   block.getParent().replaceChild(videoBlock, block);
-                } else /** new Factuel format:start if (dataTagValue != 'figure' &amp;&amp; dataTagValue != 'figcaption') newformat:end */ {
-                  // Using xhtml/1.0 there otherwise some comments characters get added when serializing it seems: /*~/*~
+                } else {
                   // Special case of the blockquote macro: we replace it with a div with a style because the quote macro does
                   // not support wiki syntax
                   if (dataTagValue.equals("blockquote")) {
@@ -287,7 +295,9 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                     parameters.put('url', url.toString());
                     def macroBlock = new MacroBlock('tweet', parameters, url.toString(), false);
                     block.getParent().replaceChild(macroBlock, block);
-                  } else {
+                  } else if (dataTagValue != 'figure' &amp;&amp; dataTagValue != 'figcaption') {
+                    // We exclude the figure and figcaption tags because they are processed separately (see below)
+                    // Using xhtml/1.0 there otherwise some comments characters get added when serializing it seems: /*~/*~
                     def blockHtml = services.rendering.render(block, 'xhtml/1.0');
                     blockHtml = blockHtml.replaceAll("&lt;div([^&gt;]*)data-tag=\"$dataTagValue\"", "&lt;$dataTagValue\$1")
                     def idx = blockHtml.lastIndexOf('&lt;/div&gt;');
@@ -303,13 +313,11 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
             }
 
             /** Chapeau */
-            if (mediaShortName.equals('FTVI')) {
-              // FTVI: the chapeau is in the "description" field, the content is in "content:enclosed"
-              if (it.description != null &amp;&amp; it.description.value != null) {
-                def chapeauXdom = services.rendering.parse('&lt;div&gt;' + it.description.value.trim() + '&lt;/div&gt;', 'html/4.01')
-                object.set('chapeau', services.rendering.render(chapeauXdom, 'xwiki/2.1'));
-              }
-            } else {
+            // For now we process Factuel separately because the description contains more than the chapeau
+            if (description != null &amp;&amp; mediaShortName != 'Factuel') {
+              def chapeauXdom = services.rendering.parse('&lt;div&gt;' + description.trim() + '&lt;/div&gt;', 'html/4.01')
+              object.set('chapeau', services.rendering.render(chapeauXdom, 'xwiki/2.1'));
+            } else if (mediaShortName == 'Factuel') {
               // Extract first h2 block and turn it into the fact-check chapeau
               def headerBlocks = xdom.getBlocks(new ClassBlockMatcher(HeaderBlock.class), Block.Axes.DESCENDANT)
               if (headerBlocks.size() &gt; 0) {
@@ -328,9 +336,11 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
               }
             }
 
+            // Import images
             // Import AFP Factuel images, which are wrapped in a &lt;figure class="image"&gt;&lt;/figure&gt;
-            /** newformat : remove "false" to activate new format */
-            if (false &amp;&amp; mediaShortName.equals("Factuel")) {
+            if (transformedContent.indexOf('data-tag="figure"') &gt;= 0) {
+              // This is for the new format used by Factuel which includes "figure" elements while previously using
+              // plain images.
               def figureImageBlocks = xdom.getBlocks(new AnyBlockMatcher(), Block.Axes.DESCENDANT)
               for (Block block : figureImageBlocks) {
                 def tag = block.getParameter('data-tag');
@@ -340,8 +350,9 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                   def imageBlock = block.getFirstBlock(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT);
                   String imageReference = imageBlock.getReference().getReference();
                   def bytes = getBytes(imageReference, username, password);
-                  String caption = "";
-                  String credit = "";
+                  //String caption = "";
+                  //String credit = "";
+                  def figCaptionInnerHtml = "";
                   if (bytes != null) {
                     def bais = new ByteArrayInputStream(bytes);
                     def idx = imageReference.lastIndexOf('/');
@@ -351,7 +362,9 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                     for (Block child: children) {
                       tag = child.getParameter('data-tag');
                       if (tag != null &amp;&amp; tag.equals('figcaption')) {
-                        def info = child.getChildren();
+                        figCaptionInnerHtml = services.rendering.render(child, 'xwiki/2.1')
+                        // TODO: keep only the inner part: remove block with 'data-tag="figcaption"'
+                        /*def info = child.getChildren();
                         for (Block cinfo: info) {
                           String itemPropValue = cinfo.getParameter("itemprop");
                           //out.println("** $cinfo " + itemPropValue);
@@ -360,7 +373,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                           } else if (itemPropValue == 'credit') {
                             credit = services.rendering.render(cinfo, 'xwiki/2.1')
                           }
-                        }
+                        }*/
                       }
                     }
                     // TODO: factorize code
@@ -370,7 +383,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                     def imageHtml = services.rendering.render(newImageBlock, 'xwiki/2.1')
                     def blockParameters = new HashMap();
                     //out.println("* New image block: $newImageBlock $imageHtml")
-                    def figCaptionBlock = new MacroBlock('figureCaption', blockParameters, caption + credit, false);
+                    def figCaptionBlock = new MacroBlock('figureCaption', blockParameters, figCaptionInnerHtml, false);
                     def figCaptionHtml = services.rendering.render(figCaptionBlock, 'xwiki/2.1')
                     // TODO: we don't want the image to be wrapped into a paragraph
                     def macroBlock = new MacroBlock('figure', blockParameters, imageHtml + '\n\n' + figCaptionHtml, false);
@@ -381,7 +394,6 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                 }
               }
             } else {
-              // Import images
               // TODO: we should check that each image has not been imported yet (as header image, or previously in the content)
               def imageBlocks = xdom.getBlocks(new ClassBlockMatcher(ImageBlock.class), Block.Axes.DESCENDANT)
               for (ImageBlock imageBlock : imageBlocks) {
