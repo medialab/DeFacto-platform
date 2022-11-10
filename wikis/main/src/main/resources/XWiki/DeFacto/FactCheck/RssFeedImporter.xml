@@ -237,6 +237,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           transformedContent = transformedContent.replaceAll('&lt;/script&gt;', '&lt;/div&gt;')
 
           // FTVI: remove iframe Twitter trackers and replace iframe tweet by "div class='twitter-tweet'" with URL to tweet
+          // Might be removed since it seems FTVI tweets are now properly represented as blockquote class="twitter-tweet" instead
           transformedContent = transformedContent.replaceAll('&lt;iframe[^&gt;]*title="Twitter settings iframe"[^&gt;]*&gt;&lt;/iframe&gt;', '')
           transformedContent = transformedContent.replaceAll('&lt;iframe[^&gt;]*title="Twitter analytics iframe"[^&gt;]*&gt;&lt;/iframe&gt;', '')
           // FTVI tweets
@@ -274,10 +275,27 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                   // Special case of the blockquote macro: we replace it with a div with a style because the quote macro does
                   // not support wiki syntax
                   if (dataTagValue.equals("blockquote")) {
-                    def parameters = new HashMap();
-                    parameters.put("class", "defacto-fact-check-quote")
-                    def groupBlock = new GroupBlock(block.getChildren(), parameters);
-                    block.getParent().replaceChild(groupBlock, block);
+                    def clazz = block.getParameter('class');
+                    // AFP and FTVI tweets are represented as &lt;blockquote class="twitter-tweet"&gt;
+                    if ("twitter-tweet".equals(clazz)) {
+                      def blockQuoteContent = services.rendering.render(block, 'plain/1.0');
+                      def links = block.getBlocks(new ClassBlockMatcher(LinkBlock.class), Block.Axes.DESCENDANT)
+                      // The link to the tweet is the last one
+                      if (links.size() &gt; 0) {
+                        def tweetLink = links.get(links.size() - 1);
+                        def url = tweetLink.getReference().getReference();
+                        def parameters = new HashMap();
+                        //def url = "https://twitter.com/user/status/${tweetId}";
+                        parameters.put('url', url.toString());
+                        def macroBlock = new MacroBlock('tweet', parameters, blockQuoteContent, false);
+                        block.getParent().replaceChild(macroBlock, block);
+                      }
+                    } else {
+                      def parameters = new HashMap();
+                      parameters.put("class", "defacto-fact-check-quote")
+                      def groupBlock = new GroupBlock(block.getChildren(), parameters);
+                      block.getParent().replaceChild(groupBlock, block);
+                    }
                   } else if (dataTagValue.equals("cite")) {
                     def parameters = new HashMap();
                     def clazz = block.getParameters().get('class');
@@ -289,6 +307,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                     def groupBlock = new GroupBlock(block.getChildren(), parameters);
                     block.getParent().replaceChild(groupBlock, block);
                   } else if (dataTagValue.equals("tweet")) {
+                    // These are iframe tweets: the code may be removed, see comment above about FTVI tweets as iframes
                     def tweetId = block.getParameter('data-tweet-id');
                     def parameters = new HashMap();
                     def url = "https://twitter.com/user/status/${tweetId}";
