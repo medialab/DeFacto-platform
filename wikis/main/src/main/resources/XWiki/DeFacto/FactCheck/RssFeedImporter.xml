@@ -106,7 +106,8 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
 
     def newEntriesCount = 0
     feed.entries.eachWithIndex{ it, index -&gt;
-      if (index &lt; 30) {
+      // Exclude a specific 20 Minutes article with too long enclosure name until #175 gets fixed
+      if (index &lt; 30 &amp;&amp; it.title.trim().toLowerCase().indexOf('parlementaire de martine wonner') &lt; 0) {
         def title = it.title.trim()
         def author = it.author
         def publishedDate = it.publishedDate
