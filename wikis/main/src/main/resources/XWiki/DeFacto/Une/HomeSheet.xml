@@ -405,7 +405,7 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
       var match = regex.exec(hash);
       while (match != null) {
         if (match.length == 3) {
-          state[match[1]] = match[2];
+          state[match[1]] = decodeURIComponent(match[2]);
         }
         match = regex.exec(hash);
       }
