@@ -1,0 +1,164 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="About.WebHome" locale="">
+  <web>About</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>About</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>(% class="tab-content" %)
+(((
+(% class="tab-pane active" id="presentation" role="tabpanel" %)
+(((
+(% style="float: right;" %)[[Version française&gt;&gt;A-propos.WebHome||class="btn btn-defacto"]]
+
+= Presentation =
+
+**Researchers, journalists and educators in France have joined together for the first time under the DE FACTO banner to address the challenges posed by the rapid spread of disinformation. The DE FACTO project, funded by the European Union, aims to provide a pluralistic, open and independent platform that focuses on the challenges of information in the digital age and facilitates verification, analysis and media education.**
+
+The digital revolution has fundamentally altered the media and information ecosystems, with news outlets and journalists having to adapt and change the way they report and distribute the news. While this transformation has made communication and access to information easier and faster, it has also given rise to global mistrust in traditional journalism and news organisations.
+
+To help tackle all the challenges we face as a result of this revolution, DE FACTO offers fact checks by reputable fact-checking organisations, analysis by top-level institutions, and educational material to help the public develop critical tools in the face of disinformation.
+
+== Who is behind DE FACTO? ==
+
+DE FACTO brings together Sciences Po university, whose medialab and School of Journalism have been studying the transformations of the information ecosystem for many years; AFP, a global leader in digital investigation with more than 130 fact-checkers working in 24 languages; CLEMI, the Center for Media and Information Education, which is in charge of Media and Information Literacy (MIL) in the French education system; and XWiki SAS, a European company that publishes the open source knowledge-sharing solutions XWiki and CryptPad.
+
+
+)))
+
+(% class="tab-pane" id="partners" role="tabpanel" %)
+(((
+(% style="float: right;" %)[[Version française&gt;&gt;A-propos.WebHome||class="btn btn-defacto"]]
+
+= Partners =
+
+== Sciences Po ==
+
+(% class="row" %)
+(((
+(% class="col-xs-12 col-sm-9" %)
+(((
+Sciences Po is an international research university, both selective and open to the world, ranking among the finest institutions in the fields of humanities and social sciences. Based on a multidisciplinary approach, it combines skills and know-how from different social sciences - including economics, history, political science, sociology and law. In the DE FACTO project, Sciences Po will engage three different entities: the medialab, the School of Journalism and the LIEPP (Interdisciplinary Laboratory for Public Policy Evaluation).
+)))
+
+(% class="col-xs-12 col-sm-3 defacto-partner-logo" %)
+(((
+[[[[image:XWiki.DeFacto.LnF.Logos@sciencespo.jpg]]&gt;&gt;https://www.sciencespo.fr/||rel="noopener noreferrer" target="_blank"]]
+)))
+)))
+
+(% class="row" %)
+(((
+(% class="col-xs-12 col-sm-9" %)
+(((
+== Agence France Presse ==
+
+AFP is a global news agency, providing rapid, comprehensive and verified coverage of current events as well as the themes that shape our daily lives. With an unrivalled network of journalists in 151 countries, AFP is also a world leader in digital investigation. Our 2,400 employees of 100 different nationalities cover the world in six languages, with a unique quality of multimedia production in video, text, photo and computer graphics.
+)))
+
+(% class="col-xs-12 col-sm-3 defacto-partner-logo" %)
+(((
+[[[[image:XWiki.DeFacto.LnF.Logos@afp.png]]&gt;&gt;https://www.afp.com/||rel="noopener noreferrer" target="_blank"]]
+)))
+)))
+
+== CLEMI ==
+
+(% class="row" %)
+(((
+(% class="col-xs-12 col-sm-9" %)
+(((
+The CLEMI (Center for Media and Information Literacy) is the reference operator in charge of media and information literacy in the French educational system. Since its creation in 1983, its mission has been to train teachers and teach students to use the media in a civic-minded way, thus promoting a better understanding of the world around them and the development of their critical thinking. It has extended its mission beyond the walls of the school to accompany and educate parents in a world in full digital transition, at the heart of the major issues of society. Its action is part of a cooperation perspective with European and international institutions and NGOs.
+)))
+
+(% class="col-xs-12 col-sm-3 defacto-partner-logo" %)
+(((
+[[[[image:XWiki.DeFacto.LnF.Logos@clemi-1.png]]&gt;&gt;https://www.clemi.fr/||rel="noopener noreferrer" target="_blank"]]
+)))
+)))
+
+== XWiki SAS ==
+
+(% class="row" %)
+(((
+(% class="col-xs-12 col-sm-9" %)
+(((
+[[XWiki SAS&gt;&gt;https://xwiki.com/]] is an independent European company that publishes the 100% open source solutions XWiki and CryptPad. XWiki is a knowledge management tool that has been implemented by XWiki SAS in more than 500 projects worldwide over the last 16 years. CryptPad is a privacy-friendly alternative to desktop tools and cloud services. XWiki SAS is responsible for the development of the DE FACTO platform.
+)))
+
+(% class="col-xs-12 col-sm-3 defacto-partner-logo" %)
+(((
+[[[[image:XWiki.DeFacto.LnF.Logos@xwiki.png]]&gt;&gt;https://xwiki.com||rel="noopener noreferrer" target="_blank"]]
+)))
+)))
+)))
+
+(% class="tab-pane" id="network" role="tabpanel" %)
+(((
+(% style="float: right;" %)[[Version française&gt;&gt;A-propos.WebHome||class="btn btn-defacto"]]
+
+= The European network =
+
+DE FACTO is a hub that is part of a larger European collective – EDMO (European Digital Media Observatory). EDMO supports independent networks working on disinformation. In addition to DE FACTO, EDMO is also launching 7 other hubs across Europe, all co-funded by the European Commission under the Connecting Europe Facility (CEF) program.
+
+EDMO is a consortium led by the European University Institute in Florence (Italy), in partnership with Athens Technology Center (Greece), Aahrus University (Denmark) and the fact-checking organization Pagella Politica (Italy).
+
+)))
+
+)))</content>
+  <object>
+    <name>About.WebHome</name>
+    <number>0</number>
+    <className>XWiki.DocumentSheetBinding</className>
+    <guid>c19600e8-b418-4720-897d-4baddb3f3361</guid>
+    <class>
+      <name>XWiki.DocumentSheetBinding</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <sheet>
+        <cache>0</cache>
+        <classname/>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <displayType>input</displayType>
+        <hint/>
+        <idField/>
+        <multiSelect>0</multiSelect>
+        <name>sheet</name>
+        <number>1</number>
+        <picker>1</picker>
+        <prettyName>Sheet</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators/>
+        <size>30</size>
+        <sort>none</sort>
+        <sql/>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <valueField/>
+        <classType>com.xpn.xwiki.objects.classes.PageClass</classType>
+      </sheet>
+    </class>
+    <property>
+      <sheet>XWiki.DeFacto.LnF.AboutSheet</sheet>
+    </property>
+  </object>
+</xwikidoc>

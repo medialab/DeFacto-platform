@@ -21,7 +21,7 @@
     <name>XWiki.DeFacto.LnF.Style</name>
     <number>0</number>
     <className>XWiki.JavaScriptExtension</className>
-    <guid>28b92249-5bec-4d7d-b7b0-17a6fa1e27c1</guid>
+    <guid>34dccbe3-5f66-4492-88ec-ef87717b924e</guid>
     <class>
       <name>XWiki.JavaScriptExtension</name>
       <customClass/>
@@ -563,7 +563,7 @@ body[class*="space-XWiki\.DeFacto"] {
     padding: 20px 30px;
   }
 
-  body[class*="space-A-propos"], body[class*="space-Actus"], body[class*="space-Comprendre"], body[class*="space-Explorer"], body[class*="space-Mentions-legales"] {
+  body[class*="space-A-propos"], body[class*="space-About"], body[class*="space-Actus"], body[class*="space-Comprendre"], body[class*="space-Explorer"], body[class*="space-Mentions-legales"] {
     #mainContentArea, #xdocFooter {
       max-width: 1100px;
       margin: auto;

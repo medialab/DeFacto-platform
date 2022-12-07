@@ -21,6 +21,7 @@
   #if ($xcontext.action == 'view')
     #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.LnF.AboutSheet'))
     #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.LnF.TabsJSX'))
+    #if ($doc.fullName == 'A-propos.WebHome')
     {{html clean="false"}}
       &lt;ul class="defacto-a-propos nav nav-tabs" role="tablist"&gt;
         &lt;li role="presentation" class="active"&gt;&lt;a href="#presentation" aria-controls="presentation" role="tab" data-toggle="tab"&gt;Présentation&lt;/a&gt;&lt;/li&gt;
@@ -29,6 +30,15 @@
         &lt;li role="presentation"&gt;&lt;a href="#presse" aria-controls="presse" role="tab" data-toggle="tab"&gt;Revue de presse&lt;/a&gt;&lt;/li&gt;
       &lt;/ul&gt;
     {{/html}}
+    #else
+    {{html clean="false"}}
+      &lt;ul class="defacto-a-propos nav nav-tabs" role="tablist"&gt;
+        &lt;li role="presentation" class="active"&gt;&lt;a href="#presentation" aria-controls="presentation" role="tab" data-toggle="tab"&gt;About&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation"&gt;&lt;a href="#partners" aria-controls="qui-sommes-nous" role="tab" data-toggle="tab"&gt;Partners&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation"&gt;&lt;a href="#network" aria-controls="reseau" role="tab" data-toggle="tab"&gt;The European Network&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    {{/html}}
+    #end
   #end
 
   #set ($type = "$xcontext.action")
