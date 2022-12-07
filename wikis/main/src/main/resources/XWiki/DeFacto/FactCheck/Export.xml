@@ -72,6 +72,10 @@
     #set ($authors = $object.getValue('authors'))
     #set ($claimReviewObj = $page.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
     #if ($claimReviewObj != $NULL)
+      #set ($itemReviewedDatePublished = $claimReviewObj.getValue('itemReviewedDatePublished'))
+      #if ($itemReviewedDatePublished != $NULL)
+        #set ($itemReviewedDatePublished = $formatter.print($itemReviewedDatePublished))
+      #end
       #set ($claimReviewed = $claimReviewObj.getValue('claimReviewed'))
       #if ("$!claimReviewed" != '')
         #set ($claimReview = {
@@ -84,7 +88,7 @@
           'itemReviewed': {
             '@type': 'Claim',
             'author': {'@type': $claimReviewObj.getValue('itemReviewedAuthorType'), 'name': $claimReviewObj.getValue('itemReviewedAuthorName')},
-            'datePublished': $claimReviewObj.getValue('itemReviewedDatePublished'),
+            'datePublished': $itemReviewedDatePublished,
             'appearance': {
               'url': $claimReviewObj.getValue('itemReviewedAppearanceUrl'),
               'headline': $claimReviewObj.getValue('itemReviewedAppearanceHeadline')
