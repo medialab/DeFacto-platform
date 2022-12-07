@@ -606,18 +606,25 @@ body[class*="space-XWiki\.DeFacto"] {
   }
 }
 
+.btn-defacto {
+  background-image: none;
+  background-color: @yellow;
+  color: white;
+  border: none;
+  transition: background-color .4s ease;
+  &amp;:hover {
+    background: darken(@yellow, 10%);
+    color: white;
+  }
+}
+
 .xwiki-social-media-share-list {
   text-align: right;
   .btn-primary {
-    background-image: none;
-    background-color: @yellow;
-    border: none;
-    transition: background-color .4s ease;
-    &amp;:hover {
-      background: darken(@yellow, 10%);
-    }
+    .btn-defacto();
   }
-}</code>
+}
+</code>
     </property>
     <property>
       <contentType>LESS</contentType>
