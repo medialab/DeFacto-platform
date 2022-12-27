@@ -57,7 +57,7 @@
         <separators>|, </separators>
         <size>5</size>
         <unmodifiable>0</unmodifiable>
-        <values>action=Action|doc.reference=Document|icon.theme=Icon theme|locale=Language|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=Request base URL|request.parameters=Request parameters|request.url=Request URL|request.wiki=Request wiki|user=User|wiki=Wiki</values>
+        <values>action=Action|doc.reference=Document|icon.theme=Thème des icônes|locale=Langue|rendering.defaultsyntax=Default syntax|rendering.restricted=Restricted|rendering.targetsyntax=Target syntax|request.base=URL de base pour la requête|request.parameters=Paramètres de la requête|request.url=URL de la requête|request.wiki=Wiki de la requête|user=Utilisateur|wiki=Wiki</values>
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </async_context>
       <async_enabled>
@@ -221,11 +221,13 @@
     </property>
     <property>
       <code>{{velocity}}
+(% class="twitter-tweet" %)
+#if ("$!wikimacro.content" != '')
 #set ($content = $wikimacro.content)
 #set ($lines = $content.split('\n'))
-(% class="twitter-tweet" %)
 #foreach ($line in $lines)
 &gt;$line
+#end
 #end
 &gt;$wikimacro.parameters.url
 {{/velocity}}</code>
@@ -237,7 +239,7 @@
       <contentJavaType/>
     </property>
     <property>
-      <contentType>Mandatory</contentType>
+      <contentType>Optional</contentType>
     </property>
     <property>
       <defaultCategory/>
