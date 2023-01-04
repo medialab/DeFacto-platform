@@ -318,7 +318,7 @@
   #end
   #set ($link = $object.getValue('link'))
   (% class="box defacto-box defacto-fact-check-source" %)(((
-    #if ($mediaObject != $NULL &amp;&amp; $hello == $NULL)
+    #if ($mediaObject != $NULL)
       #set ($mediaSite = $mediaObject.getValue('site'))
       #set ($mediaLogo = $mediaObject.getValue('logo'))
       #if ("$!mediaLogo" != '')
