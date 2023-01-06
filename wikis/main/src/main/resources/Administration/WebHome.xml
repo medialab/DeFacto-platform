@@ -24,63 +24,47 @@
 
     {{html clean="false"}}
       &lt;ul class="nav nav-tabs" role="tablist"&gt;
-        &lt;li role="presentation" class="active"&gt;&lt;a href="#une" aria-controls="une" role="tab" data-toggle="tab"&gt;À la une&lt;/a&gt;&lt;/li&gt;
-        &lt;li role="presentation"&gt;&lt;a href="#medias" aria-controls="medias" role="tab" data-toggle="tab"&gt;Médias&lt;/a&gt;&lt;/li&gt;
-        &lt;li role="presentation"&gt;&lt;a href="#factchecks" aria-controls="medias" role="tab" data-toggle="tab"&gt;Fact checks&lt;/a&gt;&lt;/li&gt;
-        &lt;li role="presentation"&gt;&lt;a href="#aide" aria-controls="medias" role="tab" data-toggle="tab"&gt;Aide&lt;/a&gt;&lt;/li&gt;
+        &lt;li role="presentation" class="active"&gt;
+          &lt;a href="#une" aria-controls="une" role="tab" data-toggle="tab"&gt;
+            $services.localization.render('defacto.une.admin.tabs.une')
+          &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li role="presentation"&gt;
+          &lt;a href="#medias" aria-controls="medias" role="tab" data-toggle="tab"&gt;
+            $services.localization.render('defacto.une.admin.tabs.medias')
+          &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li role="presentation"&gt;
+          &lt;a href="#factchecks" aria-controls="medias" role="tab" data-toggle="tab"&gt;
+            $services.localization.render('defacto.une.admin.tabs.factChecks')
+          &lt;/a&gt;
+        &lt;/li&gt;
+        &lt;li role="presentation"&gt;
+          &lt;a href="#aide" aria-controls="medias" role="tab" data-toggle="tab"&gt;
+            $services.localization.render('defacto.une.admin.tabs.help')
+          &lt;/a&gt;
+        &lt;/li&gt;
       &lt;/ul&gt;
     {{/html}}
 
     (% class="tab-content" %)(((
-      (% role="tabpanel" class="tab-pane active" id="une" %)(((
+      (% role="tabpanel" class="tab-pane active xform" id="une" %)(((
         #set ($uneConfigPage = $xwiki.getDocument('XWiki.DeFacto.Une.UneConfig'))
-        #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
 
-        == Fact check du jour ==
-        #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
-        {{html}}
-        #set ($discard = $xwiki.jsfx.use('uicomponents/suggest/suggestPropertyValues.js', {'forceSkinAction': true, 'language': $xcontext.locale}))
-        #set ($suggestParams = {
-          'class': 'suggest-propertyValues',
-          'placeholder': 'Fact check du jour',
-          'data-className': 'XWiki.DeFacto.Une.UneConfigClass',
-          'data-propertyName': 'factCheckPick',
-          'name': 'factCheckPick',
-          'value': "$!factCheckPick"
-        })
-        #suggestInput($suggestParams)
-        {{/html}}
+        == $uneConfigPage.displayPrettyName('factCheckPick', false, false) ==
 
-        == Tags à la une ==
-        #set ($uneTags = $uneConfig.getValue('tags'))
-        {{html}}
-        #set ($discard = $xwiki.jsfx.use('uicomponents/suggest/suggestPropertyValues.js',
-          {'forceSkinAction': true, 'language': $xcontext.locale}))
-        #*
-        #set ($suggestParams = {
-          'class': 'suggest-propertyValues',
-          'placeholder': 'Tags à la une',
-          'multiple': 'multiple',
-          'data-className': 'XWiki.TagClass',
-          'data-propertyName': 'tags',
-          'name': 'tags',
-          'value': $uneTags
-        })
-        *#
-        ## The suggestions work best with the options below than with the TagClass
-        #set ($suggestParams = {
-          'class': 'suggest-propertyValues',
-          'placeholder': 'Tags à la une',
-          'data-className': 'XWiki.DeFacto.Une.UneConfigClass',
-          'data-propertyName': 'tags',
-          'multiple': 'multiple',
-          'name': 'tags',
-          'value': $uneTags
-        })
-        #suggestInput($suggestParams)
-        {{/html}}
+        $uneConfigPage.display('factCheckPick', 'edit')
 
-        (% class="btn btn-primary defacto-une-save-action" %)Enregistrer(%%)
+        == $uneConfigPage.displayPrettyName('factCheckPickHeading', false, false) ==
+
+        $uneConfigPage.display('factCheckPickHeading', 'edit')
+
+        == $uneConfigPage.displayPrettyName('tags', false, false) ==
+
+        $uneConfigPage.display('tags', 'edit')
+
+
+        (% class="btn btn-primary defacto-une-save-action" %)$services.localization.render('save')(%%)
       )))
       (% role="tabpanel" class="tab-pane defacto-administration-medias" id="medias" %)(((
         {{display reference="Medias.WebHome"/}}
@@ -184,31 +168,33 @@
     <property>
       <code>require(['jquery'], function($) {
   $('.defacto-une-save-action').on('click', function(event) {
-    var uneConfigPage = new XWiki.Document('UneConfig', 'XWiki.DeFacto.Une');
-    var restUrl = uneConfigPage.getRestURL();
+    const uneConfigPage = new XWiki.Document('UneConfig', 'XWiki.DeFacto.Une');
+    let restUrl = uneConfigPage.getRestURL();
     restUrl += '/objects/XWiki.DeFacto.Une.UneConfigClass/0?media=json';
-    var selectedPageElement = $('select[name="factCheckPick"] option:selected');
-    var factCheckPick = $(selectedPageElement).attr('value');
-    var selectedTagsElements = $('select[name="tags"] option:selected');
-    var selectedTags = [];
+    const selectedPageElement = $('select[name="XWiki.DeFacto.Une.UneConfigClass_0_factCheckPick"] option:selected');
+    const factCheckPick = $(selectedPageElement).attr('value');
+    const selectedTagsElements = $('select[name="XWiki.DeFacto.Une.UneConfigClass_0_tags"] option:selected');
+    let selectedTags = [];
     selectedTagsElements.each(function(index, item) {
       selectedTags.push($(item).attr('value'));
-    })
-    var params = {
+    });
+
+    const factCheckPickHeading = $('input[name="XWiki.DeFacto.Une.UneConfigClass_0_factCheckPickHeading"]').val();
+
+    const params = {
       'property#tags': selectedTags.join('|'),
-      'property#factCheckPick': factCheckPick
+      'property#factCheckPick': factCheckPick,
+      'property#factCheckPickHeading': factCheckPickHeading
     };
-    var notification = new XWiki.widgets.Notification('Enregistrement en cours...', 'inprogress');
+    const notification = new XWiki.widgets.Notification('Enregistrement en cours...', 'inprogress');
     $.ajax({
       url: restUrl,
       type: 'PUT',
       data: params
     }).done(function (data) {
-      console.log('done: ' + data);
       notification.hide();
       new XWiki.widgets.Notification('Enregistrement effecuté', 'done');
     }).fail(function (error) {
-      console.log('error: ' + error);
       notification.hide();
       new XWiki.widgets.Notification('Une erreur s\'est produite', 'error');
     });

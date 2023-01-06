@@ -22,10 +22,12 @@
 #if ($xcontext.action == 'view')
   #set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Une.HomeSheet'))
   #set ($discard = $xwiki.jsx.use('XWiki.DeFacto.Une.HomeSheet'))
+  #set ($uneConfigPage = $xwiki.getDocument('XWiki.DeFacto.Une.UneConfig'))
+  #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
 
 (% class="defacto-home" %)(((
   (% class="defacto-home-block defacto-home-about" %)(((
-     = Qu'est-ce que DE FACTO{{html clean="false"}}&amp;nbsp;{{/html}}? =
+     = $services.localization.render('defacto.une.whatIsDeFacto') =
      (% class="box defacto-box" %)(((
        #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
          {{html clean="false"}}
@@ -41,14 +43,14 @@
   )))
 
   (% class="defacto-home-block defacto-home-explorer" %)(((
-    = Agenda =
+    = $services.localization.render('defacto.une.agenda') =
 
     {{carousel reference="Actus.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
     (% class="defacto-section-link" %)(((
       [[+ Toutes les actus&gt;&gt;Actus.WebHome]]
     )))
 
-    = Boîte à outils =
+    = $services.localization.render('defacto.une.toolbox') =
 
     {{carousel reference="Explorer.Carousel.WebHome" maxTextLength="150" mode="vertical"/}}
 
@@ -56,7 +58,7 @@
       [[+ Tous les tutos et outils&gt;&gt;Explorer.WebHome]]
     )))
 
-    = Analyses =
+    = $services.localization.render('defacto.une.analysis') =
 
     {{carousel reference="Comprendre.Carousel.WebHome" maxTextLength="400" mode="vertical"/}}
 
@@ -64,12 +66,14 @@
       [[+ Toutes les analyses&gt;&gt;Comprendre.WebHome]]
     )))
   )))
-  #set ($uneConfigPage = $xwiki.getDocument('XWiki.DeFacto.Une.UneConfig'))
-  #set ($uneConfig = $uneConfigPage.getObject('XWiki.DeFacto.Une.UneConfigClass'))
   #set ($factCheckPick = $uneConfig.getValue('factCheckPick'))
   #if ("$!factCheckPick" != '')
+  #set ($factCheckPickHeading = $uneConfig.getValue('factCheckPickHeading'))
+  #if ("$!factCheckPickHeading" == '')
+    #set ($factCheckPickHeading = $services.localization.render('defacto.une.factCheckPickHeading'))
+  #end
   (% class="defacto-home-block defacto-home-factcheck-pick" %)(((
-    = Choix de la rédaction =
+    = $factCheckPickHeading =
     {{pageBox reference="$factCheckPick" pick="true"/}}
     (% class='defacto-factcheck-pick' data-id='$escapetool.xml($factCheckPick)' %)((()))
   )))
@@ -106,7 +110,7 @@
 
   (% class="defacto-home-block defacto-home-fact-checks" %)(((
 
-    = Fact-checks =
+    = $services.localization.render('defacto.une.factChecks') =
 
     #set ($uneConfigTags = $uneConfig.getValue('tags'))
     {{html clean="false"}}

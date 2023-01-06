@@ -1,0 +1,72 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Une.UneTranslations" locale="">
+  <web>XWiki.DeFacto.Une</web>
+  <name>UneTranslations</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>Main.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>UneTranslations</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>plain/1.0</syntaxId>
+  <hidden>true</hidden>
+  <content>XWiki.DeFacto.Une.UneConfigClass_factCheckPick=Fact check du jour
+XWiki.DeFacto.Une.UneConfigClass_factCheckPickHeading=Intitulé de la section présentant le fact check du jour
+XWiki.DeFacto.Une.UneConfigClass_tags=Tags à la une
+
+defacto.une.admin.tabs.une=À la une
+defacto.une.admin.tabs.medias=Médias
+defacto.une.admin.tabs.factChecks=Fact checks
+defacto.une.admin.tabs.help=Aide
+
+defacto.une.factCheckPickHeading=Choix de la rédaction
+defacto.une.whatIsDeFacto=Qu'est-ce que DE FACTO ?
+defacto.une.toolbox=Boîte à outils
+defacto.une.agenda=Agenda
+defacto.une.analysis=Analyses
+defacto.une.factChecks=Fact-checks
+</content>
+  <object>
+    <name>XWiki.DeFacto.Une.UneTranslations</name>
+    <number>0</number>
+    <className>XWiki.TranslationDocumentClass</className>
+    <guid>f58131ca-0992-4e25-a257-91f89c4b7d28</guid>
+    <class>
+      <name>XWiki.TranslationDocumentClass</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <scope>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>scope</name>
+        <number>1</number>
+        <prettyName>Scope</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>GLOBAL|WIKI|USER|ON_DEMAND</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </scope>
+    </class>
+    <property>
+      <scope>WIKI</scope>
+    </property>
+  </object>
+</xwikidoc>

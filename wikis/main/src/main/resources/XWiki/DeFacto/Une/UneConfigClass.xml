@@ -41,7 +41,7 @@
       <name>factCheckPick</name>
       <number>1</number>
       <picker>1</picker>
-      <prettyName>factCheckPick</prettyName>
+      <prettyName>Fact-Check Pick</prettyName>
       <relationalStorage>1</relationalStorage>
       <separator> </separator>
       <separators/>
@@ -54,6 +54,20 @@
       <valueField/>
       <classType>com.xpn.xwiki.objects.classes.DBListClass</classType>
     </factCheckPick>
+    <factCheckPickHeading>
+      <customDisplay/>
+      <disabled>0</disabled>
+      <hint/>
+      <name>factCheckPickHeading</name>
+      <number>2</number>
+      <picker>0</picker>
+      <prettyName>Fact-Check Pick Heading</prettyName>
+      <size>30</size>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+    </factCheckPickHeading>
     <tags>
       <cache>0</cache>
       <classname/>
@@ -67,9 +81,9 @@
       <largeStorage>0</largeStorage>
       <multiSelect>1</multiSelect>
       <name>tags</name>
-      <number>2</number>
+      <number>3</number>
       <picker>1</picker>
-      <prettyName>tags</prettyName>
+      <prettyName>Tags</prettyName>
       <relationalStorage>1</relationalStorage>
       <separator> </separator>
       <separators/>
