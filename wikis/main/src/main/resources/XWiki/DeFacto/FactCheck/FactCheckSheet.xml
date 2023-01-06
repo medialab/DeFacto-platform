@@ -192,7 +192,7 @@
     #set ($udate = $object.getValue('updateDate'))
     #if ("$!udate" != '')
       (% class="defacto-fact-check-update-date" %)(((
-        – Mis à jour le $dateFormatter.print($pdate)
+        – Mis à jour le $dateFormatter.print($udate)
       )))
     #end
   )))
@@ -631,7 +631,8 @@
   .defacto-fact-check-date {
     text-align: right;
     font-style: italic;
-    color: #666;
+    color: #525e66;
+    font-size: 0.9em;
   }
 
   .defacto-fact-check-update-date {
