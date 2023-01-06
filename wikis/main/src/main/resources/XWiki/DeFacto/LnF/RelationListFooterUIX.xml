@@ -277,7 +277,7 @@ $object.content
     </property>
     <property>
       <content>{{velocity}}
-#set ($spaces = ['Medias', 'Comprendre', 'Explorer'])
+#set ($spaces = ['Actus', 'Medias', 'Comprendre', 'Explorer'])
 #set ($showUix = false)
 #foreach ($space in $spaces)
   #if ($doc.fullName.startsWith($space) &amp;&amp; $doc.fullName != "${space}.WebHome" &amp;&amp; $doc.getObject('XWiki.DeFacto.Media.MediaClass') == $NULL)
