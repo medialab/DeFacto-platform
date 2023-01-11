@@ -23,6 +23,9 @@
 #set ($discard = $xwiki.jsx.use('CookieConsent.Script'))
 #set ($discard = $xwiki.ssx.use('CookieConsent.WebHome'))
 #set ($object = $doc.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
+#if ($object == $NULL)
+  #stop()
+#end
 #set ($claimReview = $doc.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
 #set ($discard = $doc.use($object))
 #set ($editing = $xcontext.action == 'edit')
@@ -82,6 +85,12 @@
     $doc.display('headerAudioDescription')
 
     = $doc.displayPrettyName('headerVideo', false, false) =
+
+    #set ($property = $object.getxWikiClass().get('headerVideo'))
+    (% class="xHint" %)(((
+      $services.localization.render($property.hint)
+    )))
+
     $doc.display('headerVideo')
 
     = $doc.displayPrettyName('chapeau', false, false) =
@@ -242,9 +251,11 @@
   #set ($headerVideo = $object.getValue('headerVideo'))
   #set ($headerImage = $object.getValue('headerImage'))
   #if ("$!headerVideo" != '')
-    {{html clean="false"}}
-      &lt;iframe allowfullscreen="true" frameborder="0" scrolling="no" width="100%" height="500px" src="$headerVideo"&gt;&lt;/iframe&gt;
-    {{/html}}
+    (% class="defacto-fact-check-header-video" %)(((
+      {{html clean="false"}}
+      $headerVideo
+      {{/html}}
+    )))
   #elseif ("$!headerImage" != '')
     (% class="defacto-fact-check-header-image" %)(((
       [[image:$headerImage||queryString="width=1000"]]
@@ -652,6 +663,10 @@
     }
   }
 
+  .defacto-fact-check-header-video {
+    margin-bottom: 1em;
+  }
+
   .defacto-fact-check-chapeau {
     font-weight: 400;
     font-size: 1.4em;
@@ -820,7 +835,7 @@ figure {
       }
       .defacto-fact-check-header-media-legend {
         margin: auto;
-        max-width: 70%;
+        max-width: 900px;
       }
     }
 

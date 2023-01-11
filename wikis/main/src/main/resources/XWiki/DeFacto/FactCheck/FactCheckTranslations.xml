@@ -30,6 +30,7 @@ XWiki.DeFacto.FactCheck.FactCheckClass_headerImageCredits=Crédits de l'image d'
 XWiki.DeFacto.FactCheck.FactCheckClass_headerAudio=Audio d'entête
 XWiki.DeFacto.FactCheck.FactCheckClass_headerAudioDescription=Description de l'audio d'entête
 XWiki.DeFacto.FactCheck.FactCheckClass_headerVideo=Vidéo d'entête
+XWiki.DeFacto.FactCheck.FactCheckClass_headerVideo_hint=Saisir le code HTML d'intégration (iframe)
 XWiki.DeFacto.FactCheck.FactCheckClass_chapeau=Premier paragraphe
 XWiki.DeFacto.FactCheck.FactCheckClass_content=Contenu
 XWiki.DeFacto.FactCheck.FactCheckClass_contentHtml=Contenu HTML
