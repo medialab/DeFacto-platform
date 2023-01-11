@@ -145,7 +145,7 @@
 {{html clean="false"}}
   #template('drawer_macros.vm')
   #if ($services.security.authorization.hasAccess('view', 'Administration.WebHome'))
-    #drawerItem($xwiki.getURL('Administration.WebHome'), 'file', 'Back office', 'defacto-drawer-item-contribute')
+    #drawerItem($xwiki.getURL('Administration.WebHome'), 'cog', 'Back office', 'defacto-drawer-item-backoffice')
   #else
     #set ($hql = "select doc.fullName from XWikiDocument as doc, BaseObject as obj where obj.name = doc.fullName and obj.className = :class and doc.fullName not like '%Template%' order by doc.title")
     #set ($query = $services.query.hql($hql))
@@ -153,7 +153,7 @@
     #set ($entries = $query.execute())
     #foreach ($entry in $entries)
       #if ($services.security.authorization.hasAccess('edit', $entry))
-        #drawerItem($xwiki.getURL($entry), 'file', 'Back office', 'defacto-drawer-item-contribute')
+        #drawerItem($xwiki.getURL($entry), 'file', 'Back office', 'defacto-drawer-item-backoffice')
       #end
     #end
   #end
@@ -164,7 +164,7 @@
       <extensionPointId>org.xwiki.plaftorm.drawer</extensionPointId>
     </property>
     <property>
-      <name>    org.xwiki.defacto.plaftorm.drawer.contribute</name>
+      <name>org.xwiki.defacto.plaftorm.drawer.backoffice</name>
     </property>
     <property>
       <parameters>order=100</parameters>
