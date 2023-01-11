@@ -153,7 +153,7 @@
     #set ($entries = $query.execute())
     #foreach ($entry in $entries)
       #if ($services.security.authorization.hasAccess('edit', $entry))
-        #drawerItem($xwiki.getURL($entry), 'file', 'Back office', 'defacto-drawer-item-backoffice')
+        #drawerItem($xwiki.getURL($entry), 'cog', 'Back office', 'defacto-drawer-item-backoffice')
       #end
     #end
   #end
