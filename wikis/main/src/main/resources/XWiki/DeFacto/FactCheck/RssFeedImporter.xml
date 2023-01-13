@@ -202,7 +202,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
           def foreignMarkup = it.getForeignMarkup();
 
           def contents = it.contents;
-          def content = null;
+          def content = "";
           if (contents != null &amp;&amp; contents.size() &gt; 0) {
             content = contents.get(0).value;
           }
