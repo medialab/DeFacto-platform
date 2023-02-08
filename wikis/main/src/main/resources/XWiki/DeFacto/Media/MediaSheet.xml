@@ -54,6 +54,12 @@
         #end
         )))
       )))
+      {{html clean="false" wiki="false"}}
+      &lt;dl&gt;
+        &lt;dt&gt;Copyright:&lt;/dt&gt;
+        &lt;dd&gt;$object.getValue('copyright')&lt;/dd&gt;
+      &lt;/dl&gt;
+      {{/html}}
     )))
     #if ($services.security.authorization.hasAccess('edit', $doc.fullName))
     (% class="col-sm-4" %)(((
@@ -98,7 +104,7 @@
     'className': 'XWiki.DeFacto.FactCheck.FactCheckClass',
     'translationPrefix': 'factcheck.livetable.',
     'tagCloud': true,
-    'rowCount': 100,
+    'rowCount': 10,
     'maxPages': 10,
     'selectedColumn': 'doc.date',
     'defaultOrder': 'desc',
