@@ -175,7 +175,7 @@
             &lt;li&gt;&lt;a href="$xwiki.getURL('Newsletter.WebHome')"&gt;Newsletter&lt;/a&gt;&lt;/li&gt;
             &lt;li&gt;RSS : 
               &lt;a href="$xwiki.getURL('XWiki.DeFacto.Rss', 'get')"&gt;Site&lt;/a&gt; - 
-              &lt;a href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Rss', 'get')"&gt;Fact-checks&lt;/a&gt;
+              &lt;a href="$xwiki.getURL('XWiki.DeFacto.FactCheck.Rss', 'get')"&gt;Fact-checks&lt;/a&gt; - 
               &lt;a href="$xwiki.getURL('XWiki.DeFacto.Explorer.Rss', 'get')"&gt;Ressource pédagogiques&lt;/a&gt;
             &lt;/li&gt;
           &lt;/ul&gt;
