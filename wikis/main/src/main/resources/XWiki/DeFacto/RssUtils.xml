@@ -78,6 +78,15 @@ class RssUtils {
               enclosures.add(enclosure);
               entry.setEnclosures(enclosures);
             }
+            def category = obj.getValue('categories');
+            if (category != null &amp;&amp; category != '') {
+              def entryCategory = new SyndCategoryImpl();
+              entryCategory.setName(page.display('categories', obj));
+              //entryCategory.setLabel(category);
+              def categories = new ArrayList&lt;&gt;();
+              categories.add(entryCategory);
+              entry.setCategories(categories);
+            }
           } else {
             entryDescription.setType("text/html");
             def content = page.content;
