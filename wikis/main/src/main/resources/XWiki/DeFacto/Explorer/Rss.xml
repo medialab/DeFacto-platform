@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Explorer.Rss" locale="">
+  <web>XWiki.DeFacto.Explorer</web>
+  <name>Rss</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>XWiki.DeFacto.Explorer.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>{{include reference="XWiki.DeFacto.RssUtils"/}}
+
+{{groovy}}
+def hql = "select doc.fullName, doc.title from XWikiDocument as doc where doc.fullName like :location and doc.hidden = false order by doc.creationDate desc";
+def query = services.query.hql(hql);
+query.setLimit(20)
+query.bindValue('location', 'Explorer.%')
+def results = query.execute();
+
+def utils = new RssUtils();
+def feed = utils.createFeed(results, services, xwiki, true, xcontext);
+utils.printFeed(feed, out, xcontext, response)
+{{/groovy}}</content>
+</xwikidoc>

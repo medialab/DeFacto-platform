@@ -28,7 +28,7 @@ class RssUtils {
   }
 
   /** Method to create a generic feed. Used both by XWiki.DeFacto.Rss and and XWiki.DeFacto.FactCheck.Rss */
-  SyndFeed createFeed(pageList, services, xwiki, includeDescription) {
+  SyndFeed createFeed(pageList, services, xwiki, includeDescription, xcontext) {
     def SyndFeed feed = new SyndFeedImpl();
     feed.setFeedType("rss_2.0");
     feed.setTitle('DE FACTO');
@@ -51,12 +51,41 @@ class RssUtils {
           // Add the description to the entry
           def SyndContent entryDescription = new SyndContentImpl();
           // set published date, language, enclosure etc.
-          entryDescription.setType("text/html");
-          def content = page.content;
-          def xdom = services.rendering.parse(content, "xwiki/2.1");
-          def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
-          entryDescription.setValue(renderedContent);
-          entry.setDescription(entryDescription);
+          def obj = page.getObject('XWiki.DeFacto.Resource.ResourceClass');
+          if (obj != null) {
+            def abstractString = obj.getValue('abstract');
+            entryDescription.setValue(abstractString);
+            entry.setDescription(entryDescription);
+            def contents = new java.util.ArrayList();
+            def content = new SyndContentImpl();
+            content.setValue(page.displayDocument());
+            contents.add(content);
+            entry.setContents(contents);
+            def headerImage = obj.getValue('coverImage');
+            if (headerImage != null &amp;&amp; headerImage != '') {
+              def attachment = page.getAttachment(headerImage);
+              def mimeType = attachment.getMimeType();
+              def size = attachment.getLongSize();
+              def uri = entry.getUri();
+              def headerImageUrl = xwiki.getAttachmentURL(uri, headerImage);
+              def spaces = services.model.serialize(page.getDocumentReference().getLastSpaceReference(), 'compactwiki')
+              def url = xcontext.getURLFactory().createAttachmentURL(headerImage, spaces, 'WebHome', "download", "", xcontext.context)
+              def enclosures = new ArrayList();
+              def enclosure = new SyndEnclosureImpl();
+              enclosure.setUrl(url.toString());
+              enclosure.setType(mimeType);
+              enclosure.setLength(size);
+              enclosures.add(enclosure);
+              entry.setEnclosures(enclosures);
+            }
+          } else {
+            entryDescription.setType("text/html");
+            def content = page.content;
+            def xdom = services.rendering.parse(content, "xwiki/2.1");
+            def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
+            entryDescription.setValue(renderedContent);
+            entry.setDescription(entryDescription);
+          }
         }
 
         entry.setPublishedDate(page.getCreationDate());
