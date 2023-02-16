@@ -35,6 +35,11 @@ class RssUtils {
     feed.setLink('https://defacto-observatoire.fr/');
     feed.setDescription("DE FACTO – Des clés pour mieux s'informer");
     feed.setUri('https://defacto-observatoire.fr/')
+    def image = new SyndImageImpl()
+    image.setLink('https://defacto-observatoire.fr/')
+    image.setUrl('https://defacto-observatoire.fr/download/XWiki/DeFacto/LnF/Theme/logo.png')
+    image.setTitle("DE FACTO - Des clés pour mieux s'informer")
+    feed.setImage(image)
     def List&lt;SyndEntry&gt; entries = new ArrayList&lt;&gt;();
     pageList.each{ result -&gt;
       if (services.security.authorization.hasAccess(Right.VIEW, services.model.resolveDocument(result[0]))) {
