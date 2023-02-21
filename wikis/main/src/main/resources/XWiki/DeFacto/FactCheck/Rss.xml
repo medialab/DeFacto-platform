@@ -40,7 +40,7 @@ def results = query.execute();
 def utils = new RssUtils();
 // Create generic feed without adding the description since it will be added 
 // from the fact check chapeau rather than the page content, used for the "content" field here
-def feed = utils.createFeed(results, services, xwiki, false);
+def feed = utils.createFeed(results, services, xwiki, false, xcontext);
 def entries = feed.getEntries()
 entries.each{ entry -&gt;
   def uri = entry.getUri();
