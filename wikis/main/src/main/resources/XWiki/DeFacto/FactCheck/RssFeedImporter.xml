@@ -102,7 +102,9 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
     def password = xwiki.getXWiki().Param("defacto.media.${mediaShortName}.feed.password", null)
     def httpcon = connect(mediaFeed, username, password)
     def input = new SyndFeedInput();
-    def feed = input.build(new XmlReader(httpcon));
+    def feedStr = IOUtils.toString(new XmlReader(httpcon));
+    feedStr = feedStr.replaceAll(' UTC&lt;', ' +0100&lt;')
+    def feed = input.build(new StringReader(feedStr));
 
     def newEntriesCount = 0
     feed.entries.eachWithIndex{ it, index -&gt;
