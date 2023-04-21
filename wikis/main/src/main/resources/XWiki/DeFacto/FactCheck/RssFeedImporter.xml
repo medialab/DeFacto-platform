@@ -103,13 +103,14 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
     def httpcon = connect(mediaFeed, username, password)
     def input = new SyndFeedInput();
     def feedStr = IOUtils.toString(new XmlReader(httpcon));
-    feedStr = feedStr.replaceAll(' UTC&lt;', ' +0100&lt;')
-    def feed = input.build(new StringReader(feedStr));
+	feedStr = feedStr.replaceAll(' UTC&lt;', ' +0100&lt;')
+	def feed = input.build(new StringReader(feedStr));
+    //def feed = input.build(new XmlReader(httpcon));
 
     def newEntriesCount = 0
     feed.entries.eachWithIndex{ it, index -&gt;
       // Exclude a specific 20 Minutes article with too long enclosure name until #175 gets fixed
-      if (index &lt; 30 &amp;&amp; it.title.trim().toLowerCase().indexOf('parlementaire de martine wonner') &lt; 0) {
+      if (index &lt; 30) {
         def title = it.title.trim()
         def author = it.author
         def publishedDate = it.publishedDate
@@ -144,6 +145,8 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
         }
 
         def pageId = services.modelvalidation.transformName(title.trim())
+        if (pageId.length() &gt; 200)
+          pageId = pageId.substring(0, 200)
         def mediaSpaceReference = mediaReference.getLastSpaceReference()
         def defaultName = services.model.getEntityReference(org.xwiki.model.EntityType.DOCUMENT, 'default').getName()
         def feedSpaceReference = services.model.createSpaceReference(FACTCHECKS_SPACE, mediaSpaceReference)
@@ -165,7 +168,7 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                   def idx = enclosure.lastIndexOf('/');
                   fileName = enclosure.substring(idx+1);
                   if (fileName.length() &gt; 200) {
-                    fileName = fileName.substring(200, fileName.length());
+                    fileName = fileName.substring(0, 200);
                   }
                   page.addAttachment(fileName, bais);
                 } else {
@@ -382,6 +385,9 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                     def bais = new ByteArrayInputStream(bytes);
                     def idx = imageReference.lastIndexOf('/');
                     def fileName = imageReference.substring(idx+1);
+                    if (fileName.length() &gt; 200) {
+                      fileName = fileName.substring(0, 200);
+                    }
                     page.addAttachment(fileName, bais);
                     def children = block.getChildren();
                     for (Block child: children) {
@@ -428,6 +434,9 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                   def bais = new ByteArrayInputStream(bytes);
                   def idx = imageReference.lastIndexOf('/');
                   def fileName = imageReference.substring(idx+1);
+                  if (fileName.length() &gt; 200) {
+                    fileName = fileName.substring(0, 200);
+                  }
                   page.addAttachment(fileName, bais);
                   def ref = new ResourceReference(fileName, ResourceType.ATTACHMENT);
                   def newImageBlock = new ImageBlock(ref, false);
