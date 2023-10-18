@@ -52,6 +52,11 @@ class RssUtils {
         entry.setLink(page.getExternalURL());
         // Set the entry title
         entry.setTitle(page.displayTitle);
+        // Set entry language
+        def languageElement = new org.jdom2.Element("inLanguage", org.jdom2.Namespace.getNamespace("schema", "https://schema.org/"))
+        languageElement.addContent("fr");
+        entry.getForeignMarkup().add(languageElement);
+
         if (includeDescription == true) {
           // Add the description to the entry
           def SyndContent entryDescription = new SyndContentImpl();

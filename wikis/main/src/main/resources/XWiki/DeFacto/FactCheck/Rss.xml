@@ -50,6 +50,12 @@ entries.each{ entry -&gt;
   def pdate = object.getValue('pdate');
   entry.setPublishedDate(pdate);
 
+  def mediaValue = object.getValue('media');
+  def providerElement = new org.jdom2.Element("provider", org.jdom2.Namespace.getNamespace("schema", "https://schema.org/"))
+  def mediaPage = xwiki.getDocument(mediaValue);
+  providerElement.addContent(mediaPage.title);
+  entry.getForeignMarkup().add(providerElement);
+
   // Set enclosure
   def headerImage = object.getValue('headerImage');
   if (headerImage != '') {
