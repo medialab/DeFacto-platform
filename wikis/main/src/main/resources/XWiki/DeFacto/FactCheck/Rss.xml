@@ -33,7 +33,26 @@ if (media != null) {
  query = services.query.hql(hql);
 }
 
-query.setLimit(20)
+def limit = request.limit;
+def MAX = 20;
+if (limit == null) {
+  query.setLimit(MAX)
+} else {
+  def key = xwiki.getXWiki().Param('defacto.api.key')
+  def rkey = request.key
+  if (key != null &amp;&amp; key.equals(rkey)) {
+    try {
+      def limitInteger = Integer.parseInt(limit);
+      if (limitInteger &gt;= 0 &amp;&amp; limitInteger != -1) {
+        query.setLimit(limitInteger);
+      }
+    } catch (Exception e) {
+      query.setLimit(MAX);
+    }
+  } else {
+    query.setLimit(MAX);
+  }
+}
 query.bindValue('class', 'XWiki.DeFacto.FactCheck.FactCheckClass')
 def results = query.execute();
 
