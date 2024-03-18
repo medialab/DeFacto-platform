@@ -360,6 +360,8 @@ if (request.action == 'import' &amp;&amp; request.media != null &amp;&amp; servi
                 chapeau = chapeau.replaceAll('^=== ', '')
                 chapeau = chapeau.replaceAll(' ===$', '')
                 firstHeaderBlock.getParent().removeBlock(firstHeaderBlock);
+                chapeau = chapeau.replace('(% itemprop="leadparagraph" %)', '');
+                chapeau = chapeau.replaceAll('==', '').trim();
                 object.set('chapeau', chapeau.trim());
               }
             }

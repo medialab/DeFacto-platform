@@ -130,7 +130,7 @@ if (request.action == "run") {
     <name>XWiki.DeFacto.FactCheck.MetadataImporter</name>
     <number>0</number>
     <className>XWiki.XWikiRights</className>
-    <guid>3653e063-a8e1-418b-b21c-ac76a744d9f2</guid>
+    <guid>77a9a62d-9d72-4d2b-abe8-fa355bf97622</guid>
     <class>
       <name>XWiki.XWikiRights</name>
       <customClass/>
