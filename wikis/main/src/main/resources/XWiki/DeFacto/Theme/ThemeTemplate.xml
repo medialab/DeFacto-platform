@@ -45,8 +45,5 @@
         <classType>com.xpn.xwiki.objects.classes.ComputedFieldClass</classType>
       </title>
     </class>
-    <property>
-      <title/>
-    </property>
   </object>
 </xwikidoc>

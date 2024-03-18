@@ -775,6 +775,12 @@ require(['jquery', 'xwiki-events-bridge', 'bootstrap'], function($) {
       }
       .defacto-teaser-right {
         font-size: 1.2em;
+        &gt; p {
+          a {
+            background: #ffcd00;
+            padding: 0.2rem 0.5rem;
+          }
+        }
         a {
           color: #d1173e;
           font-weight: 500;

@@ -1,0 +1,116 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Stats.WebHome" locale="">
+  <web>XWiki.DeFacto.Stats</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>XWiki.DeFacto.WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>Statistiques de visite</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#set ($discard = $xwiki.ssx.use('XWiki.DeFacto.LnF.AboutSheet'))
+#set ($discard = $xwiki.jsx.use('XWiki.DeFacto.LnF.TabsJSX'))
+
+Période: 11 janvier 2022 - 27 février 2024
+
+{{html clean="false"}}
+  &lt;ul class="nav nav-tabs" role="tablist"&gt;
+    &lt;li role="presentation" class="active"&gt;&lt;a href="#tags" aria-controls="tags" role="tab" data-toggle="tab"&gt;Fact-checks par tags&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#fact-checks" aria-controls="fact-checks" role="tab" data-toggle="tab"&gt;Top fact-checks&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#media-literacy" aria-controls="media-literacy" role="tab" data-toggle="tab"&gt;Education aux médias&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+{{/html}}
+
+(% class="tab-content" %)
+(((
+(% class="tab-pane active" id="tags" role="tabpanel" %)
+(((
+#set ($page = $xwiki.getDocument('XWiki.DeFacto.Stats.Data.WebHome'))
+#set ($content = $page.getContent())
+#set ($data = $content.split('\n'))
+#set ($stats = {})
+#foreach ($line in $data)
+  #set ($line = $line.trim())
+  #set ($entries = $line.split('\s'))
+  #set ($name = $entries[0])
+  #set ($views = $entries[1])
+  #if ($name.startsWith('/Media'))
+    ##set ($reference = $name.replaceAll('/', '.'))
+    #set ($name = $name.substring(1))
+    #set ($idx = $name.lastIndexOf('/'))
+    #set ($name = $name.substring(0, $idx))
+    #set ($reference = $services.model.resolvePage($name))
+    #set ($article = $xwiki.getDocument($reference))
+    #set ($tags = $article.getObject('XWiki.TagClass'))
+    #set ($tags = $tags.getValue('tags'))
+    #if ("$!tags" != '')
+      #foreach ($tag in $tags)
+        #set ($tagViews = $stats.get($tag))
+        #if ($tagViews == $NULL)
+          #set ($tagViews = 0)
+        #else
+        #set ($tagViews = $tagViews.views)
+        #end
+        #set ($views = $mathtool.toNumber($views))
+        #set ($tagViews = $mathtool.add($tagViews, $views))
+        #set ($discard = $stats.put($tag, {'tag': $tag, 'views': $tagViews}))
+      #end
+    #end
+  #end
+#end
+|=Tag|=Pages vues uniques
+#foreach ($stat in $collectiontool.sort($stats.values(), 'views:desc'))
+  |$stat.tag|$stat.views
+#end
+)))
+(% class="tab-pane" id="fact-checks" role="tabpanel" %)(((
+  |=Fact-check|=Pages vues uniques
+  #foreach ($line in $data)
+    #set ($line = $line.trim())
+    #set ($entries = $line.split('\s'))
+    #set ($name = $entries[0])
+    #set ($views = $entries[1])
+    #if ($name.startsWith('/Media'))
+      #set ($name = $name.substring(1))
+      #set ($idx = $name.lastIndexOf('/'))
+      #set ($name = $name.substring(0, $idx))
+      #set ($reference = $services.model.resolvePage($name))
+      #if ($xwiki.exists($reference) &amp;&amp; $views != '-')
+        #set ($article = $xwiki.getDocument($reference))
+        |[[$article.title&gt;&gt;doc:$article.fullName]]|$views
+      #end
+    #end
+  #end
+)))
+(% class="tab-pane" id="media-literacy" role="tabpanel" %)(((
+|=Page|=Pages vues uniques
+  #foreach ($line in $data)
+    #set ($line = $line.trim())
+    #set ($entries = $line.split('\s'))
+    #set ($name = $entries[0])
+    #set ($views = $entries[1])
+    #if ($name.startsWith('/Explorer') &amp;&amp; $name.indexOf('viewer') &lt; 0)
+      #set ($name = $name.substring(1))
+      #set ($idx = $name.lastIndexOf('/'))
+      #if ($idx &gt; 0 &amp;&amp; $idx == $mathtool.sub($name.length(), 1))
+        #set ($name = $name.substring(0, $idx))
+      #end
+      #set ($reference = $services.model.resolvePage($name))
+      #if ($xwiki.exists($reference) &amp;&amp; $views != '-')
+        #set ($article = $xwiki.getDocument($reference))
+        |[[$article.title&gt;&gt;doc:$article.fullName]]|$views
+      #end
+    #end
+  #end
+)))
+{{/velocity}}</content>
+</xwikidoc>

@@ -1,0 +1,233 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.Comprendre.HomeSheet" locale="">
+  <web>XWiki.DeFacto.Comprendre</web>
+  <name>HomeSheet</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{velocity}}
+#if ($doc.name != 'HomeSheet')
+  ## Set the $type variable which is used internally by page AppWithinMinutes/Content
+  #set ($type = "$xcontext.action")
+  #if ($type == 'view')
+  (% class="defacto-section-header" %)(((
+    {{include page="AppWithinMinutes/Content"/}}
+  )))
+  #elseif ($type == 'edit')
+    {{include page="AppWithinMinutes/Content"/}}
+  #end
+#end
+{{/velocity}}
+
+{{carousel reference="Comprendre.Carousel.WebHome" maxTextLength="800"/}}
+
+{{include reference="XWiki.DeFacto.Macros"/}}
+
+{{velocity}}
+#set ($discard = $xwiki.ssx.use('XWiki.DeFacto.Comprendre.HomeSheet'))
+#set ($discard = $xwiki.jsx.use('XWiki.DeFacto.LnF.TabsJSX'))
+
+{{html clean="false"}}
+  &lt;ul class="defacto-comprendre-main nav nav-tabs" role="tablist"&gt;
+    &lt;li role="presentation" class="active"&gt;&lt;a href="#analyses" aria-controls="analyses" role="tab"&gt;Analyses&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#etudes" aria-controls="etudes" role="tab"&gt;Études&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#outils" aria-controls="outils" role="tab"&gt;Outils&lt;/a&gt;&lt;/li&gt;
+    &lt;li role="presentation"&gt;&lt;a href="#actualites" aria-controls="actualites" role="tab"&gt;Actualités&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+{{/html}}
+
+(% class="tab-content" %)(((
+  (% role="tabpanel" class="tab-pane active" id="analyses" %)(((
+    #getPublications('1', $publications)
+    #displayPublicationList($publications)
+  )))
+  (% role="tabpanel" class="tab-pane" id="etudes" %)(((
+    #getPublications('2', $publications)
+    #displayPublicationList($publications)
+  )))
+  (% role="tabpanel" class="tab-pane" id="outils" %)(((
+    #getSoftware('Comprendre', $software)
+    #displaySoftwareList($software)
+  )))
+  (% role="tabpanel" class="tab-pane" id="actualites" %)(((
+    #getNews('Comprendre', $news)
+    #displayNewsList($news)
+  )))
+)))
+{{/velocity}}
+
+</content>
+  <object>
+    <name>XWiki.DeFacto.Comprendre.HomeSheet</name>
+    <number>0</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>9a30a341-84b9-464c-8175-dc1f5555b7aa</guid>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <defaultValue>long</defaultValue>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <contenttype>PureText</contenttype>
+        <disabled>0</disabled>
+        <editor>PureText</editor>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <contentType>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>contentType</name>
+        <number>6</number>
+        <prettyName>Content Type</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>CSS|LESS</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </contentType>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <freeText>forbidden</freeText>
+        <largeStorage>0</largeStorage>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators>|, </separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage|onDemand|always</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>.carousel {
+  a {
+    color: white;
+  }
+}
+
+.box.defacto-box {
+  border-color: @red;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid @red;
+  li {
+    &amp;.active {
+      &gt; a, &gt; a:hover, &gt; a:focus {
+        background: white;
+        border: 1px solid @red;
+        border-bottom-color: transparent;
+        color: inherit;
+      }
+    }
+    &gt; a {
+      border: 1px solid @red;
+      background-color: @red;
+      color: black;
+    }
+    &gt; a:hover, &gt; a:focus {
+      background: white;
+      border: 1px solid @red;
+      border-bottom-color: transparent;
+    }
+  }
+}
+
+.defacto-comprendre-main {
+  margin-top: 1em;
+}
+
+.tab-content {
+  margin-top: 1em;
+}
+
+</code>
+    </property>
+    <property>
+      <contentType>LESS</contentType>
+    </property>
+    <property>
+      <name/>
+    </property>
+    <property>
+      <parse>0</parse>
+    </property>
+    <property>
+      <use>onDemand</use>
+    </property>
+  </object>
+</xwikidoc>

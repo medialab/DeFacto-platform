@@ -35,7 +35,7 @@
         <contenttype>---</contenttype>
         <customDisplay/>
         <disabled>0</disabled>
-        <editor>---</editor>
+        <editor>Text</editor>
         <hint/>
         <name>abstract</name>
         <number>3</number>
@@ -120,6 +120,20 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
       </displayCoverImageInContent>
+      <link>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>link</name>
+        <number>10</number>
+        <picker>1</picker>
+        <prettyName>link</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </link>
       <schedule>
         <customDisplay/>
         <disabled>0</disabled>
@@ -177,9 +191,6 @@
       <abstract/>
     </property>
     <property>
-      <content/>
-    </property>
-    <property>
       <coverImage/>
     </property>
     <property>
@@ -196,9 +207,6 @@
     </property>
     <property>
       <schedule/>
-    </property>
-    <property>
-      <title/>
     </property>
     <property>
       <type>actu</type>

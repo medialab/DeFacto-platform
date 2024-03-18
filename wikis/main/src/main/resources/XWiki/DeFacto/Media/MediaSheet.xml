@@ -93,6 +93,7 @@
     'published': {},
     'media': {'type': 'hidden'},
     'doc.date': {'filterable': true},
+    'doc.creationDate': {'filterable': true},
     'doc.author': {'link': 'author'},
     '_actions': {'sortable':false, 'filterable':false, 'html':true, 'actions': ['edit','delete']}
   })
@@ -106,12 +107,12 @@
     'tagCloud': true,
     'rowCount': 10,
     'maxPages': 10,
-    'selectedColumn': 'doc.date',
+    'selectedColumn': 'doc.creationDate',
     'defaultOrder': 'desc',
     'queryFilters': '',
     'extraParams': "&amp;location=$escapetool.url($location)&amp;media=$escapetool.url($services.model.serialize($doc.documentReference, 'compactwiki'))"
   })
-  #set ($columns = ['doc.title', 'authors', 'themes', 'reviewRatingAlternateName', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
+  #set ($columns = ['doc.title', 'authors', 'themes', 'reviewRatingAlternateName', 'pdate', 'published', 'media', 'doc.creationDate', 'doc.date','doc.author', '_actions'])
   #if ($isGuest)
     #set ($discard = $options.remove('queryFilters'))
     #set ($discard = $columns.remove('published'))

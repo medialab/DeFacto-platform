@@ -100,6 +100,35 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.ComputedFieldClass</classType>
       </content>
+      <coverImage>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <hint/>
+        <name>coverImage</name>
+        <number>12</number>
+        <picker>1</picker>
+        <prettyName>coverImage</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </coverImage>
+      <displayCoverImageInContent>
+        <customDisplay/>
+        <defaultValue/>
+        <disabled>0</disabled>
+        <displayFormType>radio</displayFormType>
+        <displayType/>
+        <hint/>
+        <name>displayCoverImageInContent</name>
+        <number>13</number>
+        <prettyName>displayCoverImageInContent</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </displayCoverImageInContent>
       <doi>
         <customDisplay/>
         <disabled>0</disabled>
@@ -236,7 +265,10 @@
       <category/>
     </property>
     <property>
-      <content/>
+      <coverImage/>
+    </property>
+    <property>
+      <displayCoverImageInContent/>
     </property>
     <property>
       <doi/>
