@@ -1,0 +1,67 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.Enrichment.EnrichmentScript" locale="">
+  <web>XWiki.DeFacto.FactCheck.Enrichment</web>
+  <name>EnrichmentScript</name>
+  <language/>
+  <defaultLanguage/>
+  <translation>0</translation>
+  <creator>xwiki:XWiki.Admin</creator>
+  <parent>WebHome</parent>
+  <author>xwiki:XWiki.Admin</author>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <version>1.1</version>
+  <title>EnrichmentScript</title>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>{{groovy}}
+import groovy.json.JsonOutput;
+import groovy.json.JsonSlurper;
+
+def page = xwiki.getDocument('XWiki.DeFacto.FactCheck.Enrichment.ScPo.WebHome');
+def attachment = page.getAttachment('2024-03-07_045829.json');
+def content = attachment.getContentAsString();
+
+if (request.action == "run") {
+  def jsonSlurper = new JsonSlurper();
+  def object = jsonSlurper.parseText(content);
+  object.eachWithIndex{ it, index -&gt;
+    def id = it.id;
+    if (index &gt;= 1000) {
+      def updateNeeded = false;
+      def pageReference = services.model.resolvePage(id);
+      def factCheckPage = xwiki.getDocument(pageReference);
+      // occasionnaly xwiki#getDocument returns null
+      if (factCheckPage != null) {
+        def claimReviewObj = factCheckPage.getObject('XWiki.DeFacto.Review.ClaimReviewClass')
+        def jsonClaimReviewsV1 = claimReviewObj.getValue('json');
+        def claimReviews = it.claimReviews;
+        def jsonClaimReviewsV2 = JsonOutput.prettyPrint(JsonOutput.toJson(claimReviews));
+        if (jsonClaimReviewsV2 != null &amp;&amp; jsonClaimReviewsV2 != jsonClaimReviewsV1) {
+          updateNeeded = true;
+          claimReviewObj.set('json', jsonClaimReviewsV2);
+        }
+        def factCheckObj = factCheckPage.getObject('XWiki.DeFacto.FactCheck.FactCheckClass')
+        def stats = it.interactionStatistic;
+        if (stats != null) {
+          def jsonStatsV1 = factCheckPage.getValue('interactionStatistic');
+          def jsonStatsV2 = JsonOutput.prettyPrint(JsonOutput.toJson(stats));
+          if (jsonStatsV2 != null &amp;&amp; jsonStatsV2 != jsonStatsV1) {
+            updateNeeded = true;
+            factCheckObj.set('interactionStatistic', jsonStatsV2);
+          }
+        }
+        if (updateNeeded) {
+          factCheckPage.save("Statistics enrichment", false);
+          out.println("|Updated|[[$factCheckPage.fullName]]")
+        } else {
+          out.println("|Not updated|[[$factCheckPage.fullName]]")
+        }
+      }
+    }
+  }
+}
+{{/groovy}}</content>
+</xwikidoc>

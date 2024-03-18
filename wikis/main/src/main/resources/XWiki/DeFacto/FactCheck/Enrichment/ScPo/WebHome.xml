@@ -1,0 +1,23 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<xwikidoc version="1.4" reference="XWiki.DeFacto.FactCheck.Enrichment.ScPo.WebHome" locale="">
+  <web>XWiki.DeFacto.FactCheck.Enrichment.ScPo</web>
+  <name>WebHome</name>
+  <language/>
+  <defaultLanguage>fr</defaultLanguage>
+  <translation>0</translation>
+  <creator>XWiki.Admin</creator>
+  <creationDate>1694705851000</creationDate>
+  <parent>Main.WebHome</parent>
+  <author>XWiki.Admin</author>
+  <contentAuthor>XWiki.Admin</contentAuthor>
+  <date>1710745880000</date>
+  <contentUpdateDate>1694706700000</contentUpdateDate>
+  <version>50.1</version>
+  <title>ScPo</title>
+  <comment>Fichier "2024-03-03_041022.json" supprimé</comment>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>false</hidden>
+  <content>&#xd;
+{{attachments/}}</content>
+</xwikidoc>
