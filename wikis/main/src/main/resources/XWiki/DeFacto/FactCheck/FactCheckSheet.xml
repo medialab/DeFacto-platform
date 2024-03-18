@@ -314,6 +314,38 @@
     $doc.getContent()
   )))
 
+  #set ($claimReview = $doc.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
+  #set ($claimReviewJson = $claimReview.getValue('json'))
+  #if ("$!claimReviewJson" != '')
+    #set ($claimReviews = $jsontool.fromString($claimReviewJson))
+    #if ($claimReviews.class.name == 'java.util.ArrayList' &amp;&amp; $claimReviews.size() &gt; 0)
+      (% class="box defacto-box claim-stats" %)(((
+        == Statistiques relatives à une ou plusieurs déclaration(s) fact-checkée(s) par cet article ==
+        #foreach ($claimReview in $claimReviews)
+          #set ($itemReviewed = $claimReview.itemReviewed)
+          #set ($appearance = $itemReviewed.appearance)
+          #if ($appearance.interactionStatistic.size() &gt; 0)
+            #set ($appearanceText = $appearance.text)
+            #set ($appearanceText = $appearanceText.replaceAll('https://.*', '').trim())
+            * URL de la déclaration : {{html clean="false"}}&lt;a href="$appearance.url" target="_blank"&gt;$stringtool.abbreviate($appearance.url, 40)&lt;/a&gt;{{/html}}
+            #if ("$!appearanceText" != '')
+            * Texte de la déclaration : (% class="claim-text" %)(((
+              $appearanceText
+            )))
+            #end
+            #foreach ($stat in $appearance.interactionStatistic)
+              #set ($label = "$stat.interactionService.name : $stat.interactionType")
+              #if ($label == 'Twitter : ShareAction')
+                #set ($label = $services.localization.render("claim.interactionStatistic.${stat.interactionService.name}.${stat.interactionType}"))
+              #end
+              * $label : $stat.userInteractionCount
+            #end
+          #end
+        #end
+      )))
+    #end
+  #end
+
   {{socialMediaShare media="twitter,facebook,linkedin,mail" twitterExtra=" – via @DEFACTO_UE"/}}
 
   #set ($tagObject = $doc.getObject('XWiki.TagClass'))
@@ -328,28 +360,32 @@
     #end
   #end
   #set ($link = $object.getValue('link'))
-  (% class="box defacto-box defacto-fact-check-source" %)(((
+  #set ($notice = $mediaObject.getValue('notice'))
+  (% class="box defacto-box factcheck-source" %)(((
     #if ($mediaObject != $NULL)
       #set ($mediaSite = $mediaObject.getValue('site'))
       #set ($mediaLogo = $mediaObject.getValue('logo'))
       #if ("$!mediaLogo" != '')
-        (% class="defacto-media-logo" %)(((
+        (% class="factcheck-media-logo" %)(((
           [[image:$media@$mediaLogo]]
         )))
       #end
       {{html clean="false"}}
       #if ("$!link" != '')
+        &lt;div class="factcheck-also-published-by-media"&gt;
         Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt; :
         &lt;em&gt;&lt;a href="$escapetool.xml($link)"&gt;$doc.title&lt;/a&gt;&lt;/em&gt;.
+        &lt;/div&gt;
       #else
-        #set ($notice = $mediaObject.getValue('notice'))
-        #if ("$!notice" != '')
-          &lt;div class="defacto-media-notice"&gt;
-          $notice
-          &lt;/div&gt;
-        #else
-          Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
-        #end
+        &lt;div class="factcheck-also-published-by-media"&gt;
+        Ce fact-check a été également publié par &lt;a href="$escapetool.xml($mediaSite)"&gt;$escapetool.xml($mediaPage.title)&lt;/a&gt;.
+        &lt;/div&gt;
+      #end
+      #if ("$!notice" != '')
+        &lt;div class="factcheck-media-notice"&gt;
+          #set ($xdom = $services.rendering.parse($notice, 'xwiki/2.1'))
+          $services.rendering.render($xdom, 'html/5.0')
+        &lt;/div&gt;
       #end
       {{/html}}
     #end
@@ -700,12 +736,38 @@
     }
   }
 
-  .defacto-fact-check-source {
-    .defacto-media-logo {
+  .factcheck-source {
+    /**.defacto-media-logo {
       text-align: center;
       img {
         max-height: 160px;
       }
+    }*/
+    display: grid;
+    grid-template-areas: "logo link"
+      "notice notice";
+    align-items: center;
+    grid-template-columns: 1fr 3fr;
+    grid-column-gap: 2em;
+
+    .factcheck-media-logo {
+      text-align: center;
+      .wikiexternallink {
+        background: inherit;
+      }
+      grid-area: logo;
+    }
+
+    .factcheck-also-published-by-media {
+      grid-area: link;
+    }
+
+    .factcheck-media-notice {
+      /** font-style: italic; */
+      font-size: 0.9em;
+      margin-top: 1rem;
+      color: #777;
+      grid-area: notice;
     }
   }
 
@@ -839,17 +901,16 @@ figure {
       }
     }
 
+    .factcheck-source {
+      margin-top: 1em;
+      grid-template-areas:
+        "logo link"
+        "logo notice";
+    }
+
     /** AFP Factuel embeds */
     .g2web {
       width: 80%;
-    }
-  }
-  .defacto-fact-check-source {
-    margin-top: 1em;
-    .defacto-media-logo {
-      float: left;
-      margin-right: 1em;
-      max-width: 180px;
     }
   }
 
@@ -864,7 +925,23 @@ figure {
 .xwiki-social-media-share-content-footer-uix {
   display: none;
 }
-</code>
+
+.claim-stats {
+  h2 {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+  .claim-text {
+    font-style: italic;
+    padding-left: 1rem;
+    border-left: 3px solid #ddd;
+    margin: 1rem;
+    color: #666;
+    p {
+      margin: 0;
+    }
+  }
+}</code>
     </property>
     <property>
       <contentType>LESS</contentType>

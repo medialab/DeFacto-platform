@@ -217,6 +217,16 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
     </headerVideo>
+    <interactionStatistic>
+      <disabled>0</disabled>
+      <name>interactionStatistic</name>
+      <number>23</number>
+      <prettyName>interactionStatistic</prettyName>
+      <rows>5</rows>
+      <size>40</size>
+      <unmodifiable>0</unmodifiable>
+      <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+    </interactionStatistic>
     <link>
       <customDisplay/>
       <disabled>0</disabled>
