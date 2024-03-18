@@ -16,169 +16,249 @@
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
   <hidden>true</hidden>
-  <content>{{velocity}}
-#set ($key = $xwiki.getXWiki().Param('defacto.api.key'))
-#set ($rkey = $request.key)
-#set ($format = $request.format)
-#if ("$!format" == '' || "$!format" == 'json')
-  #set ($format = 'json')
-#else
-  #set ($format = 'csv')
-#end
-#if ("$!key" != '' &amp;&amp; "$!rkey" == $key)
-  #set ($hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, DateProperty as pdate where obj.name = doc.fullName and obj.className = :class and pdate.id.id = obj.id and pdate.name = 'pdate' and doc.hidden = false order by pdate.value desc")
-  #set ($query = $services.query.hql($hql))
-  ##set ($discard = $query.setLimit(20))
-  #set ($discard = $query.bindValue('class', 'XWiki.DeFacto.FactCheck.FactCheckClass'))
-  #set ($entries = $query.execute())
-  #set ($data = [])
-  #set ($formatter = $xwiki.jodatime.getDateTimeFormatterForPattern("yyyy-MM-dd'T'HH:mm:ss.SSZZ"))
-  ## Add CSV header in case the format is CSV
-  #if ($format == 'csv')
-    #set ($item = ['ID', 'Title', 'DE FACTO URL', 'Original URL', "DE FACTO Publication Date"])
-    #set ($discard = $data.add($item))
-  #end
-  #foreach ($entry in $entries)
-    ## NB: when using $escapetool.json for escaping, we get escaped unicode characters for accents, which decreases readability, and it seems 
-    ## characters are already escaped when using the jsonResponse macro. TODO: check
-    #set ($page = $xwiki.getDocument($entry[0]))
-    #set ($object = $page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass'))
-    #set ($originalUrl = $object.getValue('link'))
-    #set ($chapeau = $object.getValue('chapeau'))
-    #set ($media = $object.getValue('media'))
-    #set ($mediaPage = $xwiki.getDocument($media))
-    #set ($mediaObject = $mediaPage.getObject('XWiki.DeFacto.Media.MediaClass'))
-    #set ($mediaUrl = $mediaObject.getValue('site'))
-    #set ($xdom = $services.rendering.parse($chapeau, 'xwiki/2.1'))
-    #set ($renderedChapeau = $services.rendering.render($xdom , "xhtml/1.0"))
-    #set ($pdate = $object.getValue('pdate'))
-    #set ($guid = $object.getValue('guid'))
-    #if ("$!pdate" != '')
-      #set ($pdate = $formatter.print($pdate))
-    #end
-    #set ($medias = [])
-    #set ($headerImage = $object.getValue('headerImage'))
-    #if ("$!headerImage" != '')
-      #set ($attachment = $page.getAttachment($headerImage))
-      #if ($attachment != $NULL)
-        #set ($headerImageUrl = $xwiki.getAttachmentURL($page.documentReference, $headerImage))
-        #set ($spaces = $services.model.serialize($page.getDocumentReference().getLastSpaceReference(), 'compactwiki'))
-        #set ($headerImageUrl = $xcontext.getURLFactory().createAttachmentURL($headerImage, $spaces, 'WebHome', 'download', '', $xcontext.context))
-      #end
-      #set ($discard = $medias.add({
-        'url': "$headerImageUrl"
-      }))
-    #end
-    #set ($authors = $object.getValue('authors'))
-    #set ($claimReviewObj = $page.getObject('XWiki.DeFacto.Review.ClaimReviewClass'))
-    #if ($claimReviewObj != $NULL)
-      #set ($itemReviewedDatePublished = $claimReviewObj.getValue('itemReviewedDatePublished'))
-      #if ($itemReviewedDatePublished != $NULL)
-        #set ($itemReviewedDatePublished = $formatter.print($itemReviewedDatePublished))
-      #end
-      #set ($claimReviewed = $claimReviewObj.getValue('claimReviewed'))
-      #if ("$!claimReviewed" != '')
-        #set ($claimReview = {
-          '@context': 'https://schema.org',
-          '@type': 'ClaimReview',
-          'url': $page.getExternalURL(),
-          'datePublished': $pdate,
-          'author': {'type': 'Organization', 'name': $authors},
-          'claimReviewed': $claimReviewed,
-          'itemReviewed': {
-            '@type': 'Claim',
-            'author': {'@type': $claimReviewObj.getValue('itemReviewedAuthorType'), 'name': $claimReviewObj.getValue('itemReviewedAuthorName')},
-            'datePublished': $itemReviewedDatePublished,
-            'appearance': {
-              'url': $claimReviewObj.getValue('itemReviewedAppearanceUrl'),
-              'headline': $claimReviewObj.getValue('itemReviewedAppearanceHeadline')
-            }
-          },
-          'reviewRating': {
-            '@type': 'Rating',
-            'ratingValue': $claimReviewObj.getValue('reviewRatingValue'),
-            'bestRating': '5',
-            'worstRating': '1',
-            'alternateName': $claimReviewObj.getValue('reviewRatingAlternateName')
+  <content>{{groovy}}
+import groovy.json.JsonOutput;
+import groovy.json.JsonSlurper;
+import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
+
+def key = xwiki.getXWiki().Param('defacto.api.key')
+def rkey = request.key
+def format = request.format
+if (format == null || format == 'json')
+  format = 'json'
+else
+  format = 'csv'
+
+if (key != null &amp;&amp; rkey == key) {
+  def singleFC = "and doc.fullName = 'Medias.Factuel.Fact-checks.Autisme-fibromyalgie-depression-non-la-hausse-de-ces-maladies-n-est-pas-liee-a-la-vaccination.WebHome'";
+  singleFC = "";
+  def hql = "select doc.fullName, doc.title from XWikiDocument as doc, BaseObject as obj, DateProperty as pdate where obj.name = doc.fullName and obj.className = :class and pdate.id.id = obj.id and pdate.name = 'pdate' and doc.hidden = false $singleFC order by pdate.value desc"
+  def query = services.query.hql(hql)
+  query.bindValue('class', 'XWiki.DeFacto.FactCheck.FactCheckClass')
+  //query.setLimit(50)
+  def entries = query.execute()
+  def data = []
+  //def formatter = xwiki.jodatime.getDateTimeFormatterForPattern("yyyy-MM-dd'T'HH:mm:ss.SSZZ")
+  //String europeanDatePattern = "yyyy-dd-MM HH:mm";
+  def formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+  // Add CSV header in case the format is CSV
+  if (format == 'csv') {
+    def item = ['Media', 'ID', 'Title', 'DE FACTO URL', 'Original URL', "DE FACTO Publication Date", "Appearance 1", "Claim 1", "Rating value 1", "Rating label 1", "Appearance 2", "Claim 2", "Rating value 2", "Rating label 2", "Appearance 3", "Claim 3", "Rating value 3", "Rating value 3", "Appearance 4", "Claim 4", "Rating value 4", "Rating value 4", "Appearance 5", "Claim 5", "Rating value 5", "Rating value 5"]
+    data.add(item)
+  }
+  def jsonSlurper = new JsonSlurper();
+  entries.eachWithIndex { it, index -&gt;
+    // NB: when using $escapetool.json for escaping, we get escaped unicode characters for accents, which decreases readability, and it seems 
+    // characters are already escaped when using the jsonResponse macro. TODO: check
+    def page = xwiki.getDocument(it.getAt(0))
+    def object = page.getObject('XWiki.DeFacto.FactCheck.FactCheckClass')
+    def originalUrl = object.getValue('link')
+    def chapeau = object.getValue('chapeau')
+    def media = object.getValue('media')
+    def mediaPage = xwiki.getDocument(media)
+    def mediaObject = mediaPage.getObject('XWiki.DeFacto.Media.MediaClass')
+    def mediaUrl = "";
+    if (mediaObject != null) {
+      mediaUrl = mediaObject.getValue('site')
+    }
+    def xdom = services.rendering.parse(chapeau, 'xwiki/2.1')
+    def renderedChapeau = services.rendering.render(xdom , "xhtml/1.0")
+    def pdate = object.getValue('pdate')
+    def guid = object.getValue('guid')
+    //if (pdate != null &amp;&amp; pdate != '')
+    //pdate = formatter.print(pdate)
+    def medias = new ArrayList();
+    def headerImage = object.getValue('headerImage')
+    if (headerImage != null &amp;&amp; headerImage != '') {
+      def attachment = page.getAttachment(headerImage)
+      if (attachment != null) {
+        def headerImageUrl = xwiki.getAttachmentURL(page.fullName, headerImage)
+        def spaces = services.model.serialize(page.getDocumentReference().getLastSpaceReference(), 'compactwiki')
+        headerImageUrl = xcontext.getURLFactory().createAttachmentURL(headerImage, spaces, 'WebHome', 'download', '', xcontext.context)
+        medias.add([
+          'url': headerImageUrl
+        ])
+      }
+    }
+    def authors = object.getValue('authors')
+    def claimReviewObj = page.getObject('XWiki.DeFacto.Review.ClaimReviewClass')
+    def claimReviews = new ArrayList();
+    if (claimReviewObj != null) {
+      def claimReviewsJson = claimReviewObj.getValue('json')
+      def claimReviewed = claimReviewObj.getValue('claimReviewed')
+      if (claimReviewsJson != null &amp;&amp; claimReviewsJson != '') {
+        def claimReviewsJsonObj = jsonSlurper.parseText(claimReviewsJson);
+        //out.println("crjso: $claimReviewsJsonObj")
+        if (!(claimReviewsJsonObj instanceof ArrayList)) {
+          claimReviews = new ArrayList();
+          claimReviews.add(claimReviewsJsonObj);
+        } else {
+          claimReviews = claimReviewsJsonObj;
+        }
+        claimReviews.each { itClaimReview -&gt;
+          //out.println("itcr: ${itClaimReview.getClass().getName()}")
+          if (itClaimReview.url == null || itClaimReview.url == '') {
+            itClaimReview.url = page.getExternalURL();
           }
-        })
-      #else
-        #set ($claimReview = {})
-      #end
-    #end
-    #set ($themeTitles = [])
-    #set ($themes = $object.getValue('themes'))
-    #foreach ($theme in $themes)
-      #set ($themePage = $xwiki.getDocument($theme))
-      #set ($discard = $themeTitles.add($themePage.displayTitle))
-    #end
-    #set ($tagObject = $page.getObject('XWiki.TagClass'))
-    #if ($tagObject != $NULL)
-      #set ($tags = $tagObject.getValue('tags'))
-    #end
-    #if ($format == 'json')
-      ## Use vocabulary inspired from Atom
-      #set ($item = {
-        'id': $services.model.serialize($page.getPageReference()),
-        'title': $entry[1],
-        'link': $page.getExternalURL(),
-        'channel': {
-          'id': $services.model.serialize($mediaPage.getPageReference()),
-          'name': $mediaPage.displayTitle,
-          'url': $mediaUrl
-        },
-        'chapeau': $renderedChapeau,
-        'published': "$!pdate",
-        'authors': $authors,
-        'themes': $themeTitles,
-        'tags': $tags,
-        'medias': $medias,
-        'claim-review': $claimReview
-      })
-      #if ("$!originalUrl" != '')
-        #set ($discard = $item.put('original-url', $originalUrl))
-      #end
-      #if ("$!request.body" == 'true')
-        #set ($xdom = $services.rendering.parse("((($chapeau\n)))\n$page.content", 'xwiki/2.1'))
-        #set ($renderedContent = $services.rendering.render($xdom , "xhtml/1.0"))
-        #set ($discard = $item.put('body', $renderedContent))
-      #end
-    #else
-      #set ($item = [$guid, $entry[1], $page.getExternalURL(), "$!originalUrl", "$!pdate"])
-    #end
-    #set ($discard = $data.add($item))
-  #end
-  #set ($meta = {
-    'schema': '0.1'
-    })
-  #if ($format == 'json')
-    #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
-    #jsonResponse({'data': $data, 'meta': $meta})
-  #else
-    #set ($exporter = $services.defactoCsvExporter)
-    #set ($csv = $exporter.toCsv($data))
-    #if ($csv != $NULL)
-      ## The code below was adapted from the macro "jsonResponse" in macros.vm
-      #set ($discard = $response.setContentType('text/csv'))
-      #set ($discard = $response.setHeader('content-disposition', 'inline; filename="defacto-factchecks"'))
-      #set ($characterEncoding = 'utf-8')
-      #set ($discard = $response.setCharacterEncoding($characterEncoding))
-      #set ($discard = $response.writer.write($csv))
-      #set ($discard = $response.setContentLength($csv.getBytes($characterEncoding).size()))
-      #set ($discard = $response.flushBuffer())
-      #set ($discard = $xcontext.setFinished(true))
-    #else
-      {{warning}}
-      Une erreur est survenue lors de l'export.
-      {{/warning}}
-    #end
-  #end
-#else
-{{info}}
-Cette page permet d'exporter la base de données de fact-checks au format JSON. Une clé d'API est requise.
-{{/info}}
-#end
-{{/velocity}}</content>
+          if (itClaimReview.itemReviewed != null &amp;&amp; itClaimReview.itemReviewed.appearance != null &amp;&amp; itClaimReview.itemReviewed.appearance instanceof String) {
+            itClaimReview.itemReviewed.appearance = ['url': itClaimReview.itemReviewed.appearance];
+          }
+        }
+      } else if (claimReviewed != null &amp;&amp; claimReviewed != '') {
+        def claimReview = [
+            "itemReviewed": [
+              "author": [
+                "name": claimReviewObj.getValue('itemReviewedAuthorName'),
+                "url": claimReviewObj.getValue('itemReviewedAuthorUrl'),
+                "sameAs": null,
+                "logo": null,
+                "@type": claimReviewObj.getValue('itemReviewedAuthorType')
+              ],
+              "datePublished": claimReviewObj.getValue('itemReviewedDatePublished'),
+              "appearance": [
+                "url": claimReviewObj.getValue('itemReviewedAppearanceUrl'),
+                "name": claimReviewObj.getValue('itemReviewedAppearanceName'),
+              ],
+              "@type": "Claim"
+            ],
+            "reviewRating": [
+              "ratingValue": claimReviewObj.getValue('reviewRatingValue'),
+              "alternateName": claimReviewObj.getValue('reviewRatingAlternateName"'),
+              "@type": "Rating"
+            ],
+            "datePublished": pdate,
+            "url": page.getExternalURL(),
+            "claimReviewed": claimReviewed,
+            "@context": "https://schema.org",
+            "@type": "ClaimReview"
+          ]
+        claimReviews.add(claimReview);
+      }
+    }
+    def interactionStatistic = object.getValue('locations');
+    def interactionStatisticObj = null
+    if (interactionStatistic != null &amp;&amp; interactionStatistic.indexOf('InteractionCounter') &gt;= 0) {
+     interactionStatisticObj = jsonSlurper.parseText(interactionStatistic);
+    }
+    //out.println("cr: $claimReviews")
+    def themeTitles = []
+    def themes = object.getValue('themes')
+    themes.each { itTheme -&gt;
+      def themePage = xwiki.getDocument(itTheme)
+      themeTitles.add(themePage.displayTitle)
+    }
+    def tagObject = page.getObject('XWiki.TagClass')
+    def tags = []
+    if (tagObject != null) {
+      tags = tagObject.getValue('tags')
+    }
+    if (format == 'json') {
+      //## Use vocabulary inspired from Atom
+      def item = [
+        "id": services.model.serialize(page.getPageReference()),
+        "title": it.getAt(1),
+        "url": page.getExternalURL(),
+        "provider": [
+          "id": services.model.serialize(mediaPage.getPageReference()),
+          "name": mediaPage.displayTitle,
+          "url": mediaUrl
+        ],
+        "leadParagraph": renderedChapeau,
+        "datePublished": pdate,
+        "authors": authors,
+        "topics": themeTitles,
+        "keywords": tags,
+        "image": medias,
+        "claimReviews": claimReviews,
+        "isBasedOnUrl": originalUrl,
+        "interactionStatistic": interactionStatisticObj
+      ]
+      if (request.body != null &amp;&amp; request.body.toLowerCase() == 'true') {
+        xdom = services.rendering.parse("((($chapeau\n)))\n$page.content", 'xwiki/2.1');
+        def renderedContent = services.rendering.render(xdom , "xhtml/1.0");
+        item['body'] = renderedContent;
+      }
+
+      data.add(item);
+    } else {
+      def formattedPdate = "";
+      if (pdate != null &amp;&amp; pdate != '') {
+        formattedPdate = xwiki.formatDate(pdate, "yyyy-MM-dd'T'HH:mm:ssZ")
+      }
+      def item = [mediaPage.title, services.model.serialize(page.getPageReference()), it.getAt(1), page.getExternalURL(), originalUrl, formattedPdate]
+      if (claimReviewObj != null) {
+        def claimReviewsJson = claimReviewObj.getValue('json')
+        def claimReviewed = claimReviewObj.getValue('claimReviewed')
+        if (claimReviewsJson != null &amp;&amp; claimReviewsJson != '') {
+          def claimReviewsJsonObj = jsonSlurper.parseText(claimReviewsJson);
+          if (!(claimReviewsJsonObj instanceof ArrayList)) {
+            claimReviews = new ArrayList();
+            claimReviews.add(claimReviewsJsonObj);
+          } else {
+            claimReviews = claimReviewsJsonObj;
+          }
+          claimReviews.each { itClaimReview -&gt;
+            if (itClaimReview.itemReviewed != null &amp;&amp; itClaimReview.itemReviewed.appearance != null) {
+              if  (itClaimReview.itemReviewed.appearance instanceof String) {
+                item.add(itClaimReview.itemReviewed.appearance);
+              } else if (itClaimReview.itemReviewed.appearance.url != null) {
+                item.add(itClaimReview.itemReviewed.appearance.url);
+              }
+              item.add(itClaimReview.claimReviewed);
+              if (itClaimReview.reviewRating != null) {
+                item.add(itClaimReview.reviewRating.ratingValue);
+                item.add(itClaimReview.reviewRating.alternateName);
+              }
+            }
+          }
+        } else if (claimReviewed != null &amp;&amp; claimReviewed != '') {
+          item.add(claimReviewObj.getValue('itemReviewedAppearanceUrl'))
+          item.add(claimReviewed)
+          item.add(claimReviewObj.getValue('reviewRatingValue'))
+          item.add(claimReviewObj.getValue('reviewRatingAlternateName'))
+        }
+      }
+      data.add(item);
+      }
+    }
+    def meta = [
+    'schema': '0.2'
+    ]
+    if (format == 'json') {
+      def json = [
+        "data": data,
+        "meta": meta
+      ]
+      if (true) {
+        response.setContentType("application/json");
+        response.setCharacterEncoding('utf-8')
+        response.writer.write(JsonOutput.prettyPrint(JsonOutput.toJson(json)))
+        response.flushBuffer()
+        xcontext.setFinished(true)
+      }
+    } else {
+      def exporter = services.defactoCsvExporter
+      def csv = exporter.toCsv(data)
+
+      if (csv != null) {
+        /* The code below was adapted from the macro "jsonResponse" in macros.vm */
+        response.setContentType('text/csv')
+        response.setHeader('content-disposition', 'inline; filename="defacto-factchecks.csv"')
+        def characterEncoding = 'utf-8'
+        response.setCharacterEncoding(characterEncoding)
+        response.writer.write(csv)
+        response.setContentLength(csv.getBytes(characterEncoding).size())
+        response.flushBuffer()
+        xcontext.setFinished(true)
+      } else {
+        out.println("\n{{warning}}\n\nUne erreur est survenue lors de l'export.{{/warning}}")
+      }
+    }
+} else {
+  out.println("{{info}}\nCette page permet d'exporter la base de données de fact-checks au format JSON. Une clé d'API est requise.{{/info}}")
+}
+{{/groovy}}</content>
   <object>
     <name>XWiki.DeFacto.FactCheck.Export</name>
     <number>0</number>

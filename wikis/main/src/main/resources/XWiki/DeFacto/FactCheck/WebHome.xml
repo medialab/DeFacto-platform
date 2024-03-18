@@ -38,7 +38,7 @@
     'selectedColumn': 'doc.date',
     'defaultOrder': 'desc'
 })
-#set ($columns = ['doc.title', 'authors', 'themes', 'reviewRatingAlternateName', 'pdate', 'published', 'media', 'doc.date','doc.author', '_actions'])
+#set ($columns = ['doc.title', 'authors', 'themes', 'reviewRatingAlternateName', 'pdate', 'published', 'media', 'doc.creationDate', 'doc.date','doc.author', '_actions'])
 #livetable('factchecks' $columns $columnsProperties $options)
 ##{{livetableExporter livetable="factchecks" format="csv" /}}
 {{/velocity}}</content>

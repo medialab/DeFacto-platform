@@ -27,7 +27,9 @@ XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAuthorUrl=Site de l'auteur
 XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAppearanceUrl=URL de la déclaration
 XWiki.DeFacto.Review.ClaimReviewClass_itemReviewedAppearanceName=Libellé de la source de la déclaration
 XWiki.DeFacto.Review.ClaimReviewClass_reviewRatingValue=Évaluation numérique
-XWiki.DeFacto.Review.ClaimReviewClass_reviewRatingAlternateName=Libellé de l'évaluation</content>
+XWiki.DeFacto.Review.ClaimReviewClass_reviewRatingAlternateName=Libellé de l'évaluation
+
+claim.interactionStatistic.Twitter.ShareAction=Nombre de retweets</content>
   <object>
     <name>XWiki.DeFacto.Review.ClaimReviewTranslations</name>
     <number>0</number>
